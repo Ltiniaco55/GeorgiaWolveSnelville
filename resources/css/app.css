@@ -1,9 +1,61 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views';
+@source '../js';
 
+/*
+ * Georgia Wolves design tokens.
+ * Source of truth: docs/design/direccion-de-diseno.md (see CLAUDE.md).
+ * Font families come from the Laravel Vite font plugin (vite.config.js, @fonts in app.blade.php).
+ */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: var(--gw-font-inter);
+    --font-display: var(--gw-font-barlow);
+
+    /* Main colours */
+    --color-gw-white: #ffffff;
+    --color-gw-black: #0a0a0a;
+    --color-gw-charcoal: #262626;
+    --color-gw-yellow: #ffd400;
+
+    /* Neumorphic surfaces and their shadow tones */
+    --color-gw-neu-light: #ececec;
+    --color-gw-neu-light-shade: #c8c8c8;
+    --color-gw-neu-light-highlight: #ffffff;
+    --color-gw-neu-dark: #161616;
+    --color-gw-neu-dark-shade: #090909;
+    --color-gw-neu-dark-highlight: #232323;
+
+    /* Neumorphic shadows: light surface #ECECEC (offset 14 px, blur 30 px) */
+    --shadow-gw-raised-light: 14px 14px 30px var(--color-gw-neu-light-shade), -14px -14px 30px var(--color-gw-neu-light-highlight);
+    --shadow-gw-raised-light-hover: 20px 20px 40px var(--color-gw-neu-light-shade), -20px -20px 40px var(--color-gw-neu-light-highlight);
+    --shadow-gw-raised-light-sm: 4px 4px 10px var(--color-gw-neu-light-shade), -4px -4px 10px var(--color-gw-neu-light-highlight);
+    --shadow-gw-inset-light: inset 8px 8px 18px var(--color-gw-neu-light-shade), inset -8px -8px 18px var(--color-gw-neu-light-highlight);
+    --shadow-gw-inset-light-sm: inset 3px 3px 6px var(--color-gw-neu-light-shade), inset -3px -3px 6px var(--color-gw-neu-light-highlight);
+
+    /* Neumorphic shadows: dark surface #161616 (offset 18 px, blur 36 px) */
+    --shadow-gw-raised-dark: 18px 18px 36px var(--color-gw-neu-dark-shade), -18px -18px 36px var(--color-gw-neu-dark-highlight);
+    --shadow-gw-raised-dark-sm: 4px 4px 10px var(--color-gw-neu-dark-shade), -4px -4px 10px var(--color-gw-neu-dark-highlight);
+    --shadow-gw-inset-dark: inset 8px 8px 18px var(--color-gw-neu-dark-shade), inset -8px -8px 18px var(--color-gw-neu-dark-highlight);
+    --shadow-gw-inset-dark-sm: inset 3px 3px 6px var(--color-gw-neu-dark-shade), inset -3px -3px 6px var(--color-gw-neu-dark-highlight);
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        @apply bg-gw-white font-sans text-gw-black antialiased;
+    }
+
+    /*
+     * Focus ring: black on light surfaces; dark surfaces set
+     * --gw-focus-ring to yellow so it keeps a 3:1 contrast (WCAG 1.4.11).
+     */
+    :focus-visible {
+        outline: 3px solid var(--gw-focus-ring, var(--color-gw-black));
+        outline-offset: 3px;
+    }
 }

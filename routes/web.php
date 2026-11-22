@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::inertia('/', 'Home')->name('home');
+
+if (app()->environment('local')) {
+    Route::inertia('/styleguide', 'Styleguide')->name('styleguide');
+}
