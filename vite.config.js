@@ -47,7 +47,20 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    /*
+     * Vite runs inside the Sail container: listen on all interfaces so the
+     * browser on the host can reach it, and point HMR and CORS at localhost.
+     */
     server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            host: 'localhost',
+        },
+        cors: {
+            origin: 'http://localhost',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },
