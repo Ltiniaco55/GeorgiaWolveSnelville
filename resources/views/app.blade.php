@@ -9,6 +9,13 @@
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+        @if ($canonicalUrl = \App\Support\Localization::canonicalUrl())
+            <link rel="canonical" href="{{ $canonicalUrl }}">
+        @endif
+        @foreach (\App\Support\Localization::alternateUrls() as $hreflang => $alternateUrl)
+            <link rel="alternate" hreflang="{{ $hreflang }}" href="{{ $alternateUrl }}">
+        @endforeach
+
         <meta property="og:image" content="{{ url('/og-image.png') }}">
         <meta property="og:image:width" content="1200">
         <meta property="og:image:height" content="630">

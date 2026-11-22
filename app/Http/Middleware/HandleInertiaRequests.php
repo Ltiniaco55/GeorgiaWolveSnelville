@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Localization;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -38,23 +38,9 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            'locale' => app()->getLocale(),
-            'translations' => fn (): array => $this->translations(app()->getLocale()),
+            'locale' => fn (): string => app()->getLocale(),
+            'localeUrls' => fn (): array => Localization::equivalentUrls($request),
+            'translations' => fn (): array => Localization::translations(app()->getLocale()),
         ];
-    }
-
-    /**
-     * Load every translation group of the given locale (lang/{locale}/*.php),
-     * keyed by group name, so the Vue components never hard-code UI copy.
-     *
-     * @return array<string, array<string, mixed>>
-     */
-    protected function translations(string $locale): array
-    {
-        return collect(File::glob(lang_path("{$locale}/*.php")))
-            ->mapWithKeys(fn (string $path): array => [
-                pathinfo($path, PATHINFO_FILENAME) => trans(pathinfo($path, PATHINFO_FILENAME), [], $locale),
-            ])
-            ->all();
     }
 }

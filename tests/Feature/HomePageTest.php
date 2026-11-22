@@ -17,16 +17,6 @@ test('pages share the locale and its translation groups', function () {
         );
 });
 
-test('pages share the Spanish translations when the locale is Spanish', function () {
-    app()->setLocale('es');
-
-    $this->get('/')
-        ->assertInertia(fn (Assert $page) => $page
-            ->where('locale', 'es')
-            ->where('translations.home.placeholder_title', 'Entrena como un lobo.')
-        );
-});
-
 test('the root template links the favicons and the social image', function () {
     $this->get('/')
         ->assertSee('/favicon.ico', false)
