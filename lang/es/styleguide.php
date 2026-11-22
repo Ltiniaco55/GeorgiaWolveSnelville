@@ -39,6 +39,19 @@ return [
         'inset_sm' => 'Hundida, pequeña',
     ],
 
+    'buttons' => [
+        'title' => 'Botón CTA',
+        'intro' => '<CtaButton variant="primary|secondary" surface="light|dark">. Un círculo que se abre en píldora al entrar en pantalla y vuelve a cerrarse al salir. Pasa el ratón por encima, llega con el tabulador y haz scroll.',
+        'on_light' => 'Sobre blanco',
+        'on_dark' => 'Sobre negro',
+        'sample_primary' => 'Reserva un entrenamiento gratis',
+        'sample_secondary' => 'Ver programas',
+        'sample_long' => 'Inscríbete ahora',
+        'sample_back' => 'Volver a los botones',
+        'scroll_hint' => 'Hay más botones abajo: baja y vuelve a subir para ver cómo se abren y se cierran.',
+        'scroll_band' => 'Prueba de scroll :number',
+    ],
+
     'typography' => [
         'title' => 'Tipografía',
         'intro' => 'Barlow Condensed es provisional hasta tener la fuente del wordmark.',

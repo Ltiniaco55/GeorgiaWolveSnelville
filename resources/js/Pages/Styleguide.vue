@@ -1,9 +1,13 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import BrandLogo from '../Components/BrandLogo.vue';
+import CtaButton from '../Components/CtaButton.vue';
 import { useTranslations } from '../Composables/useTranslations';
 
 const { t } = useTranslations();
+
+/** Bands further down the page, to check that each CTA opens and folds while scrolling. */
+const scrollBands = ['light', 'dark', 'light', 'dark'];
 
 /** Each logo is shown on the surface it is meant for. */
 const logos = [
@@ -130,6 +134,48 @@ const typeSamples = [
                         <code class="text-xs break-all text-gw-white/80">{{ shadow.utility }}</code>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="sg-buttons" class="px-4 py-16 sm:px-8">
+        <div class="mx-auto flex max-w-6xl flex-col gap-8">
+            <div class="flex flex-col gap-2">
+                <h2 id="sg-buttons" class="font-display text-4xl font-extrabold uppercase">{{ t('styleguide.buttons.title') }}</h2>
+                <p class="max-w-prose text-gw-black/70">{{ t('styleguide.buttons.intro') }}</p>
+            </div>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div class="flex flex-col gap-6 rounded-[2rem] bg-gw-white p-8 ring-1 ring-gw-neu-light-shade">
+                    <h3 class="font-display text-2xl font-bold uppercase">{{ t('styleguide.buttons.on_light') }}</h3>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <CtaButton variant="primary" surface="light" href="/">{{ t('styleguide.buttons.sample_primary') }}</CtaButton>
+                        <CtaButton variant="secondary" surface="light">{{ t('styleguide.buttons.sample_secondary') }}</CtaButton>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-6 rounded-[2rem] bg-gw-black p-8 text-gw-white">
+                    <h3 class="font-display text-2xl font-bold uppercase">{{ t('styleguide.buttons.on_dark') }}</h3>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <CtaButton variant="primary" surface="dark" href="/">{{ t('styleguide.buttons.sample_primary') }}</CtaButton>
+                        <CtaButton variant="secondary" surface="dark">{{ t('styleguide.buttons.sample_secondary') }}</CtaButton>
+                    </div>
+                </div>
+            </div>
+            <p class="text-sm text-gw-black/70">{{ t('styleguide.buttons.scroll_hint') }}</p>
+        </div>
+    </section>
+
+    <section
+        v-for="(surface, index) in scrollBands"
+        :key="index"
+        :aria-label="t('styleguide.buttons.scroll_band', { number: index + 1 })"
+        class="flex min-h-[80vh] items-center px-4 sm:px-8"
+        :class="surface === 'dark' ? 'bg-gw-black text-gw-white' : 'bg-gw-white'"
+    >
+        <div class="mx-auto flex w-full max-w-6xl flex-col gap-6">
+            <p class="font-display text-5xl font-extrabold uppercase">{{ t('styleguide.buttons.scroll_band', { number: index + 1 }) }}</p>
+            <div class="flex flex-wrap items-center gap-4">
+                <CtaButton variant="primary" :surface="surface" href="#sg-buttons">{{ t('styleguide.buttons.sample_long') }}</CtaButton>
+                <CtaButton variant="secondary" :surface="surface" href="#sg-buttons">{{ t('styleguide.buttons.sample_back') }}</CtaButton>
             </div>
         </div>
     </section>

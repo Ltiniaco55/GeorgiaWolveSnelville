@@ -39,6 +39,19 @@ return [
         'inset_sm' => 'Inset, small',
     ],
 
+    'buttons' => [
+        'title' => 'CTA button',
+        'intro' => '<CtaButton variant="primary|secondary" surface="light|dark">. A circle that rolls open into a pill when it enters the screen and folds back when it leaves. Hover the buttons with the mouse, tab to them with the keyboard and scroll down.',
+        'on_light' => 'On white',
+        'on_dark' => 'On black',
+        'sample_primary' => 'Book a free training',
+        'sample_secondary' => 'View programs',
+        'sample_long' => 'Register now',
+        'sample_back' => 'Back to the buttons',
+        'scroll_hint' => 'More buttons below: scroll down and up again to see them open and fold.',
+        'scroll_band' => 'Scroll test :number',
+    ],
+
     'typography' => [
         'title' => 'Typography',
         'intro' => 'Barlow Condensed is provisional until we have the wordmark font.',
