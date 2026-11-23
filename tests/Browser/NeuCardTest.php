@@ -31,30 +31,38 @@ JS;
 test('the pricing cards fit inside the screen on mobile', function () {
     $page = visitStyleguideAndWaitForCtas(['viewport' => ['width' => 390, 'height' => 844]]);
 
+    // On mobile the plans are a deck: the cards behind are rotated on purpose,
+    // so each plan is checked while it is the card on top.
     $layout = $page->script(<<<'JS'
-        () => {
+        async () => {
             const viewportWidth = document.documentElement.clientWidth;
-            const cards = [...document.querySelectorAll('[data-test^="plan-"]')];
+            const deck = document.querySelector('[data-test="pricing-deck"]');
             const isInside = (element) => {
                 const rect = element.getBoundingClientRect();
 
-                return rect.left >= 0 && rect.right <= viewportWidth;
+                return rect.width === 0 || (rect.left >= 0 && rect.right <= viewportWidth);
             };
+            const results = [];
 
-            return {
-                cardCount: cards.length,
-                cardsInside: cards.every(isInside),
-                contentInside: cards.every((card) => [...card.querySelectorAll('*')].every((child) => child.getBoundingClientRect().width === 0 || isInside(child))),
-                hasHorizontalScroll: document.documentElement.scrollWidth > viewportWidth,
-            };
+            for (const dot of deck.querySelectorAll('.gw-deck__dot')) {
+                dot.click();
+                await new Promise((resolve) => setTimeout(resolve, 1500));
+                const card = deck.querySelector(`[data-test="plan-${deck.dataset.topPlan}"]`);
+                results.push({
+                    plan: deck.dataset.topPlan,
+                    inside: isInside(card) && [...card.querySelectorAll('*')].every(isInside),
+                    hasHorizontalScroll: document.documentElement.scrollWidth > viewportWidth,
+                });
+            }
+
+            return results;
         }
     JS);
 
     expect($layout)->toBe([
-        'cardCount' => 3,
-        'cardsInside' => true,
-        'contentInside' => true,
-        'hasHorizontalScroll' => false,
+        ['plan' => 'annual', 'inside' => true, 'hasHorizontalScroll' => false],
+        ['plan' => 'monthly', 'inside' => true, 'hasHorizontalScroll' => false],
+        ['plan' => 'free_trial', 'inside' => true, 'hasHorizontalScroll' => false],
     ]);
     $page->assertNoJavaScriptErrors();
 });

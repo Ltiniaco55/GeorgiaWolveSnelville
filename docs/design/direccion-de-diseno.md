@@ -161,6 +161,20 @@ Card del entrenador: "balancín".
 - Precios de ejemplo: 100 $/mes (de la web antigua). El anual (1.000 $, "ahorra 200 $") es inventado y está pendiente de confirmar con el cliente
 - Uniforme: 80 $, pago único, en una nota debajo de las cards
 
+#### Tarifas en móvil: efecto "baraja" (propuesta del 23 nov 2026, pendiente de aprobación)
+Solo por debajo de 640 px. En escritorio se mantienen en fila (de 640 a 1023 px, en una columna).
+Prueba: sección "Pricing" de /styleguide a 390 px. Componente PricingDeck con el composable useDeckScroll.
+- Las tres cards apiladas como una baraja: Annual (la destacada) arriba y, debajo, Monthly y Free trial asomando un poco, desplazadas 20 px por nivel y giradas entre 2,5° y 3,5°
+- Orden en móvil: Annual → Monthly → Free trial. En escritorio: Free trial · Monthly · Annual. El orden del DOM cambia con el ancho, así el orden del teclado y del lector de pantalla coincide con el visual
+- La sección se engancha al scroll (position: sticky, 100svh; altura = 100svh + 70svh por cada cambio de card). Al avanzar, la card de arriba sale hacia arriba girando (-12°) y se mete al fondo del mazo, y queda arriba la siguiente. Cada paso tiene una zona de reposo al principio y al final para que la card se quede quieta antes de que salga la siguiente. Después de la última, el scroll sigue normal
+- También se cambia de card con un deslizamiento horizontal (swipe) sobre el mazo: a la izquierda, la siguiente; a la derecha, la anterior. El deslizamiento vertical es el scroll normal
+- Puntos indicadores debajo (botones con aria-label "Plan 1 of 3" y aria-current en el activo) y la pista "Scroll or swipe to see the next plan"
+- Animación solo con transform en requestAnimationFrame, sin saltos de layout. La opacidad no se anima: una card semitransparente volando sobre la siguiente mezcla los textos de las dos
+- El scroll es la única fuente de verdad: el swipe, los puntos y el foco desplazan la página hasta la posición de esa card
+- Accesibilidad: las tres cards están siempre en el DOM y se llega a todas con el teclado; al recibir el foco, esa card pasa arriba
+- Con prefers-reduced-motion se muestran apiladas en vertical (Annual primero), sin animación ni enganche
+- Cuenta como uno de los 2 o 3 scroll enganchados de la web
+
 ### Card de entrenador (sección oscura #161616)
 - Card horizontal en relieve, con esquinas de 32 px: foto a la izquierda (5/12) y contenido a la derecha (7/12). En móvil se apila
 - La foto va en un hueco hundido, con un margen de 16 px y esquinas de 24 px. Al pasar el ratón, zoom lento. Encima lleva la píldora amarilla "UEFA PRO License"

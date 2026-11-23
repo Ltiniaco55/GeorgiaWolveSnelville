@@ -5,7 +5,7 @@ import BrandLogo from '../Components/BrandLogo.vue';
 import CoachCard from '../Components/CoachCard.vue';
 import CtaButton from '../Components/CtaButton.vue';
 import NeuCard from '../Components/NeuCard.vue';
-import PricingCard from '../Components/PricingCard.vue';
+import PricingDeck from '../Components/PricingDeck.vue';
 import { useTranslations } from '../Composables/useTranslations';
 
 const { t, tList } = useTranslations();
@@ -212,9 +212,7 @@ const typeSamples = [
                         {{ t('styleguide.cards.hint_expand') }}
                     </p>
                 </div>
-                <div class="grid grid-cols-1 gap-8 lg:grid-cols-3" data-test="pricing-grid">
-                    <PricingCard v-for="plan in plans" :key="plan.id" :plan="plan" :featured="plan.id === 'annual'" />
-                </div>
+                <PricingDeck :plans="plans" featured-id="annual" />
                 <p class="text-sm text-gw-black/75">{{ t('styleguide.cards.pricing.uniform_note') }}</p>
             </div>
         </div>
