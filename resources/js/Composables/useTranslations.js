@@ -27,5 +27,18 @@ export function useTranslations() {
         );
     }
 
-    return { t };
+    /**
+     * A list or group of copy (e.g. the features of a plan), as written in the lang file.
+     * Returns an empty array when the key does not exist.
+     *
+     * @param {string} key
+     * @returns {Array<any>|Record<string, any>}
+     */
+    function tList(key) {
+        const value = key.split('.').reduce((node, segment) => node?.[segment], page.props.translations);
+
+        return value !== null && typeof value === 'object' ? value : [];
+    }
+
+    return { t, tList };
 }

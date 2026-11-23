@@ -1,10 +1,14 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import BrandLogo from '../Components/BrandLogo.vue';
+import CoachCard from '../Components/CoachCard.vue';
 import CtaButton from '../Components/CtaButton.vue';
+import NeuCard from '../Components/NeuCard.vue';
+import PricingCard from '../Components/PricingCard.vue';
 import { useTranslations } from '../Composables/useTranslations';
 
-const { t } = useTranslations();
+const { t, tList } = useTranslations();
 
 /** Bands further down the page, to check that each CTA opens and folds while scrolling. */
 const scrollBands = ['light', 'dark', 'light', 'dark'];
@@ -50,6 +54,49 @@ const darkShadows = [
     { label: 'inset', utility: 'shadow-gw-inset-dark' },
     { label: 'inset_sm', utility: 'shadow-gw-inset-dark-sm' },
 ];
+
+const cardVariants = ['raised', 'inset', 'featured'];
+
+const plans = computed(() =>
+    ['free_trial', 'monthly', 'annual'].map((id) => {
+        const key = `styleguide.cards.pricing.${id}`;
+
+        return {
+            id,
+            name: t(`${key}.name`),
+            badge: id === 'annual' ? t(`${key}.badge`) : null,
+            price: t(`${key}.price`),
+            period: t(`${key}.period`),
+            saving: t(`${key}.saving`),
+            description: t(`${key}.description`),
+            features: tList(`${key}.features`),
+            note: t('styleguide.cards.pricing.billing_note'),
+            ctaLabel: t(`${key}.cta`),
+            ctaHref: '#sg-cards',
+        };
+    }),
+);
+
+const coach = computed(() => {
+    const key = 'styleguide.cards.coach';
+
+    return {
+        role: t(`${key}.role`),
+        name: t(`${key}.name`),
+        initials: t(`${key}.initials`),
+        photo: null,
+        photoAlt: t(`${key}.photo_alt`),
+        licence: t(`${key}.licence`),
+        bio: t(`${key}.bio`),
+        stats: tList(`${key}.stats`),
+        coachingTitle: t(`${key}.coaching_title`),
+        coachingCareer: tList(`${key}.coaching`),
+        playingTitle: t(`${key}.playing_title`),
+        playingCareer: tList(`${key}.playing`),
+        primaryCta: { label: t(`${key}.primary_cta`), href: '#sg-coach' },
+        secondaryCta: { label: t(`${key}.secondary_cta`), href: '#sg-coach' },
+    };
+});
 
 const typeSamples = [
     { label: 'display_800', sample: 'sample_headline', classes: 'font-display text-5xl font-extrabold uppercase leading-none sm:text-7xl' },
@@ -138,6 +185,54 @@ const typeSamples = [
         </div>
     </section>
 
+    <section aria-labelledby="sg-cards" class="bg-gw-neu-light px-4 py-16 sm:px-8">
+        <div class="mx-auto flex max-w-6xl flex-col gap-10">
+            <div class="flex flex-col gap-2">
+                <h2 id="sg-cards" class="font-display text-4xl font-extrabold uppercase">{{ t('styleguide.cards.title') }}</h2>
+                <p class="max-w-prose text-gw-black/75">{{ t('styleguide.cards.intro') }}</p>
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <h3 class="font-display text-2xl font-bold uppercase">{{ t('styleguide.cards.variants_title') }}</h3>
+                <ul class="grid grid-cols-1 gap-8 sm:grid-cols-3">
+                    <li v-for="variant in cardVariants" :key="variant">
+                        <NeuCard surface="light" :variant="variant" class="flex h-32 flex-col justify-end p-6">
+                            <p class="font-semibold">{{ t(`styleguide.cards.variant_${variant}`) }}</p>
+                            <code class="text-xs" :class="variant === 'featured' ? 'text-gw-white/75' : 'text-gw-black/75'">variant="{{ variant }}"</code>
+                        </NeuCard>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <h3 id="sg-pricing" class="font-display text-2xl font-bold uppercase">{{ t('styleguide.cards.pricing.title') }}</h3>
+                    <p class="gw-sg-hint text-gw-black/75">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3l14 7-6 2-2 6z" /></svg>
+                        {{ t('styleguide.cards.hint_expand') }}
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-3" data-test="pricing-grid">
+                    <PricingCard v-for="plan in plans" :key="plan.id" :plan="plan" :featured="plan.id === 'annual'" />
+                </div>
+                <p class="text-sm text-gw-black/75">{{ t('styleguide.cards.pricing.uniform_note') }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section aria-labelledby="sg-coach" class="bg-gw-neu-dark px-4 py-16 text-gw-white sm:px-8 [--gw-focus-ring:var(--color-gw-yellow)]">
+        <div class="mx-auto flex max-w-6xl flex-col gap-10">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <h2 id="sg-coach" class="font-display text-4xl font-extrabold uppercase">{{ t('styleguide.cards.coach.title') }}</h2>
+                <p class="gw-sg-hint text-gw-white/75">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 3l14 7-6 2-2 6z" /></svg>
+                    {{ t('styleguide.cards.hint_tilt') }}
+                </p>
+            </div>
+            <CoachCard :coach="coach" />
+        </div>
+    </section>
+
     <section aria-labelledby="sg-buttons" class="px-4 py-16 sm:px-8">
         <div class="mx-auto flex max-w-6xl flex-col gap-8">
             <div class="flex flex-col gap-2">
@@ -195,3 +290,18 @@ const typeSamples = [
         </div>
     </section>
 </template>
+
+<style scoped>
+.gw-sg-hint {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.gw-sg-hint svg {
+    width: 16px;
+    height: 16px;
+}
+</style>

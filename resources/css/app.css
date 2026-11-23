@@ -36,9 +36,14 @@
 
     /* Neumorphic shadows: dark surface #161616 (offset 18 px, blur 36 px) */
     --shadow-gw-raised-dark: 18px 18px 36px var(--color-gw-neu-dark-shade), -18px -18px 36px var(--color-gw-neu-dark-highlight);
+    --shadow-gw-raised-dark-hover: 24px 24px 48px var(--color-gw-neu-dark-shade), -24px -24px 48px var(--color-gw-neu-dark-highlight);
     --shadow-gw-raised-dark-sm: 4px 4px 10px var(--color-gw-neu-dark-shade), -4px -4px 10px var(--color-gw-neu-dark-highlight);
     --shadow-gw-inset-dark: inset 8px 8px 18px var(--color-gw-neu-dark-shade), inset -8px -8px 18px var(--color-gw-neu-dark-highlight);
     --shadow-gw-inset-dark-sm: inset 3px 3px 6px var(--color-gw-neu-dark-shade), inset -3px -3px 6px var(--color-gw-neu-dark-highlight);
+
+    /* Featured card (Annual plan): near-black panel that keeps its section's outer shadows */
+    --color-gw-featured: #0b0b0b;
+    --shadow-gw-featured-inset: inset 0 2px 14px rgb(0 0 0 / 0.7), inset 0 -1px 0 rgb(255 255 255 / 0.06);
 }
 
 @layer base {

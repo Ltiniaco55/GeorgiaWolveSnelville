@@ -70,7 +70,7 @@ Botón secundario sobre fondo blanco:
 
 Botón secundario sobre fondo negro:
 - Transparente con borde blanco, texto y flecha blancos
-- Al pasar el ratón: fondo blanco, texto negro (interpretación, pendiente de confirmar)
+- Al pasar el ratón: fondo blanco, texto negro
 
 Efectos aprobados:
 - 3D hacia dentro (botón hundido):
@@ -90,6 +90,9 @@ Notas técnicas:
 - IntersectionObserver con rootMargin del -10% que pone o quita la clase .open
 - Se anima el width de la altura (círculo) al ancho medido del texto. El texto aparece con un fade retrasado
 - Con prefers-reduced-motion los botones salen siempre abiertos y sin expansión al pasar el ratón
+- Reserva de hueco: el botón va dentro de un contenedor (.gw-cta-slot) que siempre mide lo que la píldora abierta. Abrir o cerrar no cambia el layout: no salta de fila ni produce desplazamientos (CLS). La flecha se mueve con transform, no con right
+- El IntersectionObserver vigila ese contenedor, no el botón, y tiene histéresis: abre cuando el contenedor está entero dentro del viewport con el margen del -10 % y solo se cierra cuando sale del viewport por completo. Así no parpadea en el límite
+- El botón no se cierra al pasar el ratón ni al tener el foco: con el foco del teclado se abre aunque esté fuera de la zona de apertura
 
 ## Tipografía
 - Titulares, nombres y precios: Barlow Condensed 700/800 (provisional, hasta tener la fuente del wordmark)

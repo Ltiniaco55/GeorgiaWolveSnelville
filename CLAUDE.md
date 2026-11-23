@@ -42,7 +42,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Estilo hundido: sombra interior oscura arriba, brillo abajo, línea de luz de 1 px y texto con relieve grabado. Al hacer clic se oscurece un poco.
 - Hover: `scale(1.09)` con `cubic-bezier(.34,1.56,.64,1)` en 0,35 s. Al hacer clic, `scale(1.03)`.
 - Principal: fondo amarillo, texto negro. En hover pasa a carbón #262626 con texto blanco sobre fondo blanco, o con texto y borde amarillos sobre fondo negro.
-- Secundario: transparente con borde negro sobre blanco, o borde blanco sobre negro. En hover, carbón con texto blanco sobre blanco, o fondo blanco con texto negro sobre negro (esto último está pendiente de confirmar).
+- Secundario: transparente con borde negro sobre blanco, o borde blanco sobre negro. En hover, carbón con texto blanco sobre blanco, o fondo blanco con texto negro sobre negro.
 - Inter 600, 16 px (15 px en móvil).
 - Descartados: 3D hacia fuera, inclinación hacia el cursor, halo y glassmorphism.
 

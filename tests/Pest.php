@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 /*
@@ -47,4 +48,35 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * Registers /styleguide, which only exists in the local environment, for browser tests.
+ */
+function registerStyleguideRoute(): void
+{
+    app()->detectEnvironment(fn (): string => 'local');
+    Route::middleware('web')->group(base_path('routes/web.php'));
+    Route::getRoutes()->refreshNameLookups();
+}
+
+/**
+ * Opens /styleguide and waits until Vue has mounted the CTAs and the fonts are in.
+ *
+ * @param  array<string, mixed>  $options  Playwright browser-context options.
+ */
+function visitStyleguideAndWaitForCtas(array $options): mixed
+{
+    $page = visit('/styleguide', $options);
+
+    $page->script(<<<'JS'
+        async () => {
+            while (!document.querySelector('.gw-cta')) {
+                await new Promise((resolve) => setTimeout(resolve, 50));
+            }
+            await document.fonts.ready;
+        }
+    JS);
+
+    return $page;
 }
