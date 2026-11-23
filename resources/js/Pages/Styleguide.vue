@@ -6,7 +6,10 @@ import CoachCard from '../Components/CoachCard.vue';
 import CtaButton from '../Components/CtaButton.vue';
 import NeuCard from '../Components/NeuCard.vue';
 import PricingDeck from '../Components/PricingDeck.vue';
+import BareLayout from '../Layouts/BareLayout.vue';
 import { useTranslations } from '../Composables/useTranslations';
+
+defineOptions({ layout: BareLayout });
 
 const { t, tList } = useTranslations();
 

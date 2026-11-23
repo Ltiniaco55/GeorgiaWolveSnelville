@@ -97,6 +97,24 @@ class Localization
     }
 
     /**
+     * URL of a page of the sitemap in a locale (current locale by default), built from
+     * its slug so it also works for pages whose route does not exist yet.
+     */
+    public static function pageUrl(string $name, ?string $locale = null): string
+    {
+        $locale ??= app()->getLocale();
+        $routeName = "{$locale}.{$name}";
+
+        if (Route::has($routeName)) {
+            return route($routeName);
+        }
+
+        $path = trim(self::prefix($locale).self::slug($name, $locale), '/');
+
+        return url($path === '' ? '/' : $path);
+    }
+
+    /**
      * Name of the current localized route without its locale, e.g. "about" for "es.about".
      */
     public static function currentRouteName(?Request $request = null): ?string

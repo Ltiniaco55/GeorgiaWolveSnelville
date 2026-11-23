@@ -45,6 +45,19 @@ const props = defineProps({
         default: 'start',
         validator: (value) => ['start', 'end'].includes(value),
     },
+    /**
+     * Always a pill, never folded: for buttons that live in the fixed header, at the
+     * top edge the scroll-in observer never counts as inside (rootMargin -10 %).
+     */
+    alwaysOpen: {
+        type: Boolean,
+        default: false,
+    },
+    /** Keeps the button folded (e.g. during the brand intro); it opens once released. */
+    hold: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 const attrs = useAttrs();
@@ -79,7 +92,7 @@ const tag = computed(() => {
     return isInternalLink.value ? Link : 'a';
 });
 
-const isOpen = computed(() => prefersReducedMotion.value || isInView.value);
+const isOpen = computed(() => prefersReducedMotion.value || props.alwaysOpen || (!props.hold && isInView.value));
 
 let openObserver = null;
 let closeObserver = null;

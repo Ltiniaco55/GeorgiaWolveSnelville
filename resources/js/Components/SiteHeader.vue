@@ -1,0 +1,299 @@
+<script setup>
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useFocusTrap } from '../Composables/useFocusTrap';
+import { useTranslations } from '../Composables/useTranslations';
+import BrandLogo from './BrandLogo.vue';
+import CtaButton from './CtaButton.vue';
+import LocaleSwitcher from './LocaleSwitcher.vue';
+
+/**
+ * Fixed site header (docs/design/sitemap.md, "Navegación"): transparent over the
+ * black hero, solid once the page scrolls. Crest (72 px) and wordmark, the five
+ * main links, the EN/ES switcher and the "Register" CTA.
+ *
+ * Below 1024 px: a hamburger opens a full-screen black panel (a modal dialog) with
+ * the longer mobile link list, the CTAs, WhatsApp and the language switcher. Focus
+ * stays inside the panel, Esc closes it and focus goes back to the button.
+ *
+ * The crest is the landing spot of the brand intro (`data-intro-crest`).
+ */
+const page = usePage();
+const { t } = useTranslations();
+
+const mainLinks = ['programs', 'pricing', 'about', 'leagues', 'gallery'];
+const mobileLinks = ['programs', 'pricing', 'about', 'teams', 'leagues', 'gallery', 'faq', 'contact'];
+
+const navigation = computed(() => page.props.navigation ?? {});
+const isSolid = ref(false);
+const isMenuOpen = ref(false);
+const menuPanel = ref(null);
+
+function updateSolid() {
+    isSolid.value = window.scrollY > 8;
+}
+
+function closeMenu() {
+    isMenuOpen.value = false;
+}
+
+useFocusTrap(menuPanel, isMenuOpen, { onEscape: closeMenu });
+
+watch(isMenuOpen, (open) => document.documentElement.classList.toggle('gw-scroll-locked', open));
+watch(() => page.url, closeMenu);
+
+onMounted(() => {
+    updateSolid();
+    window.addEventListener('scroll', updateSolid, { passive: true });
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', updateSolid);
+    document.documentElement.classList.remove('gw-scroll-locked');
+});
+
+/**
+ * @param {string} name
+ */
+function isCurrent(name) {
+    return page.props.currentPage === name ? 'page' : undefined;
+}
+</script>
+
+<template>
+    <header class="gw-header gw-intro-clip" :class="{ 'gw-header--solid': isSolid }" data-test="site-header">
+        <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-8 lg:gap-8">
+            <Link :href="navigation.home" class="flex min-w-0 items-center gap-3" :aria-label="t('common.nav.home')">
+                <BrandLogo variant="crest" class="h-[72px] flex-none" decorative data-intro-crest />
+                <span class="flex min-w-0 flex-col gap-1">
+                    <BrandLogo variant="wordmark-white" class="h-3.5 sm:h-4" decorative />
+                    <span class="truncate text-[0.6875rem] font-medium tracking-[0.18em] text-gw-white/70 uppercase">{{ t('common.nav.tagline') }}</span>
+                </span>
+            </Link>
+
+            <nav class="ml-auto hidden lg:block" :aria-label="t('common.nav.label')">
+                <ul class="flex items-center gap-7">
+                    <li v-for="name in mainLinks" :key="name">
+                        <Link :href="navigation[name]" class="gw-header__link" :aria-current="isCurrent(name)">{{ t(`common.nav.${name}`) }}</Link>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="hidden lg:block">
+                <LocaleSwitcher />
+            </div>
+
+            <div class="hidden lg:block">
+                <CtaButton variant="primary" surface="dark" :href="navigation.register" align="end" always-open data-test="header-register">{{ t('common.nav.register') }}</CtaButton>
+            </div>
+
+            <button
+                type="button"
+                class="gw-header__burger ml-auto lg:hidden"
+                :aria-expanded="isMenuOpen ? 'true' : 'false'"
+                aria-controls="gw-mobile-menu"
+                data-test="menu-button"
+                @click="isMenuOpen = true"
+            >
+                <span class="sr-only">{{ t('common.menu.open') }}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h10" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <Teleport to="body">
+        <Transition name="gw-menu">
+            <div
+                v-if="isMenuOpen"
+                id="gw-mobile-menu"
+                ref="menuPanel"
+                class="gw-menu"
+                role="dialog"
+                aria-modal="true"
+                :aria-label="t('common.menu.label')"
+                data-test="mobile-menu"
+            >
+                <div class="flex items-center justify-between gap-4 px-4 py-3 sm:px-8">
+                    <BrandLogo variant="crest" class="h-14" decorative />
+                    <button type="button" class="gw-header__burger" data-test="menu-close" @click="closeMenu">
+                        <span class="sr-only">{{ t('common.menu.close') }}</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false">
+                            <path d="M6 6l12 12M18 6L6 18" />
+                        </svg>
+                    </button>
+                </div>
+
+                <nav class="flex-1 overflow-y-auto px-4 pt-4 pb-8 sm:px-8" :aria-label="t('common.nav.label')">
+                    <ul class="flex flex-col">
+                        <li v-for="name in mobileLinks" :key="name">
+                            <Link :href="navigation[name]" class="gw-menu__link" :aria-current="isCurrent(name)">{{ t(`common.nav.${name}`) }}</Link>
+                        </li>
+                    </ul>
+
+                    <div class="mt-8 flex flex-col items-start gap-4">
+                        <CtaButton variant="primary" surface="dark" :href="navigation.register">{{ t('common.nav.register') }}</CtaButton>
+                        <CtaButton variant="secondary" surface="dark" :href="navigation.free_training">{{ t('common.nav.free_training') }}</CtaButton>
+                    </div>
+
+                    <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-gw-charcoal pt-6">
+                        <a :href="page.props.whatsappUrl" class="gw-menu__whatsapp" target="_blank" rel="noopener">
+                            <svg class="size-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                                <path
+                                    d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3z"
+                                />
+                            </svg>
+                            {{ t('common.menu.whatsapp') }}
+                        </a>
+                        <LocaleSwitcher size="lg" />
+                    </div>
+                </nav>
+            </div>
+        </Transition>
+    </Teleport>
+</template>
+
+<style scoped>
+.gw-header {
+    --gw-focus-ring: var(--color-gw-yellow);
+
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 40;
+    color: var(--color-gw-white);
+    transition:
+        background-color 0.3s,
+        box-shadow 0.3s;
+}
+
+.gw-header--solid {
+    background: rgb(10 10 10 / 0.96);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.gw-header__link {
+    position: relative;
+    padding-block: 0.5rem;
+    color: rgb(255 255 255 / 0.85);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.gw-header__link::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-gw-yellow);
+    content: '';
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+}
+
+.gw-header__link[aria-current='page'] {
+    color: var(--color-gw-white);
+}
+
+.gw-header__link[aria-current='page']::after {
+    transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .gw-header__link:hover {
+        color: var(--color-gw-white);
+    }
+
+    .gw-header__link:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+.gw-header__burger {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgb(255 255 255 / 0.25);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-gw-white);
+    cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+    .gw-header .gw-header__burger {
+        display: none;
+    }
+}
+
+.gw-header__burger svg {
+    width: 22px;
+    height: 22px;
+}
+
+.gw-menu {
+    --gw-focus-ring: var(--color-gw-yellow);
+
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--color-gw-black);
+    color: var(--color-gw-white);
+}
+
+.gw-menu__link {
+    display: block;
+    padding-block: 0.375rem;
+    font-family: var(--gw-font-barlow);
+    font-size: clamp(2.25rem, 10vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1.05;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.gw-menu__link[aria-current='page'] {
+    color: var(--color-gw-yellow);
+}
+
+.gw-menu__whatsapp {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 3rem;
+    color: var(--color-gw-white);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.gw-menu-enter-active,
+.gw-menu-leave-active {
+    transition:
+        opacity 0.25s,
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.gw-menu-enter-from,
+.gw-menu-leave-to {
+    opacity: 0;
+    transform: translateY(-12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gw-header,
+    .gw-header__link::after,
+    .gw-menu-enter-active,
+    .gw-menu-leave-active {
+        transition: none;
+    }
+}
+</style>

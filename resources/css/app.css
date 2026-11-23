@@ -64,3 +64,67 @@
         outline-offset: 3px;
     }
 }
+
+/*
+ * Brand intro (BrandIntro.vue toggles these classes on <html>).
+ * - gw-intro-active: scroll locked, page black, header and main clipped by the
+ *   growing circle (--gw-intro-radius), the menu crest hidden until it pops.
+ * - gw-intro-hero-in: from 1.25 s, the hero content comes in staggered.
+ * - gw-intro-landed: from 2.35 s, the crest pops (0.7 → 1.14 → 1).
+ * Without these classes everything is in its normal state.
+ */
+.gw-intro-active,
+.gw-intro-active body {
+    overflow: hidden;
+}
+
+.gw-intro-active body {
+    background: var(--color-gw-black);
+}
+
+.gw-intro-active .gw-intro-clip {
+    clip-path: circle(var(--gw-intro-radius, 0px) at 50vw 50vh);
+}
+
+.gw-intro-active [data-intro-crest] {
+    opacity: 0;
+}
+
+.gw-intro-active.gw-intro-landed [data-intro-crest] {
+    opacity: 1;
+    animation: gw-crest-pop 0.25s ease-out both;
+}
+
+@keyframes gw-crest-pop {
+    0% {
+        transform: scale(0.7);
+    }
+
+    60% {
+        transform: scale(1.14);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.gw-intro-active .gw-hero-reveal {
+    opacity: 0;
+    transform: translate3d(0, 34px, 0);
+}
+
+.gw-intro-active.gw-intro-hero-in .gw-hero-reveal {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.7s ease-out,
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--gw-reveal-index, 0) * 90ms);
+}
+
+/* Mobile menu open: the page behind does not scroll. */
+.gw-scroll-locked,
+.gw-scroll-locked body {
+    overflow: hidden;
+}

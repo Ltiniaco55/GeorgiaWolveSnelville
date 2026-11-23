@@ -27,7 +27,7 @@ test('the home page without prefix is in English', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home')
             ->where('locale', 'en')
-            ->where('translations.home.placeholder_title', 'Train like a wolf.')
+            ->where('translations.home.hero.title_accent', 'wolf.')
         );
 });
 
@@ -38,7 +38,7 @@ test('the home page under /es is in Spanish', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home')
             ->where('locale', 'es')
-            ->where('translations.home.placeholder_title', 'Entrena como un lobo.')
+            ->where('translations.home.hero.title_accent', 'lobo.')
         );
 });
 

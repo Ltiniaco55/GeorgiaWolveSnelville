@@ -18,6 +18,16 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     /**
+     * Sitemap pages linked from the header, the mobile menu and the mobile CTA bar.
+     *
+     * @var array<int, string>
+     */
+    private const NAVIGATION_PAGES = [
+        'home', 'programs', 'pricing', 'about', 'teams', 'leagues',
+        'gallery', 'faq', 'contact', 'register', 'free_training',
+    ];
+
+    /**
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
@@ -41,6 +51,13 @@ class HandleInertiaRequests extends Middleware
             'locale' => fn (): string => app()->getLocale(),
             'localeUrls' => fn (): array => Localization::equivalentUrls($request),
             'translations' => fn (): array => Localization::translations(app()->getLocale()),
+            'currentPage' => fn (): ?string => Localization::currentRouteName($request),
+            'navigation' => fn (): array => collect(self::NAVIGATION_PAGES)
+                ->mapWithKeys(fn (string $page): array => [$page => Localization::pageUrl($page)])
+                ->all(),
+            'whatsappUrl' => fn (): string => config('club.whatsapp_number')
+                ? 'https://wa.me/'.config('club.whatsapp_number')
+                : Localization::pageUrl('contact'),
         ];
     }
 }

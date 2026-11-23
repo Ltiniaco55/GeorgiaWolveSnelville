@@ -2,7 +2,10 @@
 import { computed } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import BrandLogo from '../Components/BrandLogo.vue';
+import BareLayout from '../Layouts/BareLayout.vue';
 import { useTranslations } from '../Composables/useTranslations';
+
+defineOptions({ layout: BareLayout });
 
 const props = defineProps({
     status: {
