@@ -161,7 +161,7 @@ Card del entrenador: "balancín".
 - Precios de ejemplo: 100 $/mes (de la web antigua). El anual (1.000 $, "ahorra 200 $") es inventado y está pendiente de confirmar con el cliente
 - Uniforme: 80 $, pago único, en una nota debajo de las cards
 
-#### Tarifas en móvil: efecto "baraja" (propuesta del 23 nov 2026, pendiente de aprobación)
+#### Tarifas en móvil: efecto "baraja" (aprobada el 23 nov 2026)
 Solo por debajo de 640 px. En escritorio se mantienen en fila (de 640 a 1023 px, en una columna).
 Prueba: sección "Pricing" de /styleguide a 390 px. Componente PricingDeck con el composable useDeckScroll.
 - Las tres cards apiladas como una baraja: Annual (la destacada) arriba y, debajo, Monthly y Free trial asomando un poco, desplazadas 20 px por nivel y giradas entre 2,5° y 3,5°

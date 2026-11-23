@@ -53,7 +53,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
   - Esquinas de 28 px y separadores "grabados".
   - Hover: `scale(1.035)` con rebote en 0,4 s (el balancín se descartó para estas cards).
   - Debajo, una nota con el uniforme (pago único).
-  - En móvil (< 640 px), efecto "baraja" enganchado al scroll, con Annual arriba (PricingDeck + useDeckScroll; pendiente de aprobación). Cuenta como uno de los scroll enganchados.
+  - En móvil (< 640 px), efecto "baraja" enganchado al scroll, con Annual arriba (aprobado; PricingDeck + useDeckScroll). Cuenta como uno de los scroll enganchados.
 - Entrenador (sección #161616):
   - Card horizontal (foto 5/12 y contenido 7/12) con esquinas de 32 px. La foto va en un hueco hundido.
   - Balancín 3D con muelle: perspectiva 1000 px, inclinación máxima 4°, rigidez 0,055, amortiguación 0,86.
