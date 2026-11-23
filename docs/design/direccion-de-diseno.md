@@ -46,6 +46,11 @@ Hero (escaparate):
   - CTAs "Book a free training" y "View programs"
   - Chips de datos: días, dirección, primer entrenamiento gratis
 - Derecha: escenario hundido (neumórfico oscuro, proporción 4:5). De momento lleva la camiseta 3D; más adelante, una foto de los niños de la academia (decisión de Luciano: más humana y cercana). Lleva dos badges: "U12 Champions 2026" (amarillo) y "GYSL Fall League · Premier Division"
+- Camiseta 3D (fase 6, 23 nov 2026): Three.js directo (sin TresJS), portado de docs/design/reference/CamisetaGiratoria-referencia.jsx con el mismo comportamiento (giro solo, más lento de frente y de espalda, flotación, cámara fija a la altura del pecho). Entorno RoomEnvironment local en lugar del preset "studio" de drei (que descarga un HDR de un CDN) y sombra de contacto con un degradado radial
+  - Mientras carga, póster WebP estático (public/images/jersey-poster.webp, la camiseta de frente con fondo transparente)
+  - Three.js y el modelo se descargan solo cuando el escenario está en pantalla, después de la intro y con el navegador libre
+  - Se queda el póster con reduced motion, sin WebGL o con WebGL por software (SwiftShader, llvmpipe…): girar 160.000 triángulos en la CPU vuelve lenta toda la página
+  - Se pausa fuera de pantalla o con la pestaña oculta, y libera geometrías, texturas y renderer al desmontar
 - Debajo: una cinta de logros en movimiento (ticker) que se pausa al pasar el ratón
 - Después, la primera sección blanca, para enseñar el paso de negro a blanco
 

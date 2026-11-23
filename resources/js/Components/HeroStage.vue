@@ -1,44 +1,240 @@
 <script setup>
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useReducedMotion } from '../Composables/useReducedMotion';
 import { useTranslations } from '../Composables/useTranslations';
-import BrandLogo from './BrandLogo.vue';
 
 /**
  * Hero stage: a pressed-in dark neumorphic panel, 4:5, with two badges
- * (docs/design/direccion-de-diseno.md, "Hero"). It will hold the 3D jersey
- * (phase 6) and later a photo of the academy's kids.
+ * (docs/design/direccion-de-diseno.md, "Hero").
  *
- * mode "jersey": placeholder silhouette until the 3D model arrives.
+ * mode "jersey": the spinning 3D jersey (jerseyScene.js, plain Three.js).
+ * - A static WebP poster (the jersey from the front) is always there first.
+ * - Three.js and the model are imported only once the stage is on screen, the
+ *   brand intro is over (`ready`) and the browser is idle; then the canvas fades
+ *   in over the poster on its first frame.
+ * - With reduced motion, without hardware-accelerated WebGL, or if loading fails,
+ *   the poster stays and no canvas is created.
+ * - The animation pauses while the stage is off screen or the tab is hidden, and
+ *   everything (geometries, textures, renderer) is freed on unmount.
  * mode "photo": the default slot (an <img> with its alt).
+ *
+ * `data-jersey-state` (poster | loading | running | paused) is for tests.
  */
-defineProps({
+const props = defineProps({
     mode: {
         type: String,
         default: 'jersey',
         validator: (value) => ['jersey', 'photo'].includes(value),
     },
+    /** False while the brand intro plays: the 3D jersey waits for it. */
+    ready: {
+        type: Boolean,
+        default: true,
+    },
 });
 
+const MODEL_URL = '/models/camiseta-georgia-wolves.glb';
+const POSTER_URL = '/images/jersey-poster.webp';
+
 const { t } = useTranslations();
+const prefersReducedMotion = useReducedMotion();
+
+const stage = ref(null);
+const canvas = ref(null);
+const isOnScreen = ref(false);
+const isPageVisible = ref(!document.hidden);
+const hasWebGL = ref(null);
+const status = ref('poster');
+const hasFirstFrame = ref(false);
+
+const wants3d = computed(() => props.mode === 'jersey' && !prefersReducedMotion.value && hasWebGL.value !== false);
+const showCanvas = computed(() => wants3d.value && status.value !== 'poster');
+
+let scene = null;
+let isUnmounted = false;
+let intersectionObserver = null;
+let resizeObserver = null;
+let idleHandle = null;
+
+/** Renderers that draw WebGL on the CPU. */
+const SOFTWARE_RENDERER = /swiftshader|llvmpipe|softpipe|software|basic render/i;
+
+/**
+ * Whether this browser has hardware-accelerated WebGL (checked once, then released).
+ * Software rendering is ruled out twice: failIfMajorPerformanceCaveat, and the
+ * renderer name (Chrome does not flag SwiftShader as a caveat). Spinning a
+ * 160k-triangle model on the CPU makes the whole page sluggish, so those devices
+ * keep the poster too.
+ */
+function detectWebGL() {
+    try {
+        const probe = document.createElement('canvas');
+        const options = { failIfMajorPerformanceCaveat: true };
+        const context = probe.getContext('webgl2', options) ?? probe.getContext('webgl', options);
+
+        if (!context) {
+            return false;
+        }
+
+        const debugInfo = context.getExtension('WEBGL_debug_renderer_info');
+        const renderer = debugInfo ? String(context.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)) : '';
+        context.getExtension('WEBGL_lose_context')?.loseContext();
+
+        return !SOFTWARE_RENDERER.test(renderer);
+    } catch {
+        return false;
+    }
+}
+
+function whenIdle(callback) {
+    if ('requestIdleCallback' in window) {
+        idleHandle = window.requestIdleCallback(callback, { timeout: 1500 });
+    } else {
+        idleHandle = window.setTimeout(callback, 200);
+    }
+}
+
+function cancelIdle() {
+    if (idleHandle === null) {
+        return;
+    }
+
+    if ('cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleHandle);
+    } else {
+        window.clearTimeout(idleHandle);
+    }
+
+    idleHandle = null;
+}
+
+function syncPlayback() {
+    if (!scene) {
+        return;
+    }
+
+    if (isOnScreen.value && isPageVisible.value) {
+        scene.start();
+        status.value = 'running';
+    } else {
+        scene.stop();
+        status.value = 'paused';
+    }
+}
+
+async function load() {
+    idleHandle = null;
+    hasWebGL.value ??= detectWebGL();
+
+    if (!wants3d.value || status.value !== 'poster' || isUnmounted) {
+        return;
+    }
+
+    status.value = 'loading';
+
+    try {
+        // Wait for Vue to render the canvas before handing it to Three.js.
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+
+        const { createJerseyScene } = await import('./jerseyScene.js');
+        const created = await createJerseyScene(canvas.value, {
+            modelUrl: MODEL_URL,
+            onFirstFrame: () => {
+                hasFirstFrame.value = true;
+            },
+        });
+
+        if (isUnmounted || !wants3d.value) {
+            created.dispose();
+
+            return;
+        }
+
+        scene = created;
+        const { width, height } = stage.value.getBoundingClientRect();
+        scene.resize(width, height);
+        resizeObserver = new ResizeObserver(([entry]) => scene?.resize(entry.contentRect.width, entry.contentRect.height));
+        resizeObserver.observe(stage.value);
+        syncPlayback();
+    } catch {
+        // No WebGL context or the model failed: keep the poster.
+        hasWebGL.value = false;
+        status.value = 'poster';
+    }
+}
+
+function maybeLoad() {
+    if (status.value === 'poster' && idleHandle === null && props.ready && isOnScreen.value && wants3d.value) {
+        whenIdle(load);
+    }
+}
+
+function onVisibilityChange() {
+    isPageVisible.value = !document.hidden;
+}
+
+function teardown() {
+    cancelIdle();
+    resizeObserver?.disconnect();
+    resizeObserver = null;
+    scene?.dispose();
+    scene = null;
+    hasFirstFrame.value = false;
+    status.value = 'poster';
+}
+
+onMounted(() => {
+    if (props.mode !== 'jersey') {
+        return;
+    }
+
+    intersectionObserver = new IntersectionObserver(([entry]) => {
+        isOnScreen.value = entry.isIntersecting;
+    });
+    intersectionObserver.observe(stage.value);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+});
+
+watch([isOnScreen, isPageVisible], () => {
+    syncPlayback();
+    maybeLoad();
+});
+watch(() => props.ready, maybeLoad);
+watch(wants3d, (allowed) => (allowed ? maybeLoad() : teardown()));
+
+onBeforeUnmount(() => {
+    isUnmounted = true;
+    intersectionObserver?.disconnect();
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+    teardown();
+});
 </script>
 
 <template>
-    <figure class="gw-stage relative aspect-[4/5] w-full" data-test="hero-stage">
-        <div class="gw-stage__well absolute inset-0 grid place-items-center overflow-hidden">
+    <figure ref="stage" class="gw-stage relative aspect-[4/5] w-full" data-test="hero-stage" :data-jersey-state="mode === 'jersey' ? status : undefined">
+        <div class="gw-stage__well absolute inset-0 overflow-hidden">
             <slot v-if="mode === 'photo'" />
-            <div v-else class="flex w-3/5 flex-col items-center gap-6" role="img" :aria-label="t('home.hero.stage.label')">
-                <div class="relative w-full">
-                    <svg class="w-full text-gw-charcoal" viewBox="0 0 240 230" aria-hidden="true" focusable="false">
-                        <path
-                            d="M86 10 L46 24 L8 64 L34 102 L56 88 L56 222 L184 222 L184 88 L206 102 L232 64 L194 24 L154 10 C146 26 134 34 120 34 C106 34 94 26 86 10 Z"
-                            fill="currentColor"
-                        />
-                        <path d="M86 10 C94 26 106 34 120 34 C134 34 146 26 154 10" fill="none" stroke="var(--color-gw-yellow)" stroke-width="6" stroke-linecap="round" />
-                        <path d="M8 64 L34 102 M232 64 L206 102" fill="none" stroke="var(--color-gw-yellow)" stroke-width="5" stroke-linecap="round" />
-                    </svg>
-                    <BrandLogo variant="wolf-yellow" class="gw-stage__emblem" decorative />
-                </div>
-                <span class="text-xs font-medium tracking-widest text-gw-white/60 uppercase">{{ t('home.hero.stage.placeholder') }}</span>
-            </div>
+            <template v-else>
+                <img
+                    :src="POSTER_URL"
+                    :alt="t('home.hero.stage.poster_alt')"
+                    width="800"
+                    height="1000"
+                    fetchpriority="high"
+                    decoding="async"
+                    class="gw-stage__poster"
+                    :class="{ 'gw-stage__poster--hidden': hasFirstFrame }"
+                    data-test="jersey-poster"
+                />
+                <canvas
+                    v-if="showCanvas"
+                    ref="canvas"
+                    class="gw-stage__canvas"
+                    :class="{ 'gw-stage__canvas--visible': hasFirstFrame }"
+                    aria-hidden="true"
+                    data-test="jersey-canvas"
+                />
+            </template>
         </div>
 
         <figcaption class="contents">
@@ -64,12 +260,38 @@ const { t } = useTranslations();
         0 0 0 1px rgb(255 255 255 / 0.04);
 }
 
-/* The emblem sits on the jersey's chest. */
-.gw-stage__emblem {
+/* Poster and canvas fill the well; the canvas fades in over the poster. */
+.gw-stage__poster,
+.gw-stage__canvas {
     position: absolute;
-    top: 30%;
-    left: 50%;
-    width: 24%;
-    transform: translateX(-50%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.gw-stage__poster {
+    object-fit: contain;
+    transition: opacity 0.6s ease;
+}
+
+.gw-stage__poster--hidden {
+    opacity: 0;
+}
+
+.gw-stage__canvas {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+.gw-stage__canvas--visible {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .gw-stage__poster,
+    .gw-stage__canvas {
+        transition: none;
+    }
 }
 </style>

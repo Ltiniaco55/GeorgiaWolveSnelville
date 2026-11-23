@@ -156,23 +156,30 @@ test('the mobile CTA bar appears once the hero has been passed', function () {
             return { visible: getComputedStyle(bar).visibility === 'visible', inert: bar.inert };
         }
     JS;
-    $scrollPastHero = <<<'JS'
+    // Scrolls to `y` (or just past the hero), then waits for the bar's slide to end:
+    // a fixed delay is not enough when the 3D jersey is rendering on the CPU.
+    $scrollTo = fn (string $target): string => <<<JS
         async () => {
             const hero = document.querySelector('[data-site-hero]');
-            window.scrollTo(0, window.scrollY + hero.getBoundingClientRect().bottom + 40);
-            await new Promise((resolve) => setTimeout(resolve, 700));
+            const bar = document.querySelector('[data-test="mobile-bar"]');
+            window.scrollTo(0, {$target});
+            await new Promise((resolve) => setTimeout(resolve, 300));
+            await Promise.race([
+                Promise.all(bar.getAnimations().map((animation) => animation.finished.catch(() => null))),
+                new Promise((resolve) => setTimeout(resolve, 3000)),
+            ]);
         }
     JS;
 
     expect($page->script($barState))->toBe(['visible' => false, 'inert' => true]);
 
-    $page->script($scrollPastHero);
+    $page->script($scrollTo('window.scrollY + hero.getBoundingClientRect().bottom + 40'));
 
     expect($page->script($barState))->toBe(['visible' => true, 'inert' => false])
         ->and($page->script('() => [...document.querySelectorAll("[data-test=\'mobile-bar\'] a")].map((link) => link.textContent.trim() || link.getAttribute("aria-label"))'))
         ->toBe(['Register', 'Free training', 'Chat with us on WhatsApp']);
 
-    $page->script('async () => { window.scrollTo(0, 0); await new Promise((resolve) => setTimeout(resolve, 700)); }');
+    $page->script($scrollTo('0'));
 
     expect($page->script($barState))->toBe(['visible' => false, 'inert' => true]);
 });

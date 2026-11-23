@@ -23,8 +23,7 @@ return [
         ],
         'lamp_hint' => 'Move your cursor to light up the pitch',
         'stage' => [
-            'label' => 'Georgia Wolves jersey',
-            'placeholder' => '3D jersey coming soon',
+            'poster_alt' => 'The Georgia Wolves jersey from the front: yellow with black shoulders and sleeves, the club crest on the chest and the Joma logo.',
             'badge_champions' => 'U12 Champions 2026',
             'badge_league' => 'GYSL Fall League · Premier Division',
         ],

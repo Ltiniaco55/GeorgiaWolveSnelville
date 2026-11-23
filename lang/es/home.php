@@ -23,8 +23,7 @@ return [
         ],
         'lamp_hint' => 'Mueve el cursor para iluminar el campo',
         'stage' => [
-            'label' => 'Camiseta de Georgia Wolves',
-            'placeholder' => 'Camiseta 3D próximamente',
+            'poster_alt' => 'La camiseta de Georgia Wolves de frente: amarilla con hombros y mangas negras, el escudo del club en el pecho y el logo de Joma.',
             'badge_champions' => 'Campeones U12 2026',
             'badge_league' => 'GYSL Fall League · Premier Division',
         ],

@@ -86,7 +86,7 @@ const facts = [
             </div>
 
             <div class="gw-hero-reveal mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none" style="--gw-reveal-index: 3">
-                <HeroStage mode="jersey" />
+                <HeroStage mode="jersey" :ready="!introPlaying" />
             </div>
         </div>
     </section>
