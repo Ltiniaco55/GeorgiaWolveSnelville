@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { useTranslations } from '../Composables/useTranslations';
-import globeSvg from '../../svg/flags/globe.svg?raw';
+import mxFlagSvg from '../../svg/flags/mx.svg?raw';
 import usFlagSvg from '../../svg/flags/us.svg?raw';
 
 /**
@@ -17,7 +17,8 @@ import usFlagSvg from '../../svg/flags/us.svg?raw';
  * Keyboard: Enter, Space or ↓ open it on the active option, ↑ on the last one;
  * ↑ ↓ Home End move; Esc closes and gives the focus back to the button; Tab or a
  * click outside closes it. Esc does not reach the mobile menu's focus trap.
- * Flags are local SVGs (emoji flags do not render on Windows).
+ * Flags are local SVGs (emoji flags do not render on Windows): United States for
+ * English, Mexico for Spanish.
  */
 defineProps({
     /** Where the panel opens: below the button (header) or above it (mobile menu). */
@@ -31,7 +32,7 @@ defineProps({
 /** @type {Record<string, string>} */
 const ICONS = {
     en: usFlagSvg.replace('<svg ', '<svg aria-hidden="true" focusable="false" '),
-    es: globeSvg.replace('<svg ', '<svg aria-hidden="true" focusable="false" '),
+    es: mxFlagSvg.replace('<svg ', '<svg aria-hidden="true" focusable="false" '),
 };
 
 const page = usePage();
@@ -262,14 +263,6 @@ onBeforeUnmount(() => document.removeEventListener('pointerdown', onPointerDownO
 .gw-lang__icon :deep(svg) {
     width: 100%;
     height: 100%;
-}
-
-/* The globe is a line icon, square, not a flag. */
-.gw-lang__icon--es {
-    width: 20px;
-    height: 20px;
-    border-radius: 0;
-    color: var(--color-gw-yellow);
 }
 
 .gw-lang__chevron {

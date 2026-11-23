@@ -4,8 +4,7 @@ return [
     'skip_to_content' => 'Saltar al contenido',
     'nav' => [
         'label' => 'Principal',
-        'home' => 'Georgia Wolves, inicio',
-        'tagline' => 'Club de fútbol de Snellville',
+        'home' => 'Georgia Wolves Soccer Club – Inicio',
         'programs' => 'Programas',
         'pricing' => 'Precios',
         'about' => 'Nosotros',

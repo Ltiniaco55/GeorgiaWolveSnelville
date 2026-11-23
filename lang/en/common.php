@@ -4,8 +4,7 @@ return [
     'skip_to_content' => 'Skip to content',
     'nav' => [
         'label' => 'Main',
-        'home' => 'Georgia Wolves, home',
-        'tagline' => 'Snellville soccer club',
+        'home' => 'Georgia Wolves Soccer Club – Home',
         'programs' => 'Programs',
         'pricing' => 'Pricing',
         'about' => 'About',

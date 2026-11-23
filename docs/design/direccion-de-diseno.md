@@ -31,7 +31,13 @@ Detalles:
 - Punto de encaje calculado sobre el escudo recortado: centro en x 50 % e y 47,4 % de su caja, y diámetro del círculo igual al 62,4 % de su ancho
 
 Hero (escaparate):
-- Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES / Snellville soccer club", los enlaces, el CTA "Register" y, en la esquina derecha, el selector de idioma. Al hacer scroll se vuelve sólido
+- Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES" en una línea (wordmark-white), los enlaces, el CTA "Register" y, en la esquina derecha, el selector de idioma. Al hacer scroll se vuelve sólido (negro opaco)
+- Marca del menú al hacer scroll (propuesta del 23 nov 2026, pendiente de aprobación):
+  - Arriba, sobre el negro: escudo + "GEORGIA WOLVES". Ya no lleva la línea "Snellville soccer club"; "Snellville" sigue en el <title>, en el chip del hero ("Registration open · Fall season · Snellville, GA") y en el footer
+  - Cuando el menú pasa a sólido: el wordmark se pliega (fundido y ancho a 0), el escudo hace un fundido cruzado al emblema redondo (wolf-yellow-black) de 44 px y el menú baja de altura (de 96 a 72 px en escritorio y de 96 a 64 px en móvil). Los enlaces de la derecha no se mueven de lado
+  - Al volver arriba, vuelve el estado inicial. Transición de 0,35 s; con reduced motion, cambio directo
+  - La intro sigue encajando en el escudo del estado inicial (la intro solo corre arriba del todo): el punto de encaje no cambia
+  - El enlace de la marca se llama "Georgia Wolves Soccer Club – Home" en los dos estados
 - Izquierda:
   - Chip "Registration open · Fall season"
   - Titular gigante "TRAIN LIKE A WOLF." con "wolf." en amarillo
@@ -46,7 +52,7 @@ Selector de idioma (propuesta del 23 nov 2026, pendiente de aprobación). Sustit
 - Desplegable neumórfico sobre el menú negro: superficie #161616 con las sombras oscuras del design system
 - Botón en relieve con la bandera o el icono del idioma actual y una flecha. Al abrir, la flecha gira 180° y el botón se hunde
 - Panel neumórfico con las dos opciones: bandera o icono + "ENGLISH" / "ESPAÑOL" (Inter 600, mayúsculas) y un check amarillo en la activa. Cada opción lleva a la misma página en ese idioma (localeUrls)
-- Iconos: bandera de EE. UU. para English y un globo amarillo para Español (neutro: no asocia el español a un solo país). Son SVG locales en resources/svg/flags/, no emojis, que en Windows no se ven
+- Banderas: EE. UU. para English y México para Español (decisión de Luciano, 23 nov 2026). Son SVG locales en resources/svg/flags/, no emojis, que en Windows no se ven. El escudo de la bandera de México va simplificado, porque a 24 px no se distingue
 - Posición: en escritorio, en la esquina derecha del menú, después del CTA "Register". En móvil, dentro del panel de la hamburguesa, y se abre hacia arriba
 - Accesibilidad: button con aria-expanded y aria-haspopup; lista role="menu" con opciones menuitemradio (aria-checked en la activa) y lang="en"/"es". Se abre con Enter, Espacio o las flechas; ↑ ↓ Inicio Fin para moverse; Esc cierra y devuelve el foco al botón (en móvil cierra solo el desplegable, no el panel); Tab o un clic fuera lo cierran
 - Con reduced motion, sin animación de apertura ni giro de la flecha

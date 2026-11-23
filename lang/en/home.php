@@ -9,7 +9,7 @@ return [
     ],
 
     'hero' => [
-        'chip' => 'Registration open · Fall season',
+        'chip' => 'Registration open · Fall season · Snellville, GA',
         'title_lead' => 'Train like a',
         'title_accent' => 'wolf.',
         'subtitle' => 'Youth soccer academy in Snellville, Georgia, for boys and girls from 5 to 14 (U6–U14). Real coaching, a team to belong to, and the first training session is free.',

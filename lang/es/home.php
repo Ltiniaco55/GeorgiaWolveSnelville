@@ -9,7 +9,7 @@ return [
     ],
 
     'hero' => [
-        'chip' => 'Inscripciones abiertas · Temporada de otoño',
+        'chip' => 'Inscripciones abiertas · Temporada de otoño · Snellville, GA',
         'title_lead' => 'Entrena como un',
         'title_accent' => 'lobo.',
         'subtitle' => 'Academia de fútbol juvenil en Snellville, Georgia, para niños y niñas de 5 a 14 años (U6–U14). Entrenadores de verdad, un equipo al que pertenecer y el primer entrenamiento es gratis.',

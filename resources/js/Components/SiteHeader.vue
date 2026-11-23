@@ -9,7 +9,9 @@ import LanguageMenu from './LanguageMenu.vue';
 
 /**
  * Fixed site header (docs/design/sitemap.md, "Navegación"): transparent over the
- * black hero, solid once the page scrolls. Crest (72 px) and wordmark, the five
+ * black hero, solid once the page scrolls. Solid also means compact: the wordmark
+ * folds away and the crest cross-fades to the round emblem (44 px), in 0.35 s.
+ * The brand link keeps its accessible name in both states. Crest (72 px) and wordmark, the five
  * main links, the "Register" CTA and, in the right corner, the language dropdown.
  *
  * Below 1024 px: a hamburger opens a full-screen black panel (a modal dialog) with
@@ -62,12 +64,14 @@ function isCurrent(name) {
 
 <template>
     <header class="gw-header gw-intro-clip" :class="{ 'gw-header--solid': isSolid }" data-test="site-header">
-        <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-8 lg:gap-8">
-            <Link :href="navigation.home" class="flex min-w-0 items-center gap-3" :aria-label="t('common.nav.home')">
-                <BrandLogo variant="crest" class="h-[72px] flex-none" decorative data-intro-crest />
-                <span class="flex min-w-0 flex-col gap-1">
-                    <BrandLogo variant="wordmark-white" class="h-3.5 sm:h-4" decorative />
-                    <span class="truncate text-[0.6875rem] font-medium tracking-[0.18em] text-gw-white/70 uppercase">{{ t('common.nav.tagline') }}</span>
+        <div class="gw-header__bar mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-8 lg:gap-8">
+            <Link :href="navigation.home" class="gw-brand flex min-w-0 items-center" :aria-label="t('common.nav.home')" data-test="brand-link">
+                <span class="gw-brand__mark">
+                    <BrandLogo variant="crest" class="gw-brand__crest" decorative data-intro-crest />
+                    <BrandLogo variant="wolf-yellow-black" class="gw-brand__emblem" decorative data-test="brand-emblem" />
+                </span>
+                <span class="gw-brand__word" data-test="brand-wordmark">
+                    <BrandLogo variant="wordmark-white" class="h-5" decorative />
                 </span>
             </Link>
 
@@ -168,8 +172,76 @@ function isCurrent(name) {
 }
 
 .gw-header--solid {
-    background: rgb(10 10 10 / 0.96);
+    background: var(--color-gw-black);
     box-shadow: 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+/*
+ * Brand: crest (72 px, the brand intro lands on it) + one-line wordmark at the top;
+ * compact once solid. Only the brand box changes size: the links on the right are
+ * pushed by margin-left: auto, so they never move sideways.
+ */
+.gw-header__bar {
+    padding-block: 0.75rem;
+    transition: padding-block 0.35s ease;
+}
+
+.gw-brand__mark {
+    position: relative;
+    display: block;
+    flex: none;
+    width: calc(72px * 437 / 512);
+    height: 72px;
+    transition:
+        width 0.35s ease,
+        height 0.35s ease;
+}
+
+.gw-brand__crest,
+.gw-brand__emblem {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    margin: auto;
+    transition: opacity 0.35s ease;
+}
+
+.gw-brand__emblem {
+    opacity: 0;
+}
+
+.gw-brand__word {
+    display: block;
+    max-width: 10rem;
+    margin-left: 0.75rem;
+    overflow: hidden;
+    transition:
+        max-width 0.35s ease,
+        margin-left 0.35s ease,
+        opacity 0.2s ease;
+}
+
+.gw-header--solid .gw-header__bar {
+    padding-block: 0.5rem;
+}
+
+.gw-header--solid .gw-brand__mark {
+    width: 44px;
+    height: 44px;
+}
+
+.gw-header--solid .gw-brand__crest {
+    opacity: 0;
+}
+
+.gw-header--solid .gw-brand__emblem {
+    opacity: 1;
+}
+
+.gw-header--solid .gw-brand__word {
+    max-width: 0;
+    margin-left: 0;
+    opacity: 0;
 }
 
 .gw-header__link {
@@ -290,6 +362,11 @@ function isCurrent(name) {
 
 @media (prefers-reduced-motion: reduce) {
     .gw-header,
+    .gw-header__bar,
+    .gw-brand__mark,
+    .gw-brand__crest,
+    .gw-brand__emblem,
+    .gw-brand__word,
     .gw-header__link::after,
     .gw-menu-enter-active,
     .gw-menu-leave-active {
