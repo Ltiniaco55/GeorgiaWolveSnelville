@@ -11,27 +11,6 @@ beforeEach(function () {
 });
 
 /**
- * Opens the home page and waits until Vue has mounted the hero.
- *
- * @param  array<string, mixed>  $options  Playwright browser-context options.
- */
-function visitHome(array $options = [], string $url = '/'): mixed
-{
-    $page = visit($url, $options);
-
-    $page->script(<<<'JS'
-        async () => {
-            while (!document.querySelector('[data-test="hero"]')) {
-                await new Promise((resolve) => setTimeout(resolve, 50));
-            }
-            await document.fonts.ready;
-        }
-    JS);
-
-    return $page;
-}
-
-/**
  * State of the intro and of the page it hides.
  *
  * @return array{isPlaying: bool, scrollLocked: bool, mainInert: bool, heroTitleOpacity: string}

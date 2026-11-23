@@ -24,7 +24,7 @@ return [
         'whatsapp' => 'Chat on WhatsApp',
     ],
     'language' => [
-        'label' => 'Language',
+        'current' => 'Language: :language',
         'en' => 'English',
         'es' => 'Español',
     ],

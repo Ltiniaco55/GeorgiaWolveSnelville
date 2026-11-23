@@ -24,7 +24,7 @@ return [
         'whatsapp' => 'Escríbenos por WhatsApp',
     ],
     'language' => [
-        'label' => 'Idioma',
+        'current' => 'Idioma: :language',
         'en' => 'English',
         'es' => 'Español',
     ],

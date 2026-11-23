@@ -31,7 +31,7 @@ Detalles:
 - Punto de encaje calculado sobre el escudo recortado: centro en x 50 % e y 47,4 % de su caja, y diámetro del círculo igual al 62,4 % de su ancho
 
 Hero (escaparate):
-- Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES / Snellville soccer club", los enlaces y el CTA "Register". Al hacer scroll se vuelve sólido
+- Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES / Snellville soccer club", los enlaces, el CTA "Register" y, en la esquina derecha, el selector de idioma. Al hacer scroll se vuelve sólido
 - Izquierda:
   - Chip "Registration open · Fall season"
   - Titular gigante "TRAIN LIKE A WOLF." con "wolf." en amarillo
@@ -41,6 +41,15 @@ Hero (escaparate):
 - Derecha: escenario hundido (neumórfico oscuro, proporción 4:5). De momento lleva la camiseta 3D; más adelante, una foto de los niños de la academia (decisión de Luciano: más humana y cercana). Lleva dos badges: "U12 Champions 2026" (amarillo) y "GYSL Fall League · Premier Division"
 - Debajo: una cinta de logros en movimiento (ticker) que se pausa al pasar el ratón
 - Después, la primera sección blanca, para enseñar el paso de negro a blanco
+
+Selector de idioma (propuesta del 23 nov 2026, pendiente de aprobación). Sustituye a los enlaces EN/ES:
+- Desplegable neumórfico sobre el menú negro: superficie #161616 con las sombras oscuras del design system
+- Botón en relieve con la bandera o el icono del idioma actual y una flecha. Al abrir, la flecha gira 180° y el botón se hunde
+- Panel neumórfico con las dos opciones: bandera o icono + "ENGLISH" / "ESPAÑOL" (Inter 600, mayúsculas) y un check amarillo en la activa. Cada opción lleva a la misma página en ese idioma (localeUrls)
+- Iconos: bandera de EE. UU. para English y un globo amarillo para Español (neutro: no asocia el español a un solo país). Son SVG locales en resources/svg/flags/, no emojis, que en Windows no se ven
+- Posición: en escritorio, en la esquina derecha del menú, después del CTA "Register". En móvil, dentro del panel de la hamburguesa, y se abre hacia arriba
+- Accesibilidad: button con aria-expanded y aria-haspopup; lista role="menu" con opciones menuitemradio (aria-checked en la activa) y lang="en"/"es". Se abre con Enter, Espacio o las flechas; ↑ ↓ Inicio Fin para moverse; Esc cierra y devuelve el foco al botón (en móvil cierra solo el desplegable, no el panel); Tab o un clic fuera lo cierran
+- Con reduced motion, sin animación de apertura ni giro de la flecha
 
 Assets:
 - Los logos ya están vectorizados de verdad (22 nov 2026) en resources/svg/raw/: wolf-yellow, wolf-black, wolf-white, wolf-yellow-black (512×512), wordmark-yellow/white/black (100 de alto), crest (437×512), liga-interamericana, gysl y favicon. Los monocromos usan currentColor

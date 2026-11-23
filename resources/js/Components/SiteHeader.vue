@@ -5,12 +5,12 @@ import { useFocusTrap } from '../Composables/useFocusTrap';
 import { useTranslations } from '../Composables/useTranslations';
 import BrandLogo from './BrandLogo.vue';
 import CtaButton from './CtaButton.vue';
-import LocaleSwitcher from './LocaleSwitcher.vue';
+import LanguageMenu from './LanguageMenu.vue';
 
 /**
  * Fixed site header (docs/design/sitemap.md, "Navegación"): transparent over the
  * black hero, solid once the page scrolls. Crest (72 px) and wordmark, the five
- * main links, the EN/ES switcher and the "Register" CTA.
+ * main links, the "Register" CTA and, in the right corner, the language dropdown.
  *
  * Below 1024 px: a hamburger opens a full-screen black panel (a modal dialog) with
  * the longer mobile link list, the CTAs, WhatsApp and the language switcher. Focus
@@ -80,11 +80,11 @@ function isCurrent(name) {
             </nav>
 
             <div class="hidden lg:block">
-                <LocaleSwitcher />
+                <CtaButton variant="primary" surface="dark" :href="navigation.register" align="end" always-open data-test="header-register">{{ t('common.nav.register') }}</CtaButton>
             </div>
 
             <div class="hidden lg:block">
-                <CtaButton variant="primary" surface="dark" :href="navigation.register" align="end" always-open data-test="header-register">{{ t('common.nav.register') }}</CtaButton>
+                <LanguageMenu />
             </div>
 
             <button
@@ -146,7 +146,7 @@ function isCurrent(name) {
                             </svg>
                             {{ t('common.menu.whatsapp') }}
                         </a>
-                        <LocaleSwitcher size="lg" />
+                        <LanguageMenu placement="top" />
                     </div>
                 </nav>
             </div>
