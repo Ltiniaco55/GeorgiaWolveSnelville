@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import { useDeckScroll } from '../Composables/useDeckScroll';
 import { useMediaQuery } from '../Composables/useMediaQuery';
 import { useReducedMotion } from '../Composables/useReducedMotion';
@@ -59,6 +59,9 @@ const orderedPlans = computed(() => {
 });
 
 const section = ref(null);
+const stage = ref(null);
+const cards = ref(null);
+const controls = ref(null);
 const { position, activeIndex, sectionStyle, goTo, swipeHandlers } = useDeckScroll(section, {
     count: props.plans.length,
     enabled: isDeck,
@@ -124,6 +127,61 @@ function cardStyle(index) {
 }
 
 /**
+ * Short screens: after the compact spacing (CSS, max-height: 760px), if the deck and
+ * the dots still do not fit in the pinned stage, the deck is scaled down just enough.
+ * Only measured on resize, never while scrolling. The negative margin gives back the
+ * space the scale frees, so the stage centres what is actually drawn.
+ */
+const fitScale = ref(1);
+let fitObserver = null;
+
+function measureFit() {
+    if (!stage.value || !cards.value || !controls.value) {
+        fitScale.value = 1;
+
+        return;
+    }
+
+    const stageStyle = getComputedStyle(stage.value);
+    const available =
+        stage.value.clientHeight -
+        parseFloat(stageStyle.paddingTop) -
+        parseFloat(stageStyle.paddingBottom) -
+        parseFloat(stageStyle.rowGap) -
+        controls.value.offsetHeight;
+
+    fitScale.value = Math.min(1, available / cards.value.offsetHeight);
+}
+
+watch(
+    [isDeck, stage, cards, controls],
+    () => {
+        fitObserver?.disconnect();
+        fitObserver = null;
+        fitScale.value = 1;
+
+        if (isDeck.value && stage.value && cards.value && controls.value) {
+            fitObserver = new ResizeObserver(measureFit);
+            [stage.value, cards.value, controls.value].forEach((element) => fitObserver.observe(element));
+        }
+    },
+    { flush: 'post' },
+);
+
+onBeforeUnmount(() => fitObserver?.disconnect());
+
+const fitStyle = computed(() => {
+    if (!isDeck.value || fitScale.value >= 1 || !cards.value) {
+        return undefined;
+    }
+
+    return {
+        transform: `scale(${fitScale.value.toFixed(4)})`,
+        marginBottom: `${((fitScale.value - 1) * cards.value.offsetHeight).toFixed(1)}px`,
+    };
+});
+
+/**
  * A card that receives keyboard focus comes to the top.
  *
  * @param {number} index
@@ -137,8 +195,15 @@ function onCardFocus(index) {
 
 <template>
     <div ref="section" class="gw-deck" :class="{ 'gw-deck--active': isDeck }" :style="sectionStyle" data-test="pricing-deck" :data-top-plan="isDeck ? orderedPlans[activeIndex]?.id : undefined">
-        <div class="gw-deck__stage">
-            <div class="gw-deck__cards" :class="isDeck ? '' : 'grid grid-cols-1 gap-8 lg:grid-cols-3'" v-on="isDeck ? swipeHandlers : {}">
+        <div ref="stage" class="gw-deck__stage">
+            <div
+                ref="cards"
+                class="gw-deck__cards"
+                :class="isDeck ? '' : 'grid grid-cols-1 gap-8 lg:grid-cols-3'"
+                :style="fitStyle"
+                :data-fit-scale="isDeck ? fitScale.toFixed(3) : undefined"
+                v-on="isDeck ? swipeHandlers : {}"
+            >
                 <div
                     v-for="(plan, index) in orderedPlans"
                     :key="plan.id"
@@ -151,7 +216,7 @@ function onCardFocus(index) {
                 </div>
             </div>
 
-            <div v-if="isDeck" class="flex flex-col items-center gap-3">
+            <div v-if="isDeck" ref="controls" class="gw-deck__controls flex flex-col items-center gap-3">
                 <div class="flex items-center gap-1" role="group" :aria-label="t('common.pricing_deck.plans')">
                     <button
                         v-for="(plan, index) in orderedPlans"
@@ -185,11 +250,36 @@ function onCardFocus(index) {
     overflow-x: clip;
 }
 
-/* All cards share one grid cell: the deck is as tall as the tallest card. */
+/*
+ * All cards share one grid cell: the deck is as tall as the tallest card.
+ * The bottom padding holds the cards peeking out below (2 × 20 px).
+ */
 .gw-deck--active .gw-deck__cards {
     display: grid;
-    padding-bottom: 2rem;
+    padding-bottom: 2.5rem;
+    transform-origin: 50% 0;
     touch-action: pan-y;
+}
+
+/* Short screens (iPhone SE and smaller): tighter stage and cards. */
+@media (max-height: 760px) {
+    .gw-deck--active .gw-deck__stage {
+        gap: 0.75rem;
+        padding-block: 0.75rem 0.5rem;
+    }
+
+    .gw-deck--active .gw-deck__controls {
+        gap: 0.25rem;
+    }
+
+    .gw-deck--active :deep(.gw-plan) {
+        gap: 0.875rem;
+        padding: 1.25rem;
+    }
+
+    .gw-deck--active :deep(.gw-plan__price) {
+        font-size: 3rem;
+    }
 }
 
 .gw-deck--active .gw-deck__card {
@@ -200,6 +290,12 @@ function onCardFocus(index) {
 
 .gw-deck__card--behind {
     pointer-events: none;
+}
+
+/* The dots always stay above the cards peeking out of the deck. */
+.gw-deck__controls {
+    position: relative;
+    z-index: 100;
 }
 
 /* 24 px tap target around a small dot; the active dot is a black pill. */

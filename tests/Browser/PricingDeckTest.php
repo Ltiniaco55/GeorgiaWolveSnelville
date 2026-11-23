@@ -175,3 +175,48 @@ test('from 640 px the plans keep the order Free trial, Monthly, Annual in a row'
         'isDeck' => false,
     ]);
 });
+
+test('on short phones each card fits on screen with the dots while the deck is pinned', function (int $width, int $height) {
+    $page = visitStyleguideAndWaitForCtas(['viewport' => ['width' => $width, 'height' => $height]]);
+
+    $positions = $page->script(<<<'JS'
+        async () => {
+            const deck = document.querySelector('[data-test="pricing-deck"]');
+            const results = [];
+
+            // Start at the deck, so each dot only scrolls one card change.
+            window.scrollTo(0, Math.round(window.scrollY + deck.getBoundingClientRect().top));
+            await new Promise((resolve) => setTimeout(resolve, 400));
+
+            for (const dot of deck.querySelectorAll('.gw-deck__dot')) {
+                dot.click();
+                await new Promise((resolve) => setTimeout(resolve, 1500));
+
+                const top = deck.querySelector(`[data-test="plan-${deck.dataset.topPlan}"]`).getBoundingClientRect();
+                const controls = deck.querySelector('.gw-deck__controls').getBoundingClientRect();
+                const lowestCard = Math.max(...[...deck.querySelectorAll('[data-test^="plan-"]')].map((card) => card.getBoundingClientRect().bottom));
+
+                results.push({
+                    plan: deck.dataset.topPlan,
+                    isPinned: Math.round(deck.querySelector('.gw-deck__stage').getBoundingClientRect().top) === 0,
+                    cardOnScreen: top.top >= 0 && top.bottom <= controls.top,
+                    dotsOnScreen: controls.bottom <= window.innerHeight,
+                    deckAboveDots: lowestCard <= controls.top,
+                });
+            }
+
+            return results;
+        }
+    JS);
+
+    expect($positions)->toBe(array_map(fn (string $plan): array => [
+        'plan' => $plan,
+        'isPinned' => true,
+        'cardOnScreen' => true,
+        'dotsOnScreen' => true,
+        'deckAboveDots' => true,
+    ], ['annual', 'monthly', 'free_trial']));
+})->with([
+    'iPhone SE' => [375, 667],
+    'small Android' => [360, 640],
+]);

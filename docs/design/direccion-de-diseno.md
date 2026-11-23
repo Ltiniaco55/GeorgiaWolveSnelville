@@ -174,6 +174,7 @@ Prueba: sección "Pricing" de /styleguide a 390 px. Componente PricingDeck con e
 - Accesibilidad: las tres cards están siempre en el DOM y se llega a todas con el teclado; al recibir el foco, esa card pasa arriba
 - Con prefers-reduced-motion se muestran apiladas en vertical (Annual primero), sin animación ni enganche
 - Cuenta como uno de los 2 o 3 scroll enganchados de la web
+- Móviles bajos (alto ≤ 760 px, como el iPhone SE de 375×667 o los Android de 360×640): menos espaciado en el escenario y dentro de la card, y precio a 48 px. Si aun así la card más los puntos no caben en 100svh, el mazo se escala lo justo para que quepa (medido con ResizeObserver, solo al cambiar el tamaño, nunca durante el scroll). A 375×667 cabe sin escalar; a 360×640 se escala a 0,98
 
 ### Card de entrenador (sección oscura #161616)
 - Card horizontal en relieve, con esquinas de 32 px: foto a la izquierda (5/12) y contenido a la derecha (7/12). En móvil se apila

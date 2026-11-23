@@ -54,7 +54,7 @@ defineProps({
 
         <div class="flex flex-col gap-1">
             <p class="flex flex-wrap items-baseline gap-x-2">
-                <span class="font-display text-6xl leading-none font-extrabold" :class="featured ? 'text-gw-yellow' : ''">{{ plan.price }}</span>
+                <span class="gw-plan__price font-display text-6xl leading-none font-extrabold" :class="featured ? 'text-gw-yellow' : ''">{{ plan.price }}</span>
                 <span class="text-sm font-medium" :class="featured ? 'text-gw-white/75' : 'text-gw-black/70'">{{ plan.period }}</span>
             </p>
             <p class="text-sm font-semibold" :class="featured ? 'text-gw-yellow' : 'text-gw-black/75'">{{ plan.saving }}</p>
