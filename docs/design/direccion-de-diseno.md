@@ -34,7 +34,8 @@ Hero (escaparate):
 - Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES" en una línea (wordmark-white), los enlaces, el CTA "Register" y, en la esquina derecha, el selector de idioma. Al hacer scroll se vuelve sólido (negro opaco)
 - Marca del menú al hacer scroll (propuesta del 23 nov 2026, pendiente de aprobación):
   - Arriba, sobre el negro: escudo + "GEORGIA WOLVES". Ya no lleva la línea "Snellville soccer club"; "Snellville" sigue en el <title>, en el chip del hero ("Registration open · Fall season · Snellville, GA") y en el footer
-  - Cuando el menú pasa a sólido: el wordmark se pliega (fundido y ancho a 0), el escudo hace un fundido cruzado al emblema redondo (wolf-yellow-black) de 44 px y el menú baja de altura (de 96 a 72 px en escritorio y de 96 a 64 px en móvil). Los enlaces de la derecha no se mueven de lado
+  - Cuando el menú pasa a sólido: se mantiene el mismo escudo hexagonal (crest), más pequeño (de 72 a 48 px de alto), el wordmark se pliega (fundido y ancho a 0) y el menú baja de altura (de 96 a 72 px en escritorio y de 96 a 64 px en móvil). Los enlaces de la derecha no se mueven de lado
+  - Descartado (23 nov 2026): cambiar al emblema redondo (wolf-yellow-black) al hacer scroll. Sobre el menú negro no se ve la cara del lobo. El emblema redondo no se usa en el menú
   - Al volver arriba, vuelve el estado inicial. Transición de 0,35 s; con reduced motion, cambio directo
   - La intro sigue encajando en el escudo del estado inicial (la intro solo corre arriba del todo): el punto de encaje no cambia
   - El enlace de la marca se llama "Georgia Wolves Soccer Club – Home" en los dos estados

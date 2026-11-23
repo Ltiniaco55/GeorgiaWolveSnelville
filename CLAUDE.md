@@ -32,7 +32,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Punto de encaje sobre el escudo: x 50 %, y 47,4 % de su caja; diámetro del círculo = 62,4 % de su ancho.
 
 **Hero**
-- Menú fijo: transparente sobre el negro y sólido al hacer scroll. Lleva el escudo (72 px), el wordmark "GEORGIA WOLVES", los enlaces, el CTA "Register" y, a la derecha, el selector de idioma desplegable neumórfico (banderas de EE. UU. y México). Al pasar a sólido, el wordmark se pliega y el escudo cambia al emblema redondo de 44 px (pendiente de aprobación).
+- Menú fijo: transparente sobre el negro y sólido al hacer scroll. Lleva el escudo (72 px), el wordmark "GEORGIA WOLVES", los enlaces, el CTA "Register" y, a la derecha, el selector de idioma desplegable neumórfico (banderas de EE. UU. y México). Al pasar a sólido, el wordmark se pliega y el mismo escudo se reduce a 48 px; el emblema redondo no se usa en el menú (pendiente de aprobación).
 - Izquierda: chip, titular "TRAIN LIKE A WOLF." (con "wolf." en amarillo), subtítulo, dos CTA y chips de datos.
 - Derecha: escenario hundido 4:5 (neumórfico oscuro) con dos badges. De momento lleva la camiseta 3D; más adelante, una foto de los niños.
 

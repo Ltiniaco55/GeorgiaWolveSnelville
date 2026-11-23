@@ -10,7 +10,7 @@ import LanguageMenu from './LanguageMenu.vue';
 /**
  * Fixed site header (docs/design/sitemap.md, "Navegación"): transparent over the
  * black hero, solid once the page scrolls. Solid also means compact: the wordmark
- * folds away and the crest cross-fades to the round emblem (44 px), in 0.35 s.
+ * folds away and the same crest shrinks from 72 to 48 px, in 0.35 s.
  * The brand link keeps its accessible name in both states. Crest (72 px) and wordmark, the five
  * main links, the "Register" CTA and, in the right corner, the language dropdown.
  *
@@ -67,8 +67,7 @@ function isCurrent(name) {
         <div class="gw-header__bar mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-8 lg:gap-8">
             <Link :href="navigation.home" class="gw-brand flex min-w-0 items-center" :aria-label="t('common.nav.home')" data-test="brand-link">
                 <span class="gw-brand__mark">
-                    <BrandLogo variant="crest" class="gw-brand__crest" decorative data-intro-crest />
-                    <BrandLogo variant="wolf-yellow-black" class="gw-brand__emblem" decorative data-test="brand-emblem" />
+                    <BrandLogo variant="crest" class="gw-brand__crest" decorative data-intro-crest data-test="brand-crest" />
                 </span>
                 <span class="gw-brand__word" data-test="brand-wordmark">
                     <BrandLogo variant="wordmark-white" class="h-5" decorative />
@@ -178,8 +177,9 @@ function isCurrent(name) {
 
 /*
  * Brand: crest (72 px, the brand intro lands on it) + one-line wordmark at the top;
- * compact once solid. Only the brand box changes size: the links on the right are
- * pushed by margin-left: auto, so they never move sideways.
+ * once solid, the same crest at 48 px and no wordmark. Only the brand box changes
+ * size: the links on the right are pushed by margin-left: auto, so they never move
+ * sideways.
  */
 .gw-header__bar {
     padding-block: 0.75rem;
@@ -197,17 +197,10 @@ function isCurrent(name) {
         height 0.35s ease;
 }
 
-.gw-brand__crest,
-.gw-brand__emblem {
+.gw-brand__crest {
     position: absolute;
     inset: 0;
     height: 100%;
-    margin: auto;
-    transition: opacity 0.35s ease;
-}
-
-.gw-brand__emblem {
-    opacity: 0;
 }
 
 .gw-brand__word {
@@ -226,16 +219,8 @@ function isCurrent(name) {
 }
 
 .gw-header--solid .gw-brand__mark {
-    width: 44px;
-    height: 44px;
-}
-
-.gw-header--solid .gw-brand__crest {
-    opacity: 0;
-}
-
-.gw-header--solid .gw-brand__emblem {
-    opacity: 1;
+    width: calc(48px * 437 / 512);
+    height: 48px;
 }
 
 .gw-header--solid .gw-brand__word {
@@ -364,8 +349,6 @@ function isCurrent(name) {
     .gw-header,
     .gw-header__bar,
     .gw-brand__mark,
-    .gw-brand__crest,
-    .gw-brand__emblem,
     .gw-brand__word,
     .gw-header__link::after,
     .gw-menu-enter-active,

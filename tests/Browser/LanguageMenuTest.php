@@ -150,6 +150,8 @@ test('on mobile the dropdown is inside the menu panel and Esc closes only the dr
         ->and($page->script('() => document.querySelector("[data-test=\'mobile-menu\']") !== null'))->toBeTrue();
 
     $page->keys(':focus', 'Escape');
+    // The panel leaves with a 0.3 s transition before it is removed.
+    $page->wait(0.5);
 
     expect($page->script('() => [document.querySelector("[data-test=\'mobile-menu\']") !== null, document.activeElement.dataset.test]'))
         ->toBe([false, 'menu-button']);

@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Header brand: crest + wordmark at the top, round emblem (44 px) and no wordmark
- * once the header turns solid, and back at the top again.
+ * Header brand: crest (72 px) + wordmark at the top; once the header turns solid,
+ * the same crest at 48 px and no wordmark; back at the top, the initial state.
+ * The round emblem is never used in the header.
  */
 beforeEach(function () {
     // TestCase disables Vite for HTTP tests; a real browser needs the real assets.
@@ -10,7 +11,7 @@ beforeEach(function () {
 });
 
 /**
- * Brand state after scrolling to `$scrollY` and letting the 0.35 s transition end.
+ * Brand state after scrolling to `$scrollY` and letting the 0.35 s transitions end.
  *
  * @return array<string, mixed>
  */
@@ -18,13 +19,22 @@ function brandStateAt(mixed $page, int $scrollY): array
 {
     return $page->script(<<<JS
         async () => {
+            const nextFrame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+            const header = document.querySelector('[data-test="site-header"]');
+
             window.scrollTo(0, {$scrollY});
-            await new Promise((resolve) => setTimeout(resolve, 600));
+            // Let the scroll event switch the state, then wait for its transitions to end
+            // (not a fixed delay: on a loaded machine 0.35 s transitions run late).
+            await nextFrame();
+            await nextFrame();
+            await Promise.race([
+                Promise.all(header.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => null))),
+                new Promise((resolve) => setTimeout(resolve, 3000)),
+            ]);
 
             const round = (value) => Math.round(value * 100) / 100;
-            const header = document.querySelector('[data-test="site-header"]');
-            const crest = document.querySelector('[data-intro-crest]').getBoundingClientRect();
-            const emblem = document.querySelector('[data-test="brand-emblem"]');
+            const crestElement = document.querySelector('[data-test="brand-crest"]');
+            const crest = crestElement.getBoundingClientRect();
             const wordmark = document.querySelector('[data-test="brand-wordmark"]');
             const link = document.querySelector('[data-test="brand-link"]');
             const navLinks = [...header.querySelectorAll('nav a')].map((element) => round(element.getBoundingClientRect().left));
@@ -32,10 +42,10 @@ function brandStateAt(mixed $page, int $scrollY): array
             return {
                 isSolid: header.classList.contains('gw-header--solid'),
                 headerHeight: Math.round(header.getBoundingClientRect().height),
-                crestOpacity: getComputedStyle(document.querySelector('[data-intro-crest]')).opacity,
+                isIntroTarget: crestElement.hasAttribute('data-intro-crest'),
+                logosInBrand: link.querySelectorAll('.gw-brand-logo').length,
+                crestOpacity: getComputedStyle(crestElement).opacity,
                 crestBox: [round(crest.left), round(crest.top), round(crest.width), round(crest.height)],
-                emblemOpacity: getComputedStyle(emblem).opacity,
-                emblemHeight: Math.round(emblem.getBoundingClientRect().height),
                 wordmarkOpacity: getComputedStyle(wordmark).opacity,
                 wordmarkWidth: Math.round(wordmark.getBoundingClientRect().width),
                 linkName: link.getAttribute('aria-label'),
@@ -45,7 +55,7 @@ function brandStateAt(mixed $page, int $scrollY): array
     JS);
 }
 
-test('the header brand folds into the round emblem on scroll and comes back at the top', function (int $width, int $height) {
+test('on scroll the header keeps the same crest, smaller, folds the wordmark and comes back at the top', function (int $width, int $height) {
     $page = visitHome(['viewport' => ['width' => $width, 'height' => $height]]);
     $page->keys('@skip-intro', 'Escape');
 
@@ -55,8 +65,10 @@ test('the header brand folds into the round emblem on scroll and comes back at t
 
     expect($top)->toMatchArray([
         'isSolid' => false,
+        'isIntroTarget' => true,
+        // Crest + wordmark only: no round emblem in the header, in either state.
+        'logosInBrand' => 2,
         'crestOpacity' => '1',
-        'emblemOpacity' => '0',
         'wordmarkOpacity' => '1',
         'linkName' => 'Georgia Wolves Soccer Club – Home',
     ])
@@ -66,13 +78,14 @@ test('the header brand folds into the round emblem on scroll and comes back at t
 
     expect($scrolled)->toMatchArray([
         'isSolid' => true,
-        'crestOpacity' => '0',
-        'emblemOpacity' => '1',
-        'emblemHeight' => 44,
+        'isIntroTarget' => true,
+        'logosInBrand' => 2,
+        'crestOpacity' => '1',
         'wordmarkOpacity' => '0',
         'wordmarkWidth' => 0,
         'linkName' => 'Georgia Wolves Soccer Club – Home',
     ])
+        ->and(array_slice($scrolled['crestBox'], 2))->toBe([40.97, 48])
         ->and($scrolled['headerHeight'])->toBeLessThan($top['headerHeight'])
         // The links on the right never move sideways.
         ->and($scrolled['navLinks'])->toBe($top['navLinks']);
@@ -87,7 +100,7 @@ test('with reduced motion the brand changes state without a transition', functio
     $page = visitHome(['viewport' => ['width' => 1440, 'height' => 900], 'reducedMotion' => 'reduce']);
 
     $durations = $page->script(<<<'JS'
-        () => ['[data-test="brand-wordmark"]', '[data-test="brand-emblem"]', '[data-intro-crest]']
+        () => ['[data-test="brand-wordmark"]', '.gw-brand__mark']
             .map((selector) => getComputedStyle(document.querySelector(selector)).transitionDuration)
     JS);
 
