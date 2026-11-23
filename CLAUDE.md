@@ -130,6 +130,15 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Rate limiting en todos los formularios.
 - Los secretos solo van en `.env`, nunca en el código ni en el repo.
 
+### Tests
+- Suite completa: `vendor/bin/sail artisan test --compact`. Solo los de navegador: `vendor/bin/sail artisan test --compact --testsuite=Browser`.
+- Los tests de navegador (`tests/Browser/`, Pest browser + Playwright) llaman a `$this->useRealViteAssets()` en su `beforeEach` (`tests/TestCase.php`):
+  - Si `public/hot` existe y el servidor de Vite responde (`vendor/bin/sail npm run dev`), usan el servidor de desarrollo.
+  - Si no, usan `public/build`, aunque haya un `public/hot` viejo de un `npm run dev` ya parado.
+  - Si no hay build, o es más antiguo que `resources/js`, `resources/css` o `vite.config.js`, se saltan con un aviso que pide `vendor/bin/sail npm run build`. Después de un `git checkout` puede hacer falta volver a compilar.
+- El resto de tests no carga assets (`withoutVite()` en `TestCase`).
+- Las capturas de los fallos van a `tests/Browser/Screenshots` (ignorado en git).
+
 ### Convenciones de carpetas
 - Componentes: `resources/js/Components`
 - Secciones: `resources/js/Sections`

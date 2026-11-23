@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Route;
  * layout must never shift.
  */
 beforeEach(function () {
-    // TestCase disables Vite for HTTP tests; a real browser needs the real assets
-    // (the dev server when `public/hot` exists, otherwise `public/build`).
-    $this->withVite();
+    // TestCase disables Vite for HTTP tests; a real browser needs the real assets.
+    $this->useRealViteAssets();
 
     app()->detectEnvironment(fn (): string => 'local');
     Route::middleware('web')->group(base_path('routes/web.php'));
