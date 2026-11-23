@@ -229,20 +229,30 @@ onBeforeUnmount(() => {
     transform: none;
 }
 
+/*
+ * The arrow rides the right edge with a transform (same duration and easing as
+ * the width), not with `right: 0`: moving it through layout counts as a layout shift.
+ */
 .gw-cta__arrow {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     display: grid;
     place-items: center;
     width: var(--gw-cta-size);
     height: var(--gw-cta-size);
-    transition: transform 0.3s;
+    transition: transform 1.4s var(--gw-cta-ease-open);
+}
+
+.gw-cta--open .gw-cta__arrow,
+.gw-cta:focus-visible .gw-cta__arrow {
+    transform: translateX(calc(var(--gw-cta-open) - var(--gw-cta-size)));
 }
 
 .gw-cta__arrow svg {
     width: 22px;
     height: 22px;
+    transition: transform 0.3s;
 }
 
 /* Surfaces: focus ring has to contrast with the section behind the button. */
@@ -311,7 +321,7 @@ onBeforeUnmount(() => {
         transform: scale(1.09);
     }
 
-    .gw-cta:hover .gw-cta__arrow {
+    .gw-cta:hover .gw-cta__arrow svg {
         transform: translateX(3px);
     }
 
@@ -375,13 +385,14 @@ onBeforeUnmount(() => {
 @media (prefers-reduced-motion: reduce) {
     .gw-cta,
     .gw-cta__label,
-    .gw-cta__arrow {
+    .gw-cta__arrow,
+    .gw-cta__arrow svg {
         transition: none;
     }
 
     .gw-cta:hover,
     .gw-cta:active,
-    .gw-cta:hover .gw-cta__arrow {
+    .gw-cta:hover .gw-cta__arrow svg {
         transform: none;
     }
 }

@@ -148,15 +148,15 @@ const typeSamples = [
                 <div class="flex flex-col gap-6 rounded-[2rem] bg-gw-white p-8 ring-1 ring-gw-neu-light-shade">
                     <h3 class="font-display text-2xl font-bold uppercase">{{ t('styleguide.buttons.on_light') }}</h3>
                     <div class="flex flex-wrap items-center gap-4">
-                        <CtaButton variant="primary" surface="light" href="/">{{ t('styleguide.buttons.sample_primary') }}</CtaButton>
-                        <CtaButton variant="secondary" surface="light">{{ t('styleguide.buttons.sample_secondary') }}</CtaButton>
+                        <CtaButton variant="primary" surface="light" href="/" data-test="cta-primary-light">{{ t('styleguide.buttons.sample_primary') }}</CtaButton>
+                        <CtaButton variant="secondary" surface="light" data-test="cta-secondary-light">{{ t('styleguide.buttons.sample_secondary') }}</CtaButton>
                     </div>
                 </div>
                 <div class="flex flex-col gap-6 rounded-[2rem] bg-gw-black p-8 text-gw-white">
                     <h3 class="font-display text-2xl font-bold uppercase">{{ t('styleguide.buttons.on_dark') }}</h3>
                     <div class="flex flex-wrap items-center gap-4">
-                        <CtaButton variant="primary" surface="dark" href="/">{{ t('styleguide.buttons.sample_primary') }}</CtaButton>
-                        <CtaButton variant="secondary" surface="dark">{{ t('styleguide.buttons.sample_secondary') }}</CtaButton>
+                        <CtaButton variant="primary" surface="dark" href="/" data-test="cta-primary-dark">{{ t('styleguide.buttons.sample_primary') }}</CtaButton>
+                        <CtaButton variant="secondary" surface="dark" data-test="cta-secondary-dark">{{ t('styleguide.buttons.sample_secondary') }}</CtaButton>
                     </div>
                 </div>
             </div>

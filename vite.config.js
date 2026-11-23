@@ -50,6 +50,8 @@ export default defineConfig({
     /*
      * Vite runs inside the Sail container: listen on all interfaces so the
      * browser on the host can reach it, and point HMR and CORS at localhost.
+     * Pest browser tests serve the app on 127.0.0.1 with a random port, so
+     * that origin is allowed too.
      */
     server: {
         host: '0.0.0.0',
@@ -59,7 +61,7 @@ export default defineConfig({
             host: 'localhost',
         },
         cors: {
-            origin: 'http://localhost',
+            origin: ['http://localhost', /^http:\/\/127\.0\.0\.1(:\d+)?$/],
         },
         watch: {
             ignored: ['**/storage/framework/views/**'],
