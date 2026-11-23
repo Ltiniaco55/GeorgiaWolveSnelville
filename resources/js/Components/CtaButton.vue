@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { useReducedMotion } from '../Composables/useReducedMotion';
 
@@ -11,7 +11,15 @@ import { useReducedMotion } from '../Composables/useReducedMotion';
  * Renders an Inertia <Link> for internal URLs, an <a> for external/anchor URLs
  * and a <button> without href. The label is always in the DOM, so the accessible
  * name exists even while the button is a circle.
+ *
+ * The button sits in a slot that always reserves the open pill's width, so opening
+ * and folding never moves the layout (no wrapping rows, no CLS). The slot, not the
+ * button, is observed, with hysteresis: it opens once fully inside the viewport
+ * minus a 10 % margin and folds only after leaving the viewport completely.
+ * `class` and `style` go to the slot (layout); every other attribute to the button.
  */
+defineOptions({ inheritAttrs: false });
+
 const props = defineProps({
     variant: {
         type: String,
@@ -32,10 +40,23 @@ const props = defineProps({
         default: 'button',
         validator: (value) => ['button', 'submit', 'reset'].includes(value),
     },
+    align: {
+        type: String,
+        default: 'start',
+        validator: (value) => ['start', 'end'].includes(value),
+    },
+});
+
+const attrs = useAttrs();
+const slotAttrs = computed(() => ({ class: attrs.class, style: attrs.style }));
+const buttonAttrs = computed(() => {
+    const { class: _class, style: _style, ...rest } = attrs;
+
+    return rest;
 });
 
 const prefersReducedMotion = useReducedMotion();
-const root = ref(null);
+const slotElement = ref(null);
 const label = ref(null);
 const isInView = ref(false);
 const openWidth = ref(null);
@@ -60,7 +81,8 @@ const tag = computed(() => {
 
 const isOpen = computed(() => prefersReducedMotion.value || isInView.value);
 
-let intersectionObserver = null;
+let openObserver = null;
+let closeObserver = null;
 let resizeObserver = null;
 
 function measure() {
@@ -69,55 +91,85 @@ function measure() {
     }
 }
 
-function rootElement() {
-    return root.value?.$el ?? root.value;
-}
-
 onMounted(() => {
     measure();
 
     resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(label.value);
 
-    intersectionObserver = new IntersectionObserver(
+    openObserver = new IntersectionObserver(
         ([entry]) => {
-            isInView.value = entry.isIntersecting;
+            if (entry.isIntersecting && entry.intersectionRatio >= 1) {
+                isInView.value = true;
+            }
         },
         { rootMargin: '-10% 0px -10% 0px', threshold: 1 },
     );
-    intersectionObserver.observe(rootElement());
+    openObserver.observe(slotElement.value);
+
+    closeObserver = new IntersectionObserver(
+        ([entry]) => {
+            if (!entry.isIntersecting) {
+                isInView.value = false;
+            }
+        },
+        { threshold: 0 },
+    );
+    closeObserver.observe(slotElement.value);
 });
 
 onBeforeUnmount(() => {
-    intersectionObserver?.disconnect();
+    openObserver?.disconnect();
+    closeObserver?.disconnect();
     resizeObserver?.disconnect();
 });
 </script>
 
 <template>
-    <component
-        :is="tag"
-        ref="root"
-        :href="href ?? undefined"
-        :type="href ? undefined : type"
-        class="gw-cta"
-        :class="[`gw-cta--${variant}`, `gw-cta--${surface}`, { 'gw-cta--open': isOpen }]"
-        :style="openWidth ? { '--gw-cta-open': openWidth } : undefined"
+    <span
+        ref="slotElement"
+        class="gw-cta-slot"
+        :class="[`gw-cta-slot--${align}`, slotAttrs.class]"
+        :style="[openWidth ? { '--gw-cta-open': openWidth } : undefined, slotAttrs.style]"
     >
-        <span ref="label" class="gw-cta__label"><slot /></span>
-        <span class="gw-cta__arrow" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                <path d="M5 12h14" />
-                <path d="M13 6l6 6-6 6" />
-            </svg>
-        </span>
-    </component>
+        <component
+            :is="tag"
+            v-bind="buttonAttrs"
+            :href="href ?? undefined"
+            :type="href ? undefined : type"
+            class="gw-cta"
+            :class="[`gw-cta--${variant}`, `gw-cta--${surface}`, { 'gw-cta--open': isOpen }]"
+        >
+            <span ref="label" class="gw-cta__label"><slot /></span>
+            <span class="gw-cta__arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <path d="M5 12h14" />
+                    <path d="M13 6l6 6-6 6" />
+                </svg>
+            </span>
+        </component>
+    </span>
 </template>
 
 <style scoped>
-.gw-cta {
+/* Reserves the open pill's width so the layout never changes with the state. */
+.gw-cta-slot {
     --gw-cta-size: 56px;
     --gw-cta-open: var(--gw-cta-size);
+
+    display: inline-flex;
+    flex: none;
+    justify-content: flex-start;
+    width: var(--gw-cta-open);
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+.gw-cta-slot--end {
+    justify-content: flex-end;
+}
+
+.gw-cta {
     --gw-cta-ease-open: cubic-bezier(0.65, 0, 0.3, 1);
     --gw-cta-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
@@ -310,9 +362,11 @@ onBeforeUnmount(() => {
 }
 
 @media (max-width: 639px) {
-    .gw-cta {
+    .gw-cta-slot {
         --gw-cta-size: 52px;
+    }
 
+    .gw-cta {
         font-size: 15px;
     }
 }
