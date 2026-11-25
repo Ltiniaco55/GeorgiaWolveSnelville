@@ -52,7 +52,8 @@
  * inside the frame; the header lines up with that content.
  */
 :root {
-    --gw-header-h: 96px;
+    /* Header's initial height (16 + 72 + 16 px), measured from the frame's top. */
+    --gw-header-h: 104px;
     --gw-edge: 14px;
     --gw-gutter: 40px;
 }
@@ -60,7 +61,7 @@
 @media (max-width: 760px) {
     :root {
         --gw-edge: 8px;
-        --gw-gutter: 20px;
+        --gw-gutter: 24px;
     }
 }
 
@@ -102,6 +103,11 @@
 
 .gw-intro-active .gw-intro-clip {
     clip-path: circle(var(--gw-intro-radius, 0px) at 50vw 50vh);
+}
+
+/* The header is fixed --gw-edge inside the window: same circle, in its own box. */
+.gw-intro-active .gw-header.gw-intro-clip {
+    clip-path: circle(var(--gw-intro-radius, 0px) at calc(50vw - var(--gw-edge)) calc(50vh - var(--gw-edge)));
 }
 
 .gw-intro-active [data-intro-crest] {

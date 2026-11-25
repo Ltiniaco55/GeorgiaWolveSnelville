@@ -39,7 +39,8 @@ Hero (escaparate). APROBADO con el prototipo del 25 nov 2026:
 - Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES" en una línea (wordmark-white), los enlaces, el CTA "Register" y, en la esquina derecha, el selector de idioma. Al hacer scroll se vuelve sólido (negro opaco)
 - Marca del menú al hacer scroll (APROBADA el 25 nov 2026):
   - Arriba, sobre el negro: escudo + "GEORGIA WOLVES". Ya no lleva la línea "Snellville soccer club"; "Snellville" sigue en el <title>, en el subtítulo del hero ("…in Snellville, Georgia…") y en el footer
-  - Los márgenes laterales del menú coinciden con los del contenido del hero (borde del marco + 40 px; en móvil, 8 + 20 px), así el escudo y el titular quedan alineados
+  - El menú queda DENTRO del marco del hero (25 nov 2026, como en el prototipo): fijo a la misma distancia de la ventana que el marco (14 px; 8 px en móvil) y con un margen interior de 16 px arriba y abajo y el gutter del hero a los lados (40 px; 24 px en móvil). Así el escudo de 72 px queda 16 px por debajo del borde superior del marco, sin tocar la curva de la esquina (34 px; 26 px en móvil), y alineado con el titular
+  - Al pasar a sólido se convierte en su propia píldora flotante, también separada 14 px (8 px) del borde: gris casi opaco (#0E0E0E al 94 %, sin desenfoque) con sombra oscura neumórfica
   - Cuando el menú pasa a sólido: se mantiene el mismo escudo hexagonal (crest), más pequeño (de 72 a 48 px de alto), el wordmark se pliega (fundido y ancho a 0) y el menú baja de altura (de 96 a 72 px en escritorio y de 96 a 64 px en móvil). Los enlaces de la derecha no se mueven de lado
   - Descartado (23 nov 2026): cambiar al emblema redondo (wolf-yellow-black) al hacer scroll. Sobre el menú negro no se ve la cara del lobo. El emblema redondo no se usa en el menú
   - Al volver arriba, vuelve el estado inicial. Transición de 0,35 s; con reduced motion, cambio directo
@@ -48,7 +49,7 @@ Hero (escaparate). APROBADO con el prototipo del 25 nov 2026:
 - Marco (25 nov 2026): el hero es un panel redondeado de 34 px con borde #262626, separado 14 px del borde de la ventana (8 px y esquinas de 26 px en móvil). Ya no hay escenario 4:5: HeroStage va en modo "photo"
 - Foto a la derecha (58 % del ancho, como mucho 860 px), oscurecida (brillo 0,6) y fundida hacia el negro por la izquierda y por abajo. En pantallas anchas su borde izquierdo también se funde, para que no se vea el corte. En móvil (≤ 760 px) va arriba, a todo el ancho y con el 46 % del alto, y el texto debajo
 - Linterna: con puntero fino, al pasar el ratón por el hero se ve la foto sin oscurecer en un círculo de 230 px alrededor del puntero (máscara radial). Sin ratón o con reduced motion, no hay linterna. Sustituye a la linterna sobre las líneas del campo (PitchLamp, eliminado)
-- Contenido arriba (no centrado ni abajo): padding superior = alto del menú (96 px) + clamp(32px, 9vh, 90px), unos 100 px bajo el escudo a 1440×900. En móvil va abajo, debajo de la foto
+- Contenido arriba (no centrado ni abajo): padding superior = alto inicial del menú (104 px) + clamp(32px, 9vh, 90px), unos 100 px bajo el escudo a 1440×900. En móvil va abajo, debajo de la foto
   - Titular "TRAIN LIKE A WOLF." con "wolf." en amarillo, a clamp(56px, min(9.4vw, 13.5vh), 150px) (64 px en móvil). El acento va en línea con el resto, así en español queda "ENTRENA COMO / UN LOBO." en dos líneas
   - Subtítulo, CTAs "Book a free training" y "View programs" y chips de datos (días, dirección, primer entrenamiento gratis)
   - Por debajo de 780 px de alto se ocultan los chips de datos y se reducen los márgenes. En móvil tampoco hay chips

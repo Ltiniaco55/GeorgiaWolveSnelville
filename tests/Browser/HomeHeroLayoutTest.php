@@ -228,3 +228,45 @@ test('with reduced motion the hero scrolls away normally and nothing fades in', 
         'tickerAnimation' => 'none',
     ]);
 });
+
+test('the header crest sits inside the hero frame and the solid header floats off the edges', function (int $width, int $height, bool $isMobile) {
+    $page = visitHome([
+        'viewport' => ['width' => $width, 'height' => $height],
+        'reducedMotion' => 'reduce',
+        'isMobile' => $isMobile,
+        'hasTouch' => $isMobile,
+    ]);
+
+    $boxes = <<<'JS'
+        () => {
+            const box = (selector) => {
+                const { top, right, bottom, left } = document.querySelector(selector).getBoundingClientRect();
+
+                return { top, right, bottom, left };
+            };
+
+            return { crest: box('[data-test="brand-crest"]'), frame: box('[data-test="hero-frame"]'), header: box('[data-test="site-header"]') };
+        }
+    JS;
+
+    $top = $page->script($boxes);
+
+    // At least 12 px between the crest and the frame's top and left edges.
+    expect($top['crest']['top'] - $top['frame']['top'])->toBeGreaterThanOrEqual(12)
+        ->and($top['crest']['left'] - $top['frame']['left'])->toBeGreaterThanOrEqual(12)
+        ->and($top['crest']['right'])->toBeLessThanOrEqual($top['frame']['right'])
+        ->and($top['crest']['bottom'])->toBeLessThanOrEqual($top['frame']['bottom']);
+
+    $page->script('() => window.scrollTo(0, 500)');
+    $page->wait(0.2);
+    $scrolled = $page->script($boxes);
+
+    // Solid: a pill that keeps the same distance to the window as the frame.
+    expect($scrolled['header']['top'])->toEqual($top['frame']['top'])
+        ->and($scrolled['header']['left'])->toEqual($top['frame']['left'])
+        ->and($page->script('() => getComputedStyle(document.querySelector("[data-test=\'site-header\']")).borderTopLeftRadius'))->toBe('999px');
+})->with([
+    '1920×1080' => [1920, 1080, false],
+    '1440×900' => [1440, 900, false],
+    '390×844' => [390, 844, true],
+]);

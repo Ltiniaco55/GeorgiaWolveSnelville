@@ -8,9 +8,13 @@ import CtaButton from './CtaButton.vue';
 import LanguageMenu from './LanguageMenu.vue';
 
 /**
- * Fixed site header (docs/design/sitemap.md, "Navegación"): transparent over the
- * black hero, solid once the page scrolls. Solid also means compact: the wordmark
- * folds away and the same crest shrinks from 72 to 48 px, in 0.35 s.
+ * Fixed site header (docs/design/sitemap.md, "Navegación"; prototype home.html):
+ * it sits inside the home hero's frame, --gw-edge from the window like the frame,
+ * with 16 px above the crest and the hero's gutter at the sides, so the crest never
+ * touches the frame's rounded corner. Transparent over the black hero; once the page
+ * scrolls it becomes its own floating dark pill, still --gw-edge from the edges.
+ * Solid also means compact: the wordmark folds away and the same crest shrinks from
+ * 72 to 48 px, in 0.35 s.
  * The brand link keeps its accessible name in both states. Crest (72 px) and wordmark, the five
  * main links, the "Register" CTA and, in the right corner, the language dropdown.
  *
@@ -162,17 +166,24 @@ function isCurrent(name) {
     --gw-focus-ring: var(--color-gw-yellow);
 
     position: fixed;
-    inset: 0 0 auto;
+    top: var(--gw-edge);
+    right: var(--gw-edge);
+    left: var(--gw-edge);
     z-index: 40;
+    border-radius: 999px;
     color: var(--color-gw-white);
     transition:
         background-color 0.3s,
         box-shadow 0.3s;
 }
 
+/* Floating pill: near-opaque dark (no blur: glassmorphism is ruled out). */
 .gw-header--solid {
-    background: var(--color-gw-black);
-    box-shadow: 0 1px 0 rgb(255 255 255 / 0.06);
+    background: rgb(14 14 14 / 0.94);
+    box-shadow:
+        8px 8px 22px rgb(0 0 0 / 0.55),
+        -4px -4px 14px rgb(40 40 40 / 0.25),
+        inset 0 0 0 1px rgb(255 255 255 / 0.05);
 }
 
 /*
@@ -181,10 +192,10 @@ function isCurrent(name) {
  * size: the links on the right are pushed by margin-left: auto, so they never move
  * sideways.
  */
-/* Lined up with the home hero's content: frame edge + gutter (app.css). */
+/* Inside the hero frame and lined up with its content: the gutter (app.css). */
 .gw-header__bar {
-    padding-block: 0.75rem;
-    padding-inline: calc(var(--gw-edge) + var(--gw-gutter));
+    padding-block: 16px;
+    padding-inline: var(--gw-gutter);
     transition: padding-block 0.35s ease;
 }
 
@@ -217,7 +228,7 @@ function isCurrent(name) {
 }
 
 .gw-header--solid .gw-header__bar {
-    padding-block: 0.5rem;
+    padding-block: 8px;
 }
 
 .gw-header--solid .gw-brand__mark {
