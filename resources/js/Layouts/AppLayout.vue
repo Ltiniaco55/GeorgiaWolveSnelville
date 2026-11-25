@@ -1,11 +1,12 @@
 <script setup>
 import MobileCtaBar from '../Components/MobileCtaBar.vue';
+import SiteFooter from '../Components/SiteFooter.vue';
 import SiteHeader from '../Components/SiteHeader.vue';
 import { useTranslations } from '../Composables/useTranslations';
 
 /**
- * Site layout: skip link, fixed header, page content and, on mobile, the fixed
- * bottom CTA bar (the content keeps room for it below 1024 px).
+ * Site layout: skip link, fixed header, page content, footer and, on mobile, the
+ * fixed bottom CTA bar (the footer keeps room for it below 1024 px).
  * `gw-intro-clip` marks what the brand intro reveals through its circle.
  */
 const { t } = useTranslations();
@@ -17,6 +18,7 @@ const { t } = useTranslations();
     <main id="main" tabindex="-1" class="gw-main gw-intro-clip">
         <slot />
     </main>
+    <SiteFooter />
     <MobileCtaBar />
 </template>
 
@@ -40,16 +42,5 @@ const { t } = useTranslations();
 
 main:focus {
     outline: none;
-}
-
-/* Room for the mobile CTA bar (48 px button + 2 × 12 px padding + safe area). */
-.gw-main {
-    padding-bottom: calc(72px + env(safe-area-inset-bottom));
-}
-
-@media (min-width: 1024px) {
-    .gw-main {
-        padding-bottom: 0;
-    }
 }
 </style>

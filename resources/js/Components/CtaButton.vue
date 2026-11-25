@@ -53,6 +53,12 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    /** "large": 72 px and 19 px text (final CTA "Join the pack."); 60 px and 17 px on mobile. */
+    size: {
+        type: String,
+        default: 'default',
+        validator: (value) => ['default', 'large'].includes(value),
+    },
     /** Keeps the button folded (e.g. during the brand intro); it opens once released. */
     hold: {
         type: Boolean,
@@ -142,7 +148,7 @@ onBeforeUnmount(() => {
     <span
         ref="slotElement"
         class="gw-cta-slot"
-        :class="[`gw-cta-slot--${align}`, slotAttrs.class]"
+        :class="[`gw-cta-slot--${align}`, `gw-cta-slot--${size}`, slotAttrs.class]"
         :style="[openWidth ? { '--gw-cta-open': openWidth } : undefined, slotAttrs.style]"
     >
         <component
@@ -391,6 +397,24 @@ onBeforeUnmount(() => {
 
     .gw-cta {
         font-size: 15px;
+    }
+}
+
+.gw-cta-slot--large {
+    --gw-cta-size: 72px;
+}
+
+.gw-cta-slot--large .gw-cta {
+    font-size: 19px;
+}
+
+@media (max-width: 639px) {
+    .gw-cta-slot--large {
+        --gw-cta-size: 60px;
+    }
+
+    .gw-cta-slot--large .gw-cta {
+        font-size: 17px;
     }
 }
 

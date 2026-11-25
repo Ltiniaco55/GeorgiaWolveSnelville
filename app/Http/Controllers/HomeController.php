@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Photo;
 use App\Support\HomePricing;
 use App\Support\Localization;
@@ -16,7 +17,8 @@ class HomeController extends Controller
      * when it was already seen in this session, to review it. `pricing` carries
      * the plan prices and the "When do you join?" calendar (config/billing.php);
      * `galleryPhotos` up to 9 photos with the parents' media release;
-     * `leagues` and `partners` for the "Associated leagues and partners" strip.
+     * `leagues` and `partners` for the "Associated leagues and partners" strip;
+     * `faqs` the published questions marked for the home (at most 6).
      */
     public function __invoke(Request $request, HomePricing $pricing): Response
     {
@@ -33,6 +35,9 @@ class HomeController extends Controller
                 ])
                 ->all(),
             'partners' => config('club.partners'),
+            'faqs' => Faq::query()->published()->where('show_on_home', true)->limit(6)->get()
+                ->map(fn (Faq $faq): array => $faq->toItem())
+                ->all(),
         ]);
     }
 }

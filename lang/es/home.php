@@ -170,8 +170,18 @@ return [
         'cta' => 'Ver toda la galería',
     ],
 
-    'next' => [
-        'title' => 'Viene más de la manada.',
-        'body' => 'Las preguntas frecuentes, la llamada final y el pie llegan a continuación.',
+    'faq' => [
+        'eyebrow' => 'Preguntas frecuentes',
+        'title_lead' => 'Preguntas,',
+        'title_accent' => 'respondidas.',
+        'hint' => 'Abre una pregunta',
+        'photo_alt' => 'Jugadores pequeños con equipación gris y medallas de campeones delante de la pancarta de la Gwinnett Youth Soccer League.',
+    ],
+
+    'final' => [
+        'title_lead' => 'Únete a la',
+        'title_accent' => 'manada.',
+        'hint' => 'Acércate al botón',
+        'cta' => 'Inscríbete ahora',
     ],
 ];

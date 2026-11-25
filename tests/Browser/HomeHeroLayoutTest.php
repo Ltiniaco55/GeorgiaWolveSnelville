@@ -175,7 +175,7 @@ test('on scroll the hero stays pinned, shrinks and darkens while the sections sl
         async () => {
             await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
             const frame = document.querySelector('[data-test="hero-frame"]');
-            const heading = document.querySelector('#next-title');
+            const heading = document.querySelector('#final-title');
 
             return {
                 pin: getComputedStyle(document.querySelector('[data-test="hero-pin"]')).position,
@@ -199,10 +199,18 @@ test('on scroll the hero stays pinned, shrinks and darkens while the sections sl
 
     expect($page->script($state))->toMatchArray(['heroTop' => 0, 'transformed' => true, 'shade' => 0.275]);
 
-    $page->script('() => window.scrollTo(0, document.body.scrollHeight)');
+    // Mid-page, under the coach section, the hero is still pinned (hidden).
+    $page->script('() => document.querySelector("#coach").scrollIntoView({ block: "start" })');
     $page->wait(0.2);
 
-    expect($page->script($state))->toMatchArray(['heroTop' => 0, 'headingRevealed' => true]);
+    expect($page->script($state)['heroTop'])->toBe(0);
+
+    // The final heading fades in when it arrives. (Near the end, the footer, outside
+    // the pinned wrapper, pushes the hidden hero away.)
+    $page->script('() => document.querySelector("#final-title").scrollIntoView({ block: "center" })');
+    $page->wait(0.2);
+
+    expect($page->script($state)['headingRevealed'])->toBeTrue();
     $page->assertNoJavaScriptErrors();
 });
 

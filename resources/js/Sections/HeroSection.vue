@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import CtaButton from '../Components/CtaButton.vue';
 import HeroStage from '../Components/HeroStage.vue';
+import SocialIcon from '../Components/SocialIcon.vue';
 import { useFitText } from '../Composables/useFitText';
 import { useReducedMotion } from '../Composables/useReducedMotion';
 import { useTranslations } from '../Composables/useTranslations';
@@ -58,12 +59,6 @@ const facts = [
     { key: 'place', icon: 'M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21zM12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z' },
     { key: 'free', icon: 'M20 6L9 17l-5-5' },
 ];
-
-const socialIcons = {
-    instagram: 'M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17.5 6.5h.01',
-    facebook: 'M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z',
-    whatsapp: 'M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z',
-};
 
 const frame = ref(null);
 const shade = ref(null);
@@ -171,9 +166,7 @@ onBeforeUnmount(stopRecede);
                     <ul class="flex gap-3">
                         <li v-for="link in socialLinks" :key="link.network">
                             <a :href="link.url" class="gw-hero__social" target="_blank" rel="noopener" :aria-label="t(`common.social.${link.network}`)">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                                    <path :d="socialIcons[link.network]" />
-                                </svg>
+                                <SocialIcon :network="link.network" />
                             </a>
                         </li>
                     </ul>

@@ -170,8 +170,18 @@ return [
         'cta' => 'View full gallery',
     ],
 
-    'next' => [
-        'title' => 'More of the pack is on its way.',
-        'body' => 'The FAQ, the final call and the footer come next.',
+    'faq' => [
+        'eyebrow' => 'FAQ',
+        'title_lead' => 'Questions,',
+        'title_accent' => 'answered.',
+        'hint' => 'Open a question',
+        'photo_alt' => 'Young players in grey kits with champions’ medals in front of the Gwinnett Youth Soccer League banner.',
+    ],
+
+    'final' => [
+        'title_lead' => 'Join the',
+        'title_accent' => 'pack.',
+        'hint' => 'Get close to the button',
+        'cta' => 'Register now',
     ],
 ];

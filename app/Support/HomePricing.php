@@ -58,9 +58,7 @@ class HomePricing
                 'annual_saving' => self::money(12 * $prices['monthly'] - $prices['annual']),
                 'uniform' => self::money($prices['uniform']),
             ],
-            'cutoffDay' => $locale === 'en'
-                ? Number::ordinal($this->calculator->cutoffDay)
-                : (string) $this->calculator->cutoffDay,
+            'cutoffDay' => self::cutoffLabel($this->calculator->cutoffDay),
             'calendar' => [
                 'monthName' => $today->translatedFormat('F'),
                 'monthLabel' => ucfirst($today->translatedFormat(__('home.pricing.calendar.month_format'))),
@@ -69,6 +67,14 @@ class HomePricing
                 'days' => $days,
             ],
         ];
+    }
+
+    /**
+     * The cut-off day as said in the current locale: "15th" in English, "15" in Spanish.
+     */
+    public static function cutoffLabel(int $day): string
+    {
+        return app()->getLocale() === 'en' ? Number::ordinal($day) : (string) $day;
     }
 
     /**

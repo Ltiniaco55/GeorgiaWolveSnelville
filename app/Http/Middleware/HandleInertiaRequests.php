@@ -25,7 +25,13 @@ class HandleInertiaRequests extends Middleware
     private const NAVIGATION_PAGES = [
         'home', 'programs', 'pricing', 'about', 'teams', 'leagues',
         'gallery', 'faq', 'contact', 'register', 'free_training',
+        'privacy', 'terms', 'refund_policy', 'liability_waiver', 'media_release', 'accessibility',
     ];
+
+    /**
+     * League pages linked from the footer (slug => navigation key).
+     */
+    private const LEAGUE_PAGES = ['liga-interamericana' => 'liga_interamericana', 'gysl' => 'gysl'];
 
     /**
      * Determines the current asset version.
@@ -54,7 +60,18 @@ class HandleInertiaRequests extends Middleware
             'currentPage' => fn (): ?string => Localization::currentRouteName($request),
             'navigation' => fn (): array => collect(self::NAVIGATION_PAGES)
                 ->mapWithKeys(fn (string $page): array => [$page => Localization::pageUrl($page)])
+                ->merge(collect(self::LEAGUE_PAGES)->mapWithKeys(fn (string $key, string $slug): array => [
+                    $key => Localization::pageUrl('league', parameters: ['league' => $slug]),
+                ]))
                 ->all(),
+            'club' => fn (): array => [
+                'name' => config('club.name'),
+                'legalName' => config('club.legal_name'),
+                'email' => config('club.email'),
+                'phone' => config('club.phone'),
+                'address' => config('club.address'),
+                'mapsUrl' => config('club.maps_url'),
+            ],
             'whatsappUrl' => fn (): string => config('club.whatsapp_number')
                 ? 'https://wa.me/'.config('club.whatsapp_number')
                 : Localization::pageUrl('contact'),
