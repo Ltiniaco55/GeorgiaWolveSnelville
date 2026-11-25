@@ -112,9 +112,9 @@ test('with reduced motion the brand changes state without a transition', functio
     expect($page->script('() => getComputedStyle(document.querySelector("[data-test=\'brand-wordmark\']")).opacity'))->toBe('0');
 });
 
-test('Snellville stays in the page title and the hero chip', function () {
+test('Snellville stays in the page title and the hero subtitle', function () {
     $page = visitHome(['viewport' => ['width' => 1440, 'height' => 900], 'reducedMotion' => 'reduce']);
 
-    expect($page->script('() => [document.title, document.querySelector("[data-test=\'hero\'] p").textContent.trim()]'))
-        ->toBe(['Georgia Wolves Soccer Club Snellville', 'Registration open · Fall season · Snellville, GA']);
+    expect($page->script('() => document.title'))->toBe('Georgia Wolves Soccer Club Snellville')
+        ->and($page->script('() => document.querySelector("[data-test=\'hero-subtitle\']").textContent'))->toContain('Snellville, Georgia');
 });

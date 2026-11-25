@@ -9,7 +9,6 @@ return [
     ],
 
     'hero' => [
-        'chip' => 'Registration open · Fall season · Snellville, GA',
         'title_lead' => 'Train like a',
         'title_accent' => 'wolf.',
         'subtitle' => 'Youth soccer academy in Snellville, Georgia, for boys and girls from 5 to 14 (U6–U14). Real coaching, a team to belong to, and the first training session is free.',
@@ -21,11 +20,28 @@ return [
             'place' => 'South Gwinnett HS, Snellville',
             'free' => 'First training free',
         ],
-        'lamp_hint' => 'Move your cursor to light up the pitch',
+        'photo_alt' => 'The coach kneels in front of the team under a tent and talks to the players, who smile in their yellow and black kits.',
+        'giant_name' => 'Georgia Wolves',
+        'coach_card' => [
+            'eyebrow' => 'Meet the coach',
+            'name' => 'Christian Tiniaco',
+            'meta' => 'UEFA PRO License · 3 countries',
+        ],
         'stage' => [
             'poster_alt' => 'The Georgia Wolves jersey from the front: yellow with black shoulders and sleeves, the club crest on the chest and the Joma logo.',
-            'badge_champions' => 'U12 Champions 2026',
-            'badge_league' => 'GYSL Fall League · Premier Division',
+        ],
+    ],
+
+    'ticker' => [
+        'label' => 'Achievements',
+        'pause' => 'Pause the achievements ticker',
+        'play' => 'Play the achievements ticker',
+        'items' => [
+            'U12 GYSL Fall League Champions 2026',
+            'U9 Steamers Fall Classic Champions',
+            'Classic City Cup · Athens 2026',
+            'Hudgens Rec Cup',
+            'First training free',
         ],
     ],
 

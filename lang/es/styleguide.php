@@ -136,4 +136,9 @@ return [
         'sample_label' => 'Inscripciones abiertas · Temporada de otoño',
         'sample_button' => 'Reserva un entrenamiento gratis',
     ],
+
+    'stage' => [
+        'title' => 'Escenario del hero · camiseta 3D',
+        'intro' => '<HeroStage mode="jersey">: la camiseta que gira en un escenario hundido 4:5. De momento no está en la home (el hero lleva una foto); se guarda para más adelante.',
+    ],
 ];

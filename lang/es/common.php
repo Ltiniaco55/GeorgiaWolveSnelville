@@ -33,6 +33,12 @@ return [
         'free_training' => 'Prueba gratis',
         'whatsapp' => 'Escríbenos por WhatsApp',
     ],
+    'social' => [
+        'label' => 'Georgia Wolves en redes sociales',
+        'instagram' => 'Georgia Wolves en Instagram',
+        'facebook' => 'Georgia Wolves en Facebook',
+        'whatsapp' => 'Habla con Georgia Wolves por WhatsApp',
+    ],
     'pricing_deck' => [
         'plans' => 'Planes',
         'dot' => 'Plan :current de :total',

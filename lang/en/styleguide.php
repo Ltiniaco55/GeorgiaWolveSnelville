@@ -136,4 +136,9 @@ return [
         'sample_label' => 'Registration open · Fall season',
         'sample_button' => 'Book a free training',
     ],
+
+    'stage' => [
+        'title' => 'Hero stage · 3D jersey',
+        'intro' => '<HeroStage mode="jersey">: the spinning jersey in a 4:5 pressed-in stage. Not in the home for now (the hero shows a photo); kept for later.',
+    ],
 ];

@@ -64,7 +64,7 @@ function isCurrent(name) {
 
 <template>
     <header class="gw-header gw-intro-clip" :class="{ 'gw-header--solid': isSolid }" data-test="site-header">
-        <div class="gw-header__bar mx-auto flex max-w-7xl items-center gap-4 px-4 sm:px-8 lg:gap-8">
+        <div class="gw-header__bar flex items-center gap-4 lg:gap-8">
             <Link :href="navigation.home" class="gw-brand flex min-w-0 items-center" :aria-label="t('common.nav.home')" data-test="brand-link">
                 <span class="gw-brand__mark">
                     <BrandLogo variant="crest" class="gw-brand__crest" decorative data-intro-crest data-test="brand-crest" />
@@ -181,8 +181,10 @@ function isCurrent(name) {
  * size: the links on the right are pushed by margin-left: auto, so they never move
  * sideways.
  */
+/* Lined up with the home hero's content: frame edge + gutter (app.css). */
 .gw-header__bar {
     padding-block: 0.75rem;
+    padding-inline: calc(var(--gw-edge) + var(--gw-gutter));
     transition: padding-block 0.35s ease;
 }
 

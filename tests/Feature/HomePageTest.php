@@ -83,3 +83,24 @@ test('the WhatsApp link opens wa.me with the club number', function () {
     $this->get('/')
         ->assertInertia(fn (Assert $page) => $page->where('whatsappUrl', 'https://wa.me/14045550123'));
 });
+
+test('only the social networks with a URL are shared', function () {
+    config(['club.social' => [
+        'instagram' => 'https://instagram.com/georgiawolves',
+        'facebook' => null,
+        'whatsapp' => 'https://wa.me/14045550123',
+    ]]);
+
+    $this->get('/')
+        ->assertInertia(fn (Assert $page) => $page->where('socialLinks', [
+            ['network' => 'instagram', 'url' => 'https://instagram.com/georgiawolves'],
+            ['network' => 'whatsapp', 'url' => 'https://wa.me/14045550123'],
+        ]));
+});
+
+test('no social links are shared while the club has none', function () {
+    config(['club.social' => ['instagram' => null, 'facebook' => null, 'whatsapp' => null]]);
+
+    $this->get('/')
+        ->assertInertia(fn (Assert $page) => $page->where('socialLinks', []));
+});

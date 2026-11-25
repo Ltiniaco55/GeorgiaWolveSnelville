@@ -1,4 +1,4 @@
-# Dirección de diseño — web Georgia Wolves (actualizado 22 nov 2026)
+# Dirección de diseño — web Georgia Wolves (actualizado 25 nov 2026)
 
 ## Colores
 - Principales: blanco y negro
@@ -10,9 +10,14 @@ https://www.tiktok.com/@fraxbit/video/7702375429876862230
 - Paneles negros que se superponen a las secciones blancas al hacer scroll, con titulares grandes en blanco
 - Pasos numerados, acordeón junto a una foto, carrusel horizontal de fotos
 
-## Intro de marca y home (propuesta del 22 nov 2026, pendiente de aprobación)
-Idea de Luciano, refinada.
-Prueba: artifact "Georgia Wolves Home" (https://claude.ai/artifact/BzESgWw8NL8WXqgCGQZha6)
+## Prototipo aprobado de la home (25 nov 2026)
+Luciano cerró el diseño de la home en un prototipo navegable: `docs/design/prototype/home.html`. Es la referencia APROBADA, visual y de comportamiento, de la home completa (intro, menú, hero, transiciones y todas las secciones). Si este documento y el prototipo no coinciden en algo de la home, manda el prototipo.
+- No se copia su código: es un HTML suelto con fuentes de Google e imágenes en base64. Se reimplementa con los componentes del proyecto, Tailwind, fuentes autoalojadas y textos en lang/en y lang/es
+- Las imágenes se extraen de sus data URI a public/images (WebP y AVIF con srcset). Son de ejemplo y de poca resolución (la foto del hero mide 566×812): hacen falta las fotos reales
+- Se implementa por fases: fase A (hero y transiciones, 25 nov 2026) y después el resto de secciones
+
+## Intro de marca y home (APROBADA el 25 nov 2026)
+Idea de Luciano, refinada. Prueba original: artifact "Georgia Wolves Home" (https://claude.ai/artifact/BzESgWw8NL8WXqgCGQZha6); versión aprobada: el prototipo de arriba.
 
 La home empieza en negro (antes era blanca).
 
@@ -30,31 +35,41 @@ Detalles:
 - En producción, la intro solo debería salir en la primera visita de la sesión (sessionStorage). En la prueba se repite siempre y hay un botón "Replay intro"
 - Punto de encaje calculado sobre el escudo recortado: centro en x 50 % e y 47,4 % de su caja, y diámetro del círculo igual al 62,4 % de su ancho
 
-Hero (escaparate):
+Hero (escaparate). APROBADO con el prototipo del 25 nov 2026:
 - Menú fijo y transparente sobre el negro: el escudo (72 px de alto), el wordmark "GEORGIA WOLVES" en una línea (wordmark-white), los enlaces, el CTA "Register" y, en la esquina derecha, el selector de idioma. Al hacer scroll se vuelve sólido (negro opaco)
-- Marca del menú al hacer scroll (propuesta del 23 nov 2026, pendiente de aprobación):
-  - Arriba, sobre el negro: escudo + "GEORGIA WOLVES". Ya no lleva la línea "Snellville soccer club"; "Snellville" sigue en el <title>, en el chip del hero ("Registration open · Fall season · Snellville, GA") y en el footer
+- Marca del menú al hacer scroll (APROBADA el 25 nov 2026):
+  - Arriba, sobre el negro: escudo + "GEORGIA WOLVES". Ya no lleva la línea "Snellville soccer club"; "Snellville" sigue en el <title>, en el subtítulo del hero ("…in Snellville, Georgia…") y en el footer
+  - Los márgenes laterales del menú coinciden con los del contenido del hero (borde del marco + 40 px; en móvil, 8 + 20 px), así el escudo y el titular quedan alineados
   - Cuando el menú pasa a sólido: se mantiene el mismo escudo hexagonal (crest), más pequeño (de 72 a 48 px de alto), el wordmark se pliega (fundido y ancho a 0) y el menú baja de altura (de 96 a 72 px en escritorio y de 96 a 64 px en móvil). Los enlaces de la derecha no se mueven de lado
   - Descartado (23 nov 2026): cambiar al emblema redondo (wolf-yellow-black) al hacer scroll. Sobre el menú negro no se ve la cara del lobo. El emblema redondo no se usa en el menú
   - Al volver arriba, vuelve el estado inicial. Transición de 0,35 s; con reduced motion, cambio directo
   - La intro sigue encajando en el escudo del estado inicial (la intro solo corre arriba del todo): el punto de encaje no cambia
   - El enlace de la marca se llama "Georgia Wolves Soccer Club – Home" en los dos estados
-- Izquierda:
-  - Chip "Registration open · Fall season"
-  - Titular gigante "TRAIN LIKE A WOLF." con "wolf." en amarillo
-  - Subtítulo
-  - CTAs "Book a free training" y "View programs"
-  - Chips de datos: días, dirección, primer entrenamiento gratis
-- Derecha: escenario hundido (neumórfico oscuro, proporción 4:5). De momento lleva la camiseta 3D; más adelante, una foto de los niños de la academia (decisión de Luciano: más humana y cercana). Lleva dos badges: "U12 Champions 2026" (amarillo) y "GYSL Fall League · Premier Division"
-- Camiseta 3D (fase 6, 23 nov 2026): Three.js directo (sin TresJS), portado de docs/design/reference/CamisetaGiratoria-referencia.jsx con el mismo comportamiento (giro solo, más lento de frente y de espalda, flotación, cámara fija a la altura del pecho). Entorno RoomEnvironment local en lugar del preset "studio" de drei (que descarga un HDR de un CDN) y sombra de contacto con un degradado radial
+- Marco (25 nov 2026): el hero es un panel redondeado de 34 px con borde #262626, separado 14 px del borde de la ventana (8 px y esquinas de 26 px en móvil). Ya no hay escenario 4:5: HeroStage va en modo "photo"
+- Foto a la derecha (58 % del ancho, como mucho 860 px), oscurecida (brillo 0,6) y fundida hacia el negro por la izquierda y por abajo. En pantallas anchas su borde izquierdo también se funde, para que no se vea el corte. En móvil (≤ 760 px) va arriba, a todo el ancho y con el 46 % del alto, y el texto debajo
+- Linterna: con puntero fino, al pasar el ratón por el hero se ve la foto sin oscurecer en un círculo de 230 px alrededor del puntero (máscara radial). Sin ratón o con reduced motion, no hay linterna. Sustituye a la linterna sobre las líneas del campo (PitchLamp, eliminado)
+- Contenido arriba (no centrado ni abajo): padding superior = alto del menú (96 px) + clamp(32px, 9vh, 90px), unos 100 px bajo el escudo a 1440×900. En móvil va abajo, debajo de la foto
+  - Titular "TRAIN LIKE A WOLF." con "wolf." en amarillo, a clamp(56px, min(9.4vw, 13.5vh), 150px) (64 px en móvil). El acento va en línea con el resto, así en español queda "ENTRENA COMO / UN LOBO." en dos líneas
+  - Subtítulo, CTAs "Book a free training" y "View programs" y chips de datos (días, dirección, primer entrenamiento gratis)
+  - Por debajo de 780 px de alto se ocultan los chips de datos y se reducen los márgenes. En móvil tampoco hay chips
+- Quitados del hero (25 nov 2026): la camiseta 3D, los badges "U12 Champions 2026" y "GYSL Fall League · Premier Division", el chip "Registration open · Fall season · Snellville, GA" y la pista "Move your cursor to light up the pitch"
+- "GEORGIA WOLVES" gigante abajo: Barlow Condensed 800, degradado amarillo apagado con un contorno sutil, cortado por el borde inferior (0,17 em). Se ajusta siempre al ancho del marco (98,5 %) en cualquier pantalla: se mide y se recalcula con ResizeObserver y al cargar las fuentes (useFitText). Decorativo (aria-hidden)
+- Muesca abajo a la izquierda, del color del fondo de la página y con las esquinas cóncavas, con los iconos de Instagram, Facebook y WhatsApp en círculos neumórficos. Las URL están en config/club.php (social); las que estén vacías no se muestran y, sin ninguna, no hay muesca
+- Card "Meet the coach" abajo a la derecha, 64 px por encima del borde del marco: miniatura, "Christian Tiniaco" y "UEFA PRO License · 3 countries". Enlaza a la sección del entrenador (#coach). Neumórfica oscura sólida (sin el desenfoque del prototipo: el glassmorphism está descartado). Solo desde 1100 px de ancho
+- Camiseta 3D (fase 6, 23 nov 2026; fuera del hero desde el 25 nov 2026, se guarda para más adelante y se ve en /styleguide): Three.js directo (sin TresJS), portado de docs/design/reference/CamisetaGiratoria-referencia.jsx con el mismo comportamiento (giro solo, más lento de frente y de espalda, flotación, cámara fija a la altura del pecho). Entorno RoomEnvironment local en lugar del preset "studio" de drei (que descarga un HDR de un CDN) y sombra de contacto con un degradado radial
   - Mientras carga, póster WebP estático (public/images/jersey-poster.webp, la camiseta de frente con fondo transparente)
   - Three.js y el modelo se descargan solo cuando el escenario está en pantalla, después de la intro y con el navegador libre
   - Se queda el póster con reduced motion, sin WebGL o con WebGL por software (SwiftShader, llvmpipe…): girar 160.000 triángulos en la CPU vuelve lenta toda la página
   - Se pausa fuera de pantalla o con la pestaña oculta, y libera geometrías, texturas y renderer al desmontar
-- Debajo: una cinta de logros en movimiento (ticker) que se pausa al pasar el ratón
-- Después, la primera sección blanca, para enseñar el paso de negro a blanco
+- Debajo: una cinta de logros en movimiento (ticker) amarilla, con las esquinas superiores redondeadas. Empieza justo debajo del hero (no lo tapa al cargar), se pausa al pasar el ratón y tiene un botón de pausa que aparece al llegar con el teclado. Con reduced motion no se mueve
 
-Selector de idioma (propuesta del 23 nov 2026, pendiente de aprobación). Sustituye a los enlaces EN/ES:
+## Transiciones de página en la home (APROBADAS el 25 nov 2026, prototipo)
+- El hero se queda fijo (position: sticky) y, al bajar, se encoge un poco (escala 1 → 0,92, baja 20 px y sus esquinas pasan de 34 a 48 px) y se oscurece un 55 % mientras la siguiente sección sube por encima. Solo transform y opacidad, en requestAnimationFrame
+- Cada sección siguiente sube por encima de la anterior con las esquinas superiores redondeadas (44 px) y una sombra suave (componente HomePanel). Alternan negro (#161616 o #0A0A0A) y gris claro #ECECEC como en el prototipo
+- Los titulares y las cards entran con un fundido y una subida de 40 px al aparecer (directiva v-reveal, IntersectionObserver con margen inferior del -10 %), escalonados 0,12 s
+- Con reduced motion no hay nada de esto: el hero hace scroll normal, no se encoge ni se oscurece y nada aparece con fundido
+
+Selector de idioma (APROBADO el 25 nov 2026). Sustituye a los enlaces EN/ES:
 - Desplegable neumórfico sobre el menú negro: superficie #161616 con las sombras oscuras del design system
 - Botón en relieve con la bandera o el icono del idioma actual y una flecha. Al abrir, la flecha gira 180° y el botón se hunde
 - Panel neumórfico con las dos opciones: bandera o icono + "ENGLISH" / "ESPAÑOL" (Inter 600, mayúsculas) y un check amarillo en la activa. Cada opción lleva a la misma página en ese idioma (localeUrls)
@@ -119,7 +134,7 @@ Notas técnicas:
 - Titulares, nombres y precios: Barlow Condensed 700/800 (provisional, hasta tener la fuente del wordmark)
 - Texto, botones y etiquetas: Inter 400/500/600. El botón va en Inter 600, 16 px (15 px en móvil)
 
-## Scroll horizontal en algunas secciones (propuesta del 22 nov 2026, pendiente de aprobación)
+## Scroll horizontal en algunas secciones (propuesta del 22 nov 2026; aprobado en la home con el prototipo del 25 nov 2026)
 Petición de Luciano: que el scroll sea más divertido y que algunas secciones, en vez de bajar, avancen hacia la derecha.
 Prueba: sección "Find your category" en el artifact "Georgia Wolves CTA", entre la sección de logros y las tarifas.
 
@@ -139,7 +154,7 @@ Contenido de ejemplo:
 
 Dónde usarlo (sugerencia, sin decidir): categorías o programas, logros/temporadas, galería y ligas. Conviene no usarlo más de 2 o 3 veces en la web, para que no canse.
 
-## Cards — estilo neumorphism (propuesta del 22 nov 2026, pendiente de aprobación)
+## Cards — estilo neumorphism (APROBADAS el 25 nov 2026)
 Prueba: secciones "Card — Tarifas" y "Card — Entrenador" en el artifact "Georgia Wolves CTA".
 
 Regla base: la card es del mismo color que el fondo de su sección y se distingue solo por dos sombras exteriores, una clara arriba a la izquierda y otra oscura abajo a la derecha. Los elementos interiores van hundidos o en relieve con la misma técnica. El neumorphism no funciona sobre blanco puro ni sobre negro puro, así que las secciones de cards usan:

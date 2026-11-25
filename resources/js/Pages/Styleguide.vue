@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import BrandLogo from '../Components/BrandLogo.vue';
 import CoachCard from '../Components/CoachCard.vue';
 import CtaButton from '../Components/CtaButton.vue';
+import HeroStage from '../Components/HeroStage.vue';
 import NeuCard from '../Components/NeuCard.vue';
 import PricingDeck from '../Components/PricingDeck.vue';
 import BareLayout from '../Layouts/BareLayout.vue';
@@ -288,6 +289,18 @@ const typeSamples = [
                     <dd :class="sample.classes">{{ t(`styleguide.typography.${sample.sample}`) }}</dd>
                 </div>
             </dl>
+        </div>
+    </section>
+
+    <section aria-labelledby="sg-stage" class="bg-gw-black px-4 py-16 text-gw-white sm:px-8 [--gw-focus-ring:var(--color-gw-yellow)]">
+        <div class="mx-auto flex max-w-6xl flex-col gap-8">
+            <div class="flex flex-col gap-2">
+                <h2 id="sg-stage" class="font-display text-4xl font-extrabold uppercase">{{ t('styleguide.stage.title') }}</h2>
+                <p class="text-gw-white/80">{{ t('styleguide.stage.intro') }}</p>
+            </div>
+            <div class="w-full max-w-md">
+                <HeroStage mode="jersey" />
+            </div>
         </div>
     </section>
 </template>

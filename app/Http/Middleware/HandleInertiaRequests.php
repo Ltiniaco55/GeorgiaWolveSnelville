@@ -58,6 +58,11 @@ class HandleInertiaRequests extends Middleware
             'whatsappUrl' => fn (): string => config('club.whatsapp_number')
                 ? 'https://wa.me/'.config('club.whatsapp_number')
                 : Localization::pageUrl('contact'),
+            'socialLinks' => fn (): array => collect(config('club.social'))
+                ->filter()
+                ->map(fn (string $url, string $network): array => ['network' => $network, 'url' => $url])
+                ->values()
+                ->all(),
         ];
     }
 }

@@ -1,7 +1,7 @@
-# Home — interacción con el puntero por sección (22 nov 2026, propuesta pendiente de aprobación)
+# Home — interacción con el puntero por sección (22 nov 2026; APROBADA el 25 nov 2026)
 
 Petición de Luciano: que cada sección tenga algo interactivo con el puntero, para enganchar al scroll y que den ganas de seguir descubriendo.
-Prueba: artifact "Georgia Wolves Home" (https://claude.ai/artifact/BzESgWw8NL8WXqgCGQZha6). Es la home completa con la intro.
+Referencia aprobada (25 nov 2026): el prototipo docs/design/prototype/home.html, la home completa con la intro. Si algo de aquí no coincide con él, manda el prototipo. Prueba original: artifact "Georgia Wolves Home" (https://claude.ai/artifact/BzESgWw8NL8WXqgCGQZha6).
 El estilo visual y los componentes están en direccion-de-diseno.md.
 
 Orden de la home: intro → hero → cinta de logros → categorías (scroll horizontal) → tarifas → entrenador → franja de ligas asociadas → galería → FAQ → CTA final → pie.
@@ -10,8 +10,8 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor ("Move over a c
 
 | Sección | Interacción |
 |---|---|
-| Hero | Linterna sobre el campo: un círculo de luz que sigue al ratón deja ver las líneas de un campo de fútbol dibujadas en amarillo (SVG con mask radial) y un brillo amarillo suave. Pista abajo: "Move your cursor to light up the pitch" |
-| Cinta de logros | Se pausa al pasar el ratón |
+| Hero | Linterna sobre la foto (25 nov 2026): al pasar el ratón por el hero, la foto (oscurecida) se ilumina en un círculo de 230 px alrededor del puntero (máscara radial). Solo con puntero fino y sin reduced motion. Ya no hay líneas del campo ni pista "Move your cursor to light up the pitch" |
+| Cinta de logros | Se pausa al pasar el ratón (y con un botón de pausa que aparece al llegar con el teclado) |
 | Categorías | Scroll horizontal enganchado. Además, parallax dentro de cada panel: el número grande sigue un poco al ratón y el número fantasma de fondo se mueve en sentido contrario, lo que da profundidad |
 | Tarifas | Cards con expansión al pasar el ratón (aprobada) y un calculador "When do you join?". Muestra los días del mes actual; al pasar el ratón, enfocar o tocar un día, explica la regla del 15: si te apuntas del 1 al 15 pagas el mes ahora (100 $); del 16 en adelante, 0 $ hoy y el primer cobro el día 1 del mes siguiente. Los días a partir del 16 van marcados en otro tono |
 | Entrenador | Balancín 3D de la card (aprobado) y zoom lento de la foto al pasar el ratón |
@@ -36,6 +36,7 @@ Notas técnicas:
 - Las fotos de la galería y la del entrenador son de ejemplo, pendientes del cliente
 
 Decisión posterior (22 nov 2026): el escenario 4:5 del hero lleva de momento la camiseta 3D; más adelante se cambiará por una foto de los niños de la academia, para que la web sea más humana y cercana.
+Actualización (25 nov 2026): hecho. El hero ya no tiene escenario 4:5: lleva la foto a sangre a la derecha (HeroStage en modo "photo"). La camiseta 3D se guarda para más adelante.
 
 Direcciones descartadas:
 - Cursor personalizado con un mini balón que seguía al ratón y giraba
