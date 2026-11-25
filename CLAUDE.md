@@ -12,7 +12,9 @@ Web de Georgia Wolves Soccer Club Snellville: academia de fútbol juvenil (U6–
 - Ningún texto de interfaz va escrito a mano en los componentes: todo va en `lang/en` y `lang/es`.
 
 ### Fuente de verdad del diseño
-`docs/design/direccion-de-diseno.md` y `docs/design/home-interacciones.md`. Si el código contradice estos documentos, mandan los documentos. Muchas piezas están marcadas en ellos como "pendiente de aprobación": se implementan así, pero se avisa antes de darlas por cerradas.
+`docs/design/direccion-de-diseno.md` y `docs/design/home-interacciones.md`. Si el código contradice estos documentos, mandan los documentos. Las piezas que sigan marcadas en ellos como "pendiente de aprobación" se implementan así, pero se avisa antes de darlas por cerradas.
+
+La home está APROBADA (25 nov 2026) en el prototipo navegable `docs/design/prototype/home.html`: es la referencia visual y de comportamiento de la home. Si algo de la home no coincide con él, manda el prototipo. No se copia su código (HTML suelto, fuentes de Google, imágenes en base64): se reimplementa con nuestros componentes, Tailwind, fuentes autoalojadas y textos en `lang/`.
 
 `docs/design/plan-claude-code-prompts.md` es el plan de fases y prompts del proyecto (referencia de orden y alcance; para diseño mandan los otros dos).
 
@@ -22,7 +24,7 @@ Resumen de las reglas clave:
 intro → hero → cinta de logros → categorías (scroll horizontal) → tarifas → entrenador → franja "Associated leagues and partners" → galería → FAQ → CTA final "Join the pack." → pie.
 Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a interactuar ("Move over a card", "Open a question"…).
 
-**Intro de marca (2,6 s)**
+**Intro de marca (2,6 s, aprobada)**
 - Pantalla negra. El emblema amarillo entra con rebote y luego "rueda" en arco hasta el escudo del menú: unas 2,5 vueltas en sentido antihorario, encogiéndose.
 - La página se revela con un círculo que crece desde el centro (`clip-path: circle`) y un anillo amarillo de 3 px que se expande y se desvanece.
 - Al final, el escudo aparece con un "pop" (escala 0,7 → 1,14 → 1).
@@ -31,10 +33,24 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Solo se muestra en la primera visita de la sesión (`sessionStorage`). Con reduced motion no hay intro.
 - Punto de encaje sobre el escudo: x 50 %, y 47,4 % de su caja; diámetro del círculo = 62,4 % de su ancho.
 
-**Hero**
-- Menú fijo: transparente sobre el negro y sólido al hacer scroll. Lleva el escudo (72 px), el wordmark "GEORGIA WOLVES", los enlaces, el CTA "Register" y, a la derecha, el selector de idioma desplegable neumórfico (banderas de EE. UU. y México). Al pasar a sólido, el wordmark se pliega y el mismo escudo se reduce a 48 px; el emblema redondo no se usa en el menú (pendiente de aprobación).
-- Izquierda: chip, titular "TRAIN LIKE A WOLF." (con "wolf." en amarillo), subtítulo, dos CTA y chips de datos.
-- Derecha: escenario hundido 4:5 (neumórfico oscuro) con dos badges. De momento lleva la camiseta 3D; más adelante, una foto de los niños.
+**Menú (aprobado)**
+- Fijo y dentro del marco del hero: a 14 px del borde de la ventana (8 px en móvil), con 16 px de margen interior arriba y abajo y el gutter del hero a los lados (40 px; 24 px en móvil). El escudo de 72 px no toca la curva de la esquina del marco.
+- Lleva el escudo hexagonal, el wordmark "GEORGIA WOLVES", los enlaces, el CTA "Register" y, a la derecha, el selector de idioma desplegable neumórfico (banderas de EE. UU. y México).
+- Transparente sobre el hero. Al hacer scroll se convierte en una píldora flotante oscura (#0E0E0E al 94 %, sin desenfoque), también separada del borde: el wordmark se pliega y el mismo escudo baja de 72 a 48 px. El emblema redondo no se usa en el menú.
+
+**Hero (aprobado; HeroSection + HeroStage en modo "photo")**
+- Marco redondeado de 34 px con borde #262626, a 14 px del borde de la ventana (8 px y radio 26 px en móvil). No hay escenario 4:5.
+- Foto a la derecha (58 % del ancho, como mucho 860 px), oscurecida y fundida hacia el negro por la izquierda y por abajo. En móvil (≤ 760 px), la foto arriba y el texto debajo.
+- Contenido arriba: padding superior = alto del menú (`--gw-header-h`, 104 px) + `clamp(32px, 9vh, 90px)`. Titular "TRAIN LIKE A WOLF." (con "wolf." en amarillo y en línea) a `clamp(56px, min(9.4vw, 13.5vh), 150px)`, subtítulo (con "Snellville, Georgia"), dos CTA y chips de datos. Por debajo de 780 px de alto no hay chips.
+- "GEORGIA WOLVES" gigante abajo, cortado por el borde, ajustado siempre al ancho del marco (`useFitText`, con ResizeObserver y al cargar las fuentes). Decorativo.
+- Muesca abajo a la izquierda con los iconos de redes (`config/club.php` > `social`; sin URL no se muestran). Card "Meet the coach" abajo a la derecha (desde 1100 px), que enlaza a `#coach`.
+- Fuera del hero (no volver a ponerlos): la camiseta 3D (se conserva en `HeroStage` modo "jersey" y se ve en /styleguide), los badges, el chip "Registration open…" y la pista de la linterna.
+
+**Transiciones de la home (aprobadas)**
+- El hero se queda fijo y, al bajar, se encoge (escala 0,92) y se oscurece mientras la siguiente sección sube por encima.
+- Cada sección siguiente es un `HomePanel` con esquinas superiores de 44 px que sube 44 px sobre la anterior, alternando negro (#161616 / #0A0A0A) y #ECECEC. La cinta amarilla de logros empieza justo debajo del hero. El footer también sube con esquinas de 44 px.
+- Titulares y cards entran con fundido y subida (`v-reveal`).
+- Con reduced motion no hay nada de esto.
 
 **Botón CTA (aprobado)**
 - Píldora con una flecha dentro de un círculo. El alto del botón es igual al diámetro del círculo.
@@ -46,7 +62,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Inter 600, 16 px (15 px en móvil).
 - Descartados: 3D hacia fuera, inclinación hacia el cursor, halo y glassmorphism.
 
-**Cards neumórficas**
+**Cards neumórficas (aprobadas)**
 - La card es del mismo color que el fondo de su sección y se distingue solo por dos sombras exteriores: clara arriba a la izquierda y oscura abajo a la derecha. No se usa neumorfismo sobre blanco ni negro puros.
 - Tarifas (sección #ECECEC):
   - Tres cards: Free trial, Monthly y Annual. Annual es la destacada: fondo #0B0B0B, precio y checks en amarillo, etiqueta "Best value".
@@ -65,10 +81,10 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Con reduced motion pasa a ser un carrusel con `overflow-x` y `scroll-snap`.
 
 **Interacción con el puntero por sección de la home**
-- Hero: linterna. Un círculo de luz sigue al ratón y deja ver las líneas de un campo en amarillo (SVG con máscara radial).
+- Hero: linterna sobre la foto. Con puntero fino, la foto se ve sin oscurecer en un círculo de 230 px alrededor del ratón (máscara radial, `usePointerLamp`).
 - Cinta de logros: se pausa al pasar el ratón.
 - Categorías: parallax. El número grande sigue al ratón y el número fantasma del fondo se mueve en sentido contrario.
-- Tarifas: calculador "When do you join?" que explica la regla del día 15. La regla se lee de `config/billing.php` y no se repite en el frontend.
+- Tarifas: calculador "When do you join?" que explica la regla del día 15. El día de corte, la zona horaria y los precios están en `config/billing.php`; la regla la aplica `BillingStartCalculator` en el servidor y no se repite en el frontend (tampoco en los textos de las FAQ, que usan `:cutoff_day` y `:monthly_price`).
 - Entrenador: balancín y zoom de la foto.
 - Ligas: los escudos van en píldoras neumórficas, en gris y semitransparentes. Al pasar el ratón o enfocarlos recuperan el color, crecen y se hunden. Las ligas **no tienen sección propia en la home**: sus escudos enlazan a sus páginas.
 - Galería: rastro de fotos giradas bajo el cursor. Duran 1,6 s, hay como máximo 14 a la vez y sale una cada 110 px de recorrido. En táctil, rejilla estática.
