@@ -54,8 +54,18 @@
 :root {
     /* Header's initial height (16 + 72 + 16 px), measured from the frame's top. */
     --gw-header-h: 104px;
+
+    /* Height of the solid header pill (8 + 56 px CTA + 8): sticky bars go below it. */
+    --gw-header-solid-h: 72px;
     --gw-edge: 14px;
     --gw-gutter: 40px;
+}
+
+@media (max-width: 1023px) {
+    :root {
+        /* 8 + 48 px menu button + 8. */
+        --gw-header-solid-h: 64px;
+    }
 }
 
 @media (max-width: 760px) {

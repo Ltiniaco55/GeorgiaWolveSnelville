@@ -30,6 +30,14 @@ Prueba: gallery.html en el mismo artifact; se llega desde el enlace "Gallery" de
 - Al hacer clic se abre un visor a pantalla completa con flechas de anterior y siguiente, contador, cierre y teclado (Esc, ← y →). Recorre solo las fotos del filtro activo
 - 18 fotos de ejemplo (placeholders). Las reales necesitan el permiso de imagen de los padres
 
+Implementación (25 nov 2026; /gallery y /es/galeria, GalleryController + Pages/Gallery.vue):
+- Cabecera negra con "← Back to home" y el titular; debajo, una sección #161616 con las pestañas, el muro y el visor
+- Fotos del modelo Photo: solo las que tienen has_media_release. Las pestañas son "All" más las categorías que tienen fotos (una categoría sin fotos no sale). De momento son las 9 fotos del prototipo
+- Pestañas (GalleryTabs): pestañas ARIA con activación automática (← →, Inicio, Fin), contador leído como ", 3 photos", indicador amarillo que se desliza; fijas bajo la píldora del menú
+- Muro (GalleryWall): masonry por JS (4 columnas desde 1024 px de ancho del muro, 3 desde 640, 2 por debajo), cada foto en la columna más baja. Al filtrar, las que salen se encogen y se desvanecen en su sitio y quedan inertes; las demás se recolocan en 0,7 s y la altura del muro se anima. Con reduced motion, cambio directo
+- Pie de foto con la etiqueta amarilla, el título y el subtítulo: sube al pasar el ratón o con el foco; en táctil está siempre visible (más pequeño a 2 columnas)
+- Visor (PhotoViewer): diálogo modal con la foto y su texto alternativo, anterior/siguiente (da la vuelta), contador, cierre, Esc, ← y →; recorre solo el filtro activo y devuelve el foco a la foto que lo abrió
+
 Implementación en la home (fase B, 25 nov 2026):
 - Franja de ligas: los escudos enlazan a /leagues/{slug} (/es/ligas/{slug}). Joma y CER salen de config/club.php ("partners"): mientras no tengan logo muestran sus iniciales en un círculo hundido y, sin URL, no son enlace. El foco con teclado se ve igual que el hover
 - Galería: modelo Photo (categoría, título, subtítulo y texto alternativo en inglés y español, imagen en WebP y AVIF, has_media_release y orden). La home solo recibe las que tienen el permiso de imagen (como mucho 9). Las 9 fotos de ejemplo del prototipo están en public/images/gallery y en PhotoSeeder, marcadas con permiso para poder maquetar: hay que confirmar el permiso real antes de publicar

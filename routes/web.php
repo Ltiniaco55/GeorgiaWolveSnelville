@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Support\Localization;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
  */
 Localization::routes(function (string $locale): void {
     Route::get(Localization::slug('home', $locale), HomeController::class)->name('home');
+    Route::get(Localization::slug('gallery', $locale), GalleryController::class)->name('gallery');
 });
 
 if (app()->environment('local')) {

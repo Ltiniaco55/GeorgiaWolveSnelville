@@ -77,7 +77,7 @@ class Photo extends Model
     /**
      * What the frontend needs to show the photo.
      *
-     * @return array{id: int, category: string, title: string, alt: string, avif: string, webp: string, width: int, height: int}
+     * @return array{id: int, category: string, title: string, subtitle: string, alt: string, avif: string, webp: string, width: int, height: int}
      */
     public function toCard(): array
     {
@@ -85,6 +85,7 @@ class Photo extends Model
             'id' => $this->id,
             'category' => $this->category->value,
             'title' => $this->text('title'),
+            'subtitle' => $this->text('subtitle'),
             'alt' => $this->text('alt'),
             'avif' => asset("{$this->image}.avif"),
             'webp' => asset("{$this->image}.webp"),
