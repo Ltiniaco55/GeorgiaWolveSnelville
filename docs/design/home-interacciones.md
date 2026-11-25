@@ -11,7 +11,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor ("Move over a c
 | Sección | Interacción |
 |---|---|
 | Hero | Linterna sobre la foto (25 nov 2026): al pasar el ratón por el hero, la foto (oscurecida) se ilumina en un círculo de 230 px alrededor del puntero (máscara radial). Solo con puntero fino y sin reduced motion. Ya no hay líneas del campo ni pista "Move your cursor to light up the pitch" |
-| Cinta de logros | Se pausa al pasar el ratón (y con un botón de pausa que aparece al llegar con el teclado) |
+| Cinta de logros | Frases con el lobo negro entre ellas. Se pausa al pasar el ratón (y con un botón de pausa que aparece al llegar con el teclado) |
 | Categorías | Scroll horizontal enganchado. Además, parallax dentro de cada panel: el número grande sigue un poco al ratón y el número fantasma de fondo se mueve en sentido contrario, lo que da profundidad |
 | Tarifas | Cards con expansión al pasar el ratón (aprobada) y un calculador "When do you join?". Muestra los días del mes actual; al pasar el ratón, enfocar o tocar un día, explica la regla del 15: si te apuntas del 1 al 15 pagas el mes ahora (100 $); del 16 en adelante, 0 $ hoy y el primer cobro el día 1 del mes siguiente. Los días a partir del 16 van marcados en otro tono |
 | Entrenador | Balancín 3D de la card (aprobado) y zoom lento de la foto al pasar el ratón |

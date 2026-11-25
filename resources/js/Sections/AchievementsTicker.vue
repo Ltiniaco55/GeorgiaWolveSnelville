@@ -5,8 +5,8 @@ import { useTranslations } from '../Composables/useTranslations';
 
 /**
  * Achievements ticker (docs/design/home-interacciones.md): a yellow band right
- * below the hero, with rounded top corners, that slides over the sticky hero as
- * the page scrolls. The row moves on a loop (two copies, the second hidden from
+ * below the hero, with rounded top corners and the black wolf between phrases,
+ * that slides over the sticky hero as the page scrolls. The row moves on a loop (two copies, the second hidden from
  * assistive technology) and pauses on hover.
  *
  * A pause button appears on keyboard focus (WCAG 2.2.2: moving content can be
@@ -25,7 +25,7 @@ const isPaused = ref(false);
         <div class="gw-ticker__row">
             <ul v-for="copy in 2" :key="copy" class="gw-ticker__list" :aria-hidden="copy === 2 ? 'true' : undefined">
                 <li v-for="item in tList('home.ticker.items')" :key="item" class="gw-ticker__item">
-                    <BrandLogo variant="wolf-yellow-black" class="size-[30px]" decorative />
+                    <BrandLogo variant="wolf-black" class="size-[30px]" decorative />
                     {{ item }}
                 </li>
             </ul>

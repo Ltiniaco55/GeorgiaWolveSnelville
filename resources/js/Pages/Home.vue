@@ -7,11 +7,12 @@ import { shouldPlayBrandIntro } from '../Composables/useBrandIntro';
 import { vReveal } from '../Composables/useReveal';
 import { useTranslations } from '../Composables/useTranslations';
 import AchievementsTicker from '../Sections/AchievementsTicker.vue';
+import CategoriesSection from '../Sections/CategoriesSection.vue';
 import HeroSection from '../Sections/HeroSection.vue';
 
 /**
  * Home (order in docs/design/home-interacciones.md; reference:
- * docs/design/prototype/home.html): brand intro → hero → achievements ticker → …
+ * docs/design/prototype/home.html): brand intro → hero → achievements ticker → categories → …
  *
  * Page transition: the hero is sticky for this whole wrapper and every section
  * after it slides up over it (the ticker, then HomePanel sections alternating
@@ -19,7 +20,8 @@ import HeroSection from '../Sections/HeroSection.vue';
  * the flow, so the mobile CTA bar knows when the hero has been passed even though
  * the hero itself never scrolls away.
  *
- * The sections after the ticker arrive in phase B; a placeholder panel stands in.
+ * The sections after the categories arrive in the next parts of phase B; a
+ * placeholder panel stands in.
  */
 const props = defineProps({
     /** Local only: ?intro=1 plays the intro again in the same session. */
@@ -45,10 +47,12 @@ const isIntroPlaying = ref(shouldPlayBrandIntro(props.forceIntro));
 
         <AchievementsTicker />
 
-        <HomePanel tone="dark" class="flex min-h-svh items-center px-[calc(var(--gw-edge)+var(--gw-gutter))] py-24" aria-labelledby="next-title">
+        <CategoriesSection />
+
+        <HomePanel tone="light" class="flex min-h-svh items-center px-[calc(var(--gw-edge)+var(--gw-gutter))] py-24" aria-labelledby="next-title">
             <div class="flex w-full flex-col gap-4">
                 <h2 id="next-title" v-reveal class="max-w-3xl font-display text-5xl leading-none font-extrabold uppercase sm:text-7xl">{{ t('home.next.title') }}</h2>
-                <p v-reveal="2" class="max-w-prose text-lg text-gw-white/75">{{ t('home.next.body') }}</p>
+                <p v-reveal="2" class="max-w-prose text-lg text-gw-black/75">{{ t('home.next.body') }}</p>
             </div>
         </HomePanel>
     </div>

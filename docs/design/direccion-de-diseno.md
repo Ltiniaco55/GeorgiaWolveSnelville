@@ -153,6 +153,11 @@ Contenido de ejemplo:
 - Panel final negro con el CTA "Book free training"
 - Las descripciones y los rangos de edad por categoría son de ejemplo: hay que confirmarlos con el cliente
 
+Implementado en la home (fase B, 25 nov 2026; CategoriesSection + usePinnedHorizontal):
+- El escenario enganchado deja hueco arriba para la píldora del menú y, por debajo de 1024 px, abajo para la barra fija de móvil
+- Si un enlace de un panel recibe el foco con el teclado, la página baja hasta que ese panel se ve entero (la pista nunca hace scroll propio)
+- Los días de entrenamiento de los paneles son los del hero ("Tue & Thu"), no los de ejemplo del prototipo
+
 Dónde usarlo (sugerencia, sin decidir): categorías o programas, logros/temporadas, galería y ligas. Conviene no usarlo más de 2 o 3 veces en la web, para que no canse.
 
 ## Cards — estilo neumorphism (APROBADAS el 25 nov 2026)
