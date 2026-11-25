@@ -19,12 +19,15 @@ import NeuCard from './NeuCard.vue';
  * @property {{ value: string, label: string }[]} stats
  * @property {string} coachingTitle
  * @property {{ period: string, title: string, place: string }[]} coachingCareer
- * @property {string} playingTitle
- * @property {string[]} playingCareer
+ * @property {string} [playingTitle]
+ * @property {string[]} [playingCareer] Optional: without clubs the block is not shown.
  * @property {{ label: string, href: string }} primaryCta
  * @property {{ label: string, href: string }} secondaryCta
  * @property {string|null} [photo] Image URL; initials are shown without it.
  * @property {string} [photoAlt]
+ * @property {{ avif: string, webp: string }} [photoSrcset] Responsive sources for `photo`.
+ * @property {string} [photoSizes]
+ * @property {string} [photoPosition] CSS object-position, e.g. "70% 20%".
  */
 defineProps({
     /** @type {import('vue').PropType<Coach>} */
@@ -38,7 +41,21 @@ defineProps({
 <template>
     <NeuCard as="article" surface="dark" hover="tilt" class="gw-coach grid grid-cols-1 gap-2 p-4 lg:grid-cols-12 [--gw-neu-radius:32px]" aria-labelledby="coach-name" data-test="coach-card">
         <div class="gw-coach__hollow relative aspect-[4/5] overflow-hidden lg:col-span-5 lg:aspect-auto lg:min-h-[32rem]">
-            <img v-if="coach.photo" :src="coach.photo" :alt="coach.photoAlt ?? ''" class="gw-coach__photo h-full w-full object-cover" />
+            <picture v-if="coach.photo" class="absolute inset-0">
+                <template v-if="coach.photoSrcset">
+                    <source type="image/avif" :srcset="coach.photoSrcset.avif" :sizes="coach.photoSizes" />
+                    <source type="image/webp" :srcset="coach.photoSrcset.webp" :sizes="coach.photoSizes" />
+                </template>
+                <img
+                    :src="coach.photo"
+                    :alt="coach.photoAlt ?? ''"
+                    loading="lazy"
+                    decoding="async"
+                    class="gw-coach__photo h-full w-full object-cover"
+                    :style="coach.photoPosition ? { objectPosition: coach.photoPosition } : undefined"
+                    data-test="coach-photo"
+                />
+            </picture>
             <div v-else class="gw-coach__photo grid h-full w-full place-items-center" role="img" :aria-label="coach.photoAlt ?? coach.name">
                 <span class="font-display text-[7rem] leading-none font-extrabold text-gw-white/15" aria-hidden="true">{{ coach.initials }}</span>
             </div>
@@ -75,7 +92,7 @@ defineProps({
                 </ol>
             </div>
 
-            <div class="flex flex-col gap-3">
+            <div v-if="coach.playingCareer?.length" class="flex flex-col gap-3">
                 <h4 class="text-sm font-semibold tracking-widest text-gw-white/70 uppercase">{{ coach.playingTitle }}</h4>
                 <ul class="flex flex-wrap gap-3">
                     <li v-for="club in coach.playingCareer" :key="club" class="rounded-full px-4 py-2 text-sm font-medium shadow-gw-raised-dark-sm">{{ club }}</li>

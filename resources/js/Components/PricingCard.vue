@@ -14,7 +14,7 @@ import NeuCard from './NeuCard.vue';
  * @property {string} price e.g. "$100"
  * @property {string} period e.g. "/ month"
  * @property {string} saving
- * @property {string} description
+ * @property {string} [description] Optional (the home plans have none).
  * @property {string[]} features
  * @property {string} note Billing rule note (day 15).
  * @property {string} ctaLabel
@@ -55,12 +55,12 @@ defineProps({
         <div class="flex flex-col gap-1">
             <p class="flex flex-wrap items-baseline gap-x-2">
                 <span class="gw-plan__price font-display text-6xl leading-none font-extrabold" :class="featured ? 'text-gw-yellow' : ''">{{ plan.price }}</span>
-                <span class="text-sm font-medium" :class="featured ? 'text-gw-white/75' : 'text-gw-black/70'">{{ plan.period }}</span>
+                <span v-if="plan.period" class="text-sm font-medium" :class="featured ? 'text-gw-white/75' : 'text-gw-black/70'">{{ plan.period }}</span>
             </p>
             <p class="text-sm font-semibold" :class="featured ? 'text-gw-yellow' : 'text-gw-black/75'">{{ plan.saving }}</p>
         </div>
 
-        <p :class="featured ? 'text-gw-white/80' : 'text-gw-black/75'">{{ plan.description }}</p>
+        <p v-if="plan.description" :class="featured ? 'text-gw-white/80' : 'text-gw-black/75'">{{ plan.description }}</p>
 
         <div class="gw-plan__divider" aria-hidden="true" />
 

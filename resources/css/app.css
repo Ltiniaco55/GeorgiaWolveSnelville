@@ -148,6 +148,28 @@
 }
 
 /*
+ * Content width of the home sections: lined up with the hero's content up to
+ * 1440 px wide, centred beyond.
+ */
+.gw-wrap {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: calc(var(--gw-edge) + var(--gw-gutter));
+}
+
+/* Vertical padding of a home section (prototype ".sec-pad"). */
+.gw-section-pad {
+    padding-block: 120px 140px;
+}
+
+@media (max-width: 760px) {
+    .gw-section-pad {
+        padding-block: 90px 110px;
+    }
+}
+
+/*
  * v-reveal (resources/js/Composables/useReveal.js): fade in and rise 40 px the
  * first time the element enters the viewport. The directive only adds
  * .gw-reveal when motion is allowed.

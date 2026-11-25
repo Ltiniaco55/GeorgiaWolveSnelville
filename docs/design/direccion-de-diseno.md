@@ -202,6 +202,8 @@ Card del entrenador: "balancín".
   - CTA (secundario en las normales, principal en la destacada)
 - Precios de ejemplo: 100 $/mes (de la web antigua). El anual (1.000 $, "ahorra 200 $") es inventado y está pendiente de confirmar con el cliente
 - Uniforme: 80 $, pago único, en una nota debajo de las cards
+- En la home (fase B, 25 nov 2026): los precios, el día de corte (15) y la zona horaria (America/New_York) están en config/billing.php. Las cards, la nota del uniforme y el calculador "When do you join?" los leen de ahí a través del servidor (HomePricing y BillingStartCalculator); el frontend no repite la regla
+- Calculador "When do you join?": los días del mes actual (en la zona horaria del club) en una rejilla de 520 px como máximo, con el día de hoy seleccionado al cargar y subrayado. Los días a partir del 16 van en un tono cálido (#6B5600 sobre #F3EFE0) con una leyenda, para no depender solo del color. Con el teclado es una sola parada de tabulador: ← → mueven un día, ↑ ↓ una semana, Inicio y Fin. La respuesta se anuncia (aria-live)
 
 #### Tarifas en móvil: efecto "baraja" (aprobada el 23 nov 2026)
 Solo por debajo de 640 px. En escritorio se mantienen en fila (de 640 a 1023 px, en una columna).
@@ -229,4 +231,5 @@ Prueba: sección "Pricing" de /styleguide a 390 px. Componente PricingDeck con e
   - Trayectoria como entrenador en una línea de tiempo, con separadores grabados
   - Trayectoria como jugador en chips en relieve
   - CTAs: "Train with Christian" (principal) y "Read full bio" (secundario)
-- Pendiente: la foto real del entrenador (por ahora, un placeholder con las iniciales)
+- Pendiente: la foto real del entrenador. En la home (fase B) va de momento la foto de ejemplo del prototipo (la misma del hero)
+- En la home, como en el prototipo, la card no lleva los chips de trayectoria como jugador (el bloque solo sale si hay clubes). "Train with Christian" lleva a las tarifas y "Read full bio" a About

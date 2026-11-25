@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Support\BillingStartCalculator;
 use App\Support\Localization;
 use Illuminate\Support\ServiceProvider;
 use Inertia\ExceptionResponse;
@@ -22,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Built per resolution, so it always reflects config/billing.php.
+        $this->app->bind(BillingStartCalculator::class, fn (): BillingStartCalculator => BillingStartCalculator::fromConfig());
     }
 
     /**
