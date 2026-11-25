@@ -148,8 +148,30 @@ return [
         ],
     ],
 
+    'leagues' => [
+        'eyebrow' => 'Ligas asociadas y patrocinadores',
+        'hint' => 'Pasa el ratón por un escudo',
+        'names' => [
+            'liga-interamericana' => 'Liga Interamericana',
+            'gysl' => 'Gwinnett Youth Soccer League',
+        ],
+        'roles' => [
+            'kit_partner' => 'Equipación',
+            'sponsor' => 'Patrocinador',
+        ],
+        'logo_soon' => 'Logo de :name, próximamente',
+    ],
+
+    'gallery' => [
+        'eyebrow' => 'Galería',
+        'title_lead' => 'La vida en la',
+        'title_accent' => 'manada.',
+        'hint' => 'Mueve el cursor por aquí',
+        'cta' => 'Ver toda la galería',
+    ],
+
     'next' => [
         'title' => 'Viene más de la manada.',
-        'body' => 'Las ligas, la galería, las preguntas frecuentes y el pie llegan a continuación.',
+        'body' => 'Las preguntas frecuentes, la llamada final y el pie llegan a continuación.',
     ],
 ];

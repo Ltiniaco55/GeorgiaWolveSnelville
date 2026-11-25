@@ -99,17 +99,26 @@ class Localization
     /**
      * URL of a page of the sitemap in a locale (current locale by default), built from
      * its slug so it also works for pages whose route does not exist yet.
+     * `$parameters` fill the slug's placeholders, e.g. ['league' => 'gysl'].
+     *
+     * @param  array<string, string>  $parameters
      */
-    public static function pageUrl(string $name, ?string $locale = null): string
+    public static function pageUrl(string $name, ?string $locale = null, array $parameters = []): string
     {
         $locale ??= app()->getLocale();
         $routeName = "{$locale}.{$name}";
 
         if (Route::has($routeName)) {
-            return route($routeName);
+            return route($routeName, $parameters);
         }
 
-        $path = trim(self::prefix($locale).self::slug($name, $locale), '/');
+        $slug = self::slug($name, $locale);
+
+        foreach ($parameters as $key => $value) {
+            $slug = str_replace('{'.$key.'}', rawurlencode($value), $slug);
+        }
+
+        $path = trim(self::prefix($locale).$slug, '/');
 
         return url($path === '' ? '/' : $path);
     }

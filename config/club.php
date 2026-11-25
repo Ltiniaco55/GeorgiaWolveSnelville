@@ -26,6 +26,14 @@ return [
     |
     */
 
+    'partners' => [
+        // Kit partner and sponsor of the home strip "Associated leagues and partners".
+        // Pending from the client: while `logo` (a public path) is null the pill shows
+        // the name in a placeholder circle; while `url` is null it is not a link.
+        ['name' => 'Joma', 'initials' => 'JOMA', 'role' => 'kit_partner', 'logo' => null, 'url' => null],
+        ['name' => 'CER', 'initials' => 'CER', 'role' => 'sponsor', 'logo' => null, 'url' => null],
+    ],
+
     'social' => [
         'instagram' => env('CLUB_INSTAGRAM_URL'),
         'facebook' => env('CLUB_FACEBOOK_URL'),

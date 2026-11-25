@@ -148,8 +148,30 @@ return [
         ],
     ],
 
+    'leagues' => [
+        'eyebrow' => 'Associated leagues and partners',
+        'hint' => 'Move over a crest',
+        'names' => [
+            'liga-interamericana' => 'Liga Interamericana',
+            'gysl' => 'Gwinnett Youth Soccer League',
+        ],
+        'roles' => [
+            'kit_partner' => 'Kit partner',
+            'sponsor' => 'Sponsor',
+        ],
+        'logo_soon' => ':name logo coming soon',
+    ],
+
+    'gallery' => [
+        'eyebrow' => 'Gallery',
+        'title_lead' => 'Life in the',
+        'title_accent' => 'pack.',
+        'hint' => 'Move your cursor around',
+        'cta' => 'View full gallery',
+    ],
+
     'next' => [
         'title' => 'More of the pack is on its way.',
-        'body' => 'The leagues, the gallery, the FAQ and the footer come next.',
+        'body' => 'The FAQ, the final call and the footer come next.',
     ],
 ];

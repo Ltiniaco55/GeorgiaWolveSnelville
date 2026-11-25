@@ -30,6 +30,11 @@ Prueba: gallery.html en el mismo artifact; se llega desde el enlace "Gallery" de
 - Al hacer clic se abre un visor a pantalla completa con flechas de anterior y siguiente, contador, cierre y teclado (Esc, ← y →). Recorre solo las fotos del filtro activo
 - 18 fotos de ejemplo (placeholders). Las reales necesitan el permiso de imagen de los padres
 
+Implementación en la home (fase B, 25 nov 2026):
+- Franja de ligas: los escudos enlazan a /leagues/{slug} (/es/ligas/{slug}). Joma y CER salen de config/club.php ("partners"): mientras no tengan logo muestran sus iniciales en un círculo hundido y, sin URL, no son enlace. El foco con teclado se ve igual que el hover
+- Galería: modelo Photo (categoría, título, subtítulo y texto alternativo en inglés y español, imagen en WebP y AVIF, has_media_release y orden). La home solo recibe las que tienen el permiso de imagen (como mucho 9). Las 9 fotos de ejemplo del prototipo están en public/images/gallery y en PhotoSeeder, marcadas con permiso para poder maquetar: hay que confirmar el permiso real antes de publicar
+- El rastro es decorativo (aria-hidden); en táctil y con reduced motion, la rejilla estática lleva los textos alternativos. Sin fotos publicadas no hay ni rastro ni rejilla
+
 Notas técnicas:
 - Todo lo que depende del ratón se activa solo con `(hover:hover) and (pointer:fine)`. Con prefers-reduced-motion se desactiva lo que tiene movimiento
 - Fallo encontrado y corregido en la prueba: la clase `.sec` de las secciones chocaba con la clase de los botones secundarios `.cta.sec`. En el proyecto real conviene usar nombres de clase con prefijo o componentes con estilos aislados (scoped)

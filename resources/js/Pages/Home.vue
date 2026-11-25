@@ -9,13 +9,15 @@ import { useTranslations } from '../Composables/useTranslations';
 import AchievementsTicker from '../Sections/AchievementsTicker.vue';
 import CategoriesSection from '../Sections/CategoriesSection.vue';
 import CoachSection from '../Sections/CoachSection.vue';
+import GalleryTrail from '../Sections/GalleryTrail.vue';
 import HeroSection from '../Sections/HeroSection.vue';
+import LeaguesStrip from '../Sections/LeaguesStrip.vue';
 import PricingSection from '../Sections/PricingSection.vue';
 
 /**
  * Home (order in docs/design/home-interacciones.md; reference:
  * docs/design/prototype/home.html): brand intro → hero → achievements ticker → categories → pricing →
- * coach → …
+ * coach → leagues and partners → gallery → …
  *
  * Page transition: the hero is sticky for this whole wrapper and every section
  * after it slides up over it (the ticker, then HomePanel sections alternating
@@ -23,7 +25,7 @@ import PricingSection from '../Sections/PricingSection.vue';
  * the flow, so the mobile CTA bar knows when the hero has been passed even though
  * the hero itself never scrolls away.
  *
- * The sections after the coach arrive in the next parts of phase B; a
+ * The sections after the gallery arrive in the next parts of phase B; a
  * placeholder panel stands in.
  */
 const props = defineProps({
@@ -36,6 +38,21 @@ const props = defineProps({
     pricing: {
         type: Object,
         required: true,
+    },
+    /** Up to 9 photos with the parents' media release (Photo::toCard). */
+    galleryPhotos: {
+        type: Array,
+        default: () => [],
+    },
+    /** League crests of the partners strip: { slug, url }. */
+    leagues: {
+        type: Array,
+        default: () => [],
+    },
+    /** Kit partner and sponsors (config/club.php). */
+    partners: {
+        type: Array,
+        default: () => [],
     },
 });
 
@@ -60,6 +77,10 @@ const isIntroPlaying = ref(shouldPlayBrandIntro(props.forceIntro));
         <PricingSection :pricing="pricing" />
 
         <CoachSection />
+
+        <LeaguesStrip :leagues="leagues" :partners="partners" />
+
+        <GalleryTrail :photos="galleryPhotos" />
 
         <HomePanel tone="light" class="flex min-h-svh items-center px-[calc(var(--gw-edge)+var(--gw-gutter))] py-24" aria-labelledby="next-title">
             <div class="flex w-full flex-col gap-4">
