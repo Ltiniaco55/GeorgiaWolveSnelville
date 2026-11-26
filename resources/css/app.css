@@ -78,6 +78,9 @@
 @layer base {
     html {
         -webkit-text-size-adjust: 100%;
+
+        /* Anchor jumps and focused elements stay clear of the fixed header pill. */
+        scroll-padding-top: calc(var(--gw-edge) + var(--gw-header-solid-h) + 8px);
     }
 
     body {

@@ -48,17 +48,14 @@ test('without published photos the gallery gets none', function () {
         ->assertInertia(fn (Assert $page) => $page->where('galleryPhotos', []));
 });
 
-test('the league crests link to their league pages in the current locale', function (string $url, array $expected) {
+test('every page shares the league crests, which link to their Instagram', function (string $url) {
     $this->get($url)
         ->assertInertia(fn (Assert $page) => $page
             ->where('leagues', [
-                ['slug' => 'liga-interamericana', 'url' => $expected[0]],
-                ['slug' => 'gysl', 'url' => $expected[1]],
+                ['slug' => 'liga-interamericana', 'name' => 'Liga Interamericana', 'url' => 'https://www.instagram.com/ligainteramericana/'],
+                ['slug' => 'gysl', 'name' => 'Gwinnett Youth Soccer League', 'url' => 'https://www.instagram.com/gwinnettfutbol/'],
             ])
             ->where('partners.0.name', 'Joma')
             ->where('partners.1.name', 'CER')
         );
-})->with([
-    'English' => ['/', ['http://localhost/leagues/liga-interamericana', 'http://localhost/leagues/gysl']],
-    'Spanish' => ['/es', ['http://localhost/es/ligas/liga-interamericana', 'http://localhost/es/ligas/gysl']],
-]);
+})->with(['/', '/es']);

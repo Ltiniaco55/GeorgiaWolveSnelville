@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Localization::routes(function (string $locale): void {
     Route::get(Localization::slug('home', $locale), HomeController::class)->name('home');
     Route::get(Localization::slug('gallery', $locale), GalleryController::class)->name('gallery');
+    Route::inertia(Localization::slug('programs', $locale), 'ComingSoon', ['section' => 'programs'])->name('programs');
 });
 
 if (app()->environment('local')) {

@@ -51,7 +51,7 @@ test('every page shares the club details and the footer links of its locale', fu
             ->where('club.phone', null)
             ->where('club.address.street', '2288 Main St E')
             ->where('navigation.privacy', 'http://localhost/es/privacidad')
-            ->where('navigation.liga_interamericana', 'http://localhost/es/ligas/liga-interamericana')
-            ->where('navigation.gysl', 'http://localhost/es/ligas/gysl')
+            ->where('leagues.0.url', 'https://www.instagram.com/ligainteramericana/')
+            ->where('leagues.1.url', 'https://www.instagram.com/gwinnettfutbol/')
         );
 });

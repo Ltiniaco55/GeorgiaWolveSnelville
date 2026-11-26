@@ -18,20 +18,23 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     /**
-     * Sitemap pages linked from the header, the mobile menu and the mobile CTA bar.
+     * Pages with their own URL linked from the header, the mobile menu, the mobile
+     * CTA bar and the footer.
      *
      * @var array<int, string>
      */
     private const NAVIGATION_PAGES = [
-        'home', 'programs', 'pricing', 'about', 'teams', 'leagues',
-        'gallery', 'faq', 'contact', 'register', 'free_training',
+        'home', 'programs', 'gallery', 'register', 'free_training',
         'privacy', 'terms', 'refund_policy', 'liability_waiver', 'media_release', 'accessibility',
     ];
 
     /**
-     * League pages linked from the footer (slug => navigation key).
+     * Menu entries that are sections of the home page (navigation key => anchor):
+     * pricing, the coach (About), the leagues strip and the FAQ.
+     *
+     * @var array<string, string>
      */
-    private const LEAGUE_PAGES = ['liga-interamericana' => 'liga_interamericana', 'gysl' => 'gysl'];
+    private const HOME_SECTIONS = ['pricing' => 'pricing', 'about' => 'coach', 'leagues' => 'leagues', 'faq' => 'faq'];
 
     /**
      * Determines the current asset version.
@@ -60,10 +63,9 @@ class HandleInertiaRequests extends Middleware
             'currentPage' => fn (): ?string => Localization::currentRouteName($request),
             'navigation' => fn (): array => collect(self::NAVIGATION_PAGES)
                 ->mapWithKeys(fn (string $page): array => [$page => Localization::pageUrl($page)])
-                ->merge(collect(self::LEAGUE_PAGES)->mapWithKeys(fn (string $key, string $slug): array => [
-                    $key => Localization::pageUrl('league', parameters: ['league' => $slug]),
-                ]))
+                ->merge(collect(self::HOME_SECTIONS)->map(fn (string $anchor): string => Localization::pageUrl('home').'#'.$anchor))
                 ->all(),
+            'leagues' => fn (): array => config('club.leagues'),
             'club' => fn (): array => [
                 'name' => config('club.name'),
                 'legalName' => config('club.legal_name'),
@@ -72,9 +74,9 @@ class HandleInertiaRequests extends Middleware
                 'address' => config('club.address'),
                 'mapsUrl' => config('club.maps_url'),
             ],
-            'whatsappUrl' => fn (): string => config('club.whatsapp_number')
+            'whatsappUrl' => fn (): ?string => config('club.whatsapp_number')
                 ? 'https://wa.me/'.config('club.whatsapp_number')
-                : Localization::pageUrl('contact'),
+                : null,
             'socialLinks' => fn (): array => collect(config('club.social'))
                 ->filter()
                 ->map(fn (string $url, string $network): array => ['network' => $network, 'url' => $url])

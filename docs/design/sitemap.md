@@ -194,6 +194,14 @@ Tokens, tipografía, `CtaButton` en sus 4 variantes, `NeuCard` en sus variantes,
 
 ## 4. Navegación
 
+**Decisión de Luciano (26 nov 2026), manda sobre lo que sigue:**
+- Las ligas no tienen páginas en la web: solo salen como escudos en la home ("Associated leagues and partners") y en el footer, y enlazan a sus Instagram (config/club.php, "leagues"). No se va a hacer nada más con ellas
+- Pricing, About (la card del entrenador), Leagues y FAQ del menú y del footer llevan a su sección de la home (/#pricing, /#coach, /#leagues, /#faq). En la home el salto es directo, sin recargar
+- Programs es una página "Coming soon" (sin indexar)
+- Teams y Contact se quitan del menú móvil y del footer hasta que existan
+- Los CTA de las tarifas llevan a las plantillas de inscripción: Free trial → /free-training, Monthly → /register?plan=monthly, Annual → /register?plan=annual
+- WhatsApp no se muestra mientras no haya número
+
 ### Menú principal (escritorio)
 Escudo y wordmark → `/` · **Programs · Pricing · About · Leagues · Gallery** · selector EN/ES · CTA **Register**
 - Teams no va en el menú principal (ver la sección de Teams & Achievements).

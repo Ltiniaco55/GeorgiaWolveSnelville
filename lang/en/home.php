@@ -159,6 +159,7 @@ return [
             'kit_partner' => 'Kit partner',
             'sponsor' => 'Sponsor',
         ],
+        'instagram' => ':name on Instagram (opens in a new tab)',
         'logo_soon' => ':name logo coming soon',
     ],
 

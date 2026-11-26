@@ -43,11 +43,6 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
-    /** League crests of the partners strip: { slug, url }. */
-    leagues: {
-        type: Array,
-        default: () => [],
-    },
     /** Kit partner and sponsors (config/club.php). */
     partners: {
         type: Array,
@@ -82,7 +77,7 @@ const isIntroPlaying = ref(shouldPlayBrandIntro(props.forceIntro));
 
         <CoachSection />
 
-        <LeaguesStrip :leagues="leagues" :partners="partners" />
+        <LeaguesStrip :leagues="$page.props.leagues ?? []" :partners="partners" />
 
         <GalleryTrail :photos="galleryPhotos" />
 

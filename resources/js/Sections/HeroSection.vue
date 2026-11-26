@@ -149,7 +149,7 @@ onBeforeUnmount(stopRecede);
                         <CtaButton variant="primary" surface="dark" :href="navigation.free_training" :hold="introPlaying" data-test="hero-cta-primary">
                             {{ t('home.hero.cta_primary') }}
                         </CtaButton>
-                        <CtaButton variant="secondary" surface="dark" :href="navigation.programs" :hold="introPlaying">{{ t('home.hero.cta_secondary') }}</CtaButton>
+                        <CtaButton variant="secondary" surface="dark" href="#categories" :hold="introPlaying">{{ t('home.hero.cta_secondary') }}</CtaButton>
                     </div>
 
                     <ul class="gw-hero-reveal gw-hero__facts" :aria-label="t('home.hero.facts_label')" style="--gw-reveal-index: 3" data-test="hero-facts">

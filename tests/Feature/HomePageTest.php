@@ -43,7 +43,7 @@ test('?intro=1 does nothing outside the local environment', function () {
         ->assertInertia(fn (Assert $page) => $page->where('forceIntro', false));
 });
 
-test('pages share the navigation URLs of their locale, also for pages that do not exist yet', function (string $url, array $expected) {
+test('pages share the navigation URLs of their locale; some entries are sections of the home', function (string $url, array $expected) {
     $this->get($url)
         ->assertInertia(fn (Assert $page) => $page
             ->where('currentPage', 'home')
@@ -52,6 +52,11 @@ test('pages share the navigation URLs of their locale, also for pages that do no
             ->where('navigation.register', $expected['register'])
             ->where('navigation.free_training', $expected['free_training'])
             ->where('navigation.faq', $expected['faq'])
+            ->where('navigation.pricing', $expected['pricing'])
+            ->where('navigation.about', $expected['about'])
+            ->where('navigation.leagues', $expected['leagues'])
+            ->missing('navigation.teams')
+            ->missing('navigation.contact')
         );
 })->with([
     'English' => ['/', [
@@ -59,22 +64,28 @@ test('pages share the navigation URLs of their locale, also for pages that do no
         'programs' => 'http://localhost/programs',
         'register' => 'http://localhost/register',
         'free_training' => 'http://localhost/free-training',
-        'faq' => 'http://localhost/faq',
+        'faq' => 'http://localhost#faq',
+        'pricing' => 'http://localhost#pricing',
+        'about' => 'http://localhost#coach',
+        'leagues' => 'http://localhost#leagues',
     ]],
     'Spanish' => ['/es', [
         'home' => 'http://localhost/es',
         'programs' => 'http://localhost/es/programas',
         'register' => 'http://localhost/es/inscripcion',
         'free_training' => 'http://localhost/es/entrenamiento-gratis',
-        'faq' => 'http://localhost/es/preguntas-frecuentes',
+        'faq' => 'http://localhost/es#faq',
+        'pricing' => 'http://localhost/es#pricing',
+        'about' => 'http://localhost/es#coach',
+        'leagues' => 'http://localhost/es#leagues',
     ]],
 ]);
 
-test('the WhatsApp link points to the contact page until there is a number', function () {
+test('there is no WhatsApp link until there is a number', function () {
     config(['club.whatsapp_number' => null]);
 
     $this->get('/')
-        ->assertInertia(fn (Assert $page) => $page->where('whatsappUrl', 'http://localhost/contact'));
+        ->assertInertia(fn (Assert $page) => $page->where('whatsappUrl', null));
 });
 
 test('the WhatsApp link opens wa.me with the club number', function () {

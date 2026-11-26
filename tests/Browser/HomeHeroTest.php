@@ -141,6 +141,9 @@ test('the mobile menu keeps the focus inside, closes with Esc and gives the focu
 });
 
 test('the mobile CTA bar appears once the hero has been passed', function () {
+    // The WhatsApp button only exists once the club has a number.
+    config(['club.whatsapp_number' => '14045550123']);
+
     $page = visitHome([
         'viewport' => ['width' => 390, 'height' => 844],
         'isMobile' => true,

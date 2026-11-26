@@ -126,7 +126,7 @@ test('the footer shows the club address and the sitemap links, and clears the mo
             return {
                 address: document.querySelector('[data-test="footer-address"]').textContent.replace(/\s+/g, ' ').trim(),
                 privacy: new URL(document.querySelector('[data-test="footer-privacy"]').href).pathname,
-                gysl: new URL(document.querySelector('[data-test="footer-gysl"]').href).pathname,
+                gysl: document.querySelector('[data-test="footer-league-gysl"]').href,
                 maps: document.querySelector('[data-test="footer-maps"]').href.startsWith('https://www.google.com/maps/'),
                 clearsBar: copyright.bottom <= bar.top,
             };
@@ -136,7 +136,7 @@ test('the footer shows the club address and the sitemap links, and clears the mo
     expect($footer)->toBe([
         'address' => 'Georgia Wolves Soccer Club South Gwinnett High School 2288 Main St E, Snellville, GA 30078',
         'privacy' => '/es/privacidad',
-        'gysl' => '/es/ligas/gysl',
+        'gysl' => 'https://www.instagram.com/gwinnettfutbol/',
         'maps' => true,
         'clearsBar' => true,
     ]);

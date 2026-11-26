@@ -1,9 +1,10 @@
 <script setup>
 import { computed } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { usePage } from '@inertiajs/vue3';
 import { useTranslations } from '../Composables/useTranslations';
 import BrandLogo from './BrandLogo.vue';
 import LanguageMenu from './LanguageMenu.vue';
+import NavLink from './NavLink.vue';
 import SocialIcon from './SocialIcon.vue';
 
 /**
@@ -13,7 +14,7 @@ import SocialIcon from './SocialIcon.vue';
  *
  * - Club details from config/club.php (shared as `club`): address, email and
  *   phone (only if set), a link to Google Maps and the social profiles.
- * - Link columns of the sitemap: Club, Train, Leagues and Legal.
+ * - Link columns of the sitemap: Club, Train, Leagues (their Instagram) and Legal.
  * - Bottom line: © legal name, small crest and the language dropdown.
  *
  * Below 1024 px it keeps room at the bottom for the fixed mobile CTA bar.
@@ -25,10 +26,12 @@ const club = computed(() => page.props.club ?? {});
 const socialLinks = computed(() => page.props.socialLinks ?? []);
 const year = new Date().getFullYear();
 
+const leagues = computed(() => page.props.leagues ?? []);
+
 const columns = [
-    { key: 'club', links: ['about', 'teams', 'gallery', 'faq'] },
+    { key: 'club', links: ['about', 'gallery', 'faq'] },
     { key: 'train', links: ['programs', 'pricing', 'free_training', 'register'] },
-    { key: 'leagues', links: ['leagues', 'liga_interamericana', 'gysl'] },
+    { key: 'leagues', links: ['leagues'] },
     { key: 'legal', links: ['privacy', 'terms', 'refund_policy', 'liability_waiver', 'media_release', 'accessibility'] },
 ];
 </script>
@@ -69,8 +72,15 @@ const columns = [
                         <h2 class="gw-footer__heading">{{ t(`common.footer.columns.${column.key}`) }}</h2>
                         <ul class="gw-footer__links">
                             <li v-for="name in column.links" :key="name">
-                                <Link :href="navigation[name]" :data-test="`footer-${name}`">{{ t(`common.footer.links.${name}`) }}</Link>
+                                <NavLink :href="navigation[name]" :data-test="`footer-${name}`">{{ t(`common.footer.links.${name}`) }}</NavLink>
                             </li>
+                            <template v-if="column.key === 'leagues'">
+                                <li v-for="league in leagues" :key="league.slug">
+                                    <a :href="league.url" target="_blank" rel="noopener" :data-test="`footer-league-${league.slug}`">
+                                        {{ league.name }}<span class="sr-only"> ({{ t('common.footer.instagram') }})</span> ↗
+                                    </a>
+                                </li>
+                            </template>
                         </ul>
                     </div>
                 </nav>

@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { useReducedMotion } from '../Composables/useReducedMotion';
+import { isSamePageAnchor } from '../Composables/useSamePageAnchor';
 
 /**
  * Brand CTA (docs/design/direccion-de-diseno.md, "Botón CTA — versión final aprobada").
@@ -81,7 +82,8 @@ const isInView = ref(false);
 const openWidth = ref(null);
 
 const isInternalLink = computed(() => {
-    if (!props.href || props.href.startsWith('#')) {
+    // Anchors of the current page jump natively (see NavLink).
+    if (!props.href || isSamePageAnchor(props.href)) {
         return false;
     }
 

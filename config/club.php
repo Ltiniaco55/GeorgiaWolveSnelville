@@ -38,7 +38,7 @@ return [
     |
     | WhatsApp number in international format without "+" or spaces
     | (e.g. 14045550123), used for the wa.me links. Pending from the client:
-    | while it is empty, WhatsApp links point to the contact page.
+    | while it is empty, the WhatsApp links are not shown.
     |
     */
 
@@ -54,6 +54,13 @@ return [
     | not shown. WhatsApp reuses the number above.
     |
     */
+
+    'leagues' => [
+        // Crests of the home strip "Associated leagues and partners" and the footer.
+        // The leagues have no pages on this site: they link to their Instagram.
+        ['slug' => 'liga-interamericana', 'name' => 'Liga Interamericana', 'url' => 'https://www.instagram.com/ligainteramericana/'],
+        ['slug' => 'gysl', 'name' => 'Gwinnett Youth Soccer League', 'url' => 'https://www.instagram.com/gwinnettfutbol/'],
+    ],
 
     'partners' => [
         // Kit partner and sponsor of the home strip "Associated leagues and partners".

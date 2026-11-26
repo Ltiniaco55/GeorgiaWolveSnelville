@@ -47,7 +47,12 @@ const plans = computed(() => {
         };
     };
 
-    return [plan('free_trial', navigation.value.free_training), plan('monthly', navigation.value.register), plan('annual', navigation.value.register)];
+    // Each plan opens its registration form; /register?plan=… preselects the plan.
+    return [
+        plan('free_trial', navigation.value.free_training),
+        plan('monthly', `${navigation.value.register}?plan=monthly`),
+        plan('annual', `${navigation.value.register}?plan=annual`),
+    ];
 });
 </script>
 

@@ -86,7 +86,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 - Categorías: parallax. El número grande sigue al ratón y el número fantasma del fondo se mueve en sentido contrario.
 - Tarifas: calculador "When do you join?" que explica la regla del día 15. El día de corte, la zona horaria y los precios están en `config/billing.php`; la regla la aplica `BillingStartCalculator` en el servidor y no se repite en el frontend (tampoco en los textos de las FAQ, que usan `:cutoff_day` y `:monthly_price`).
 - Entrenador: balancín y zoom de la foto.
-- Ligas: los escudos van en píldoras neumórficas, en gris y semitransparentes. Al pasar el ratón o enfocarlos recuperan el color, crecen y se hunden. Las ligas **no tienen sección propia en la home**: sus escudos enlazan a sus páginas.
+- Ligas: los escudos van en píldoras neumórficas, en gris y semitransparentes. Al pasar el ratón o enfocarlos recuperan el color, crecen y se hunden. Las ligas **no tienen sección propia en la home ni páginas en la web**: sus escudos enlazan a sus Instagram (`config/club.php` > `leagues`). Pricing, About, Leagues y FAQ del menú son secciones de la home; Programs es "Coming soon"; no hay Teams ni Contact en el menú.
 - Galería: rastro de fotos giradas bajo el cursor. Duran 1,6 s, hay como máximo 14 a la vez y sale una cada 110 px de recorrido. En táctil, rejilla estática.
 - FAQ: acordeón neumórfico. La pregunta se rellena de amarillo de izquierda a derecha y el "+" gira.
 - CTA final: botón magnético. Se activa a menos de 220 px, se desplaza el 35 % de la distancia y vuelve con rebote.

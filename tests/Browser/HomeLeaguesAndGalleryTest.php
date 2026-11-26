@@ -47,7 +47,8 @@ test('league crests are grey until hovered or focused, then get their colour and
     $page->keys('[data-test="league-liga-interamericana"]', 'Shift');
 
     expect(pillLook($page, '[data-test="league-liga-interamericana"]')['sunk'])->toBeTrue()
-        ->and($page->script('() => document.querySelector("[data-test=\'league-gysl\']").getAttribute("href")'))->toEndWith('/leagues/gysl');
+        ->and($page->script('() => { const link = document.querySelector("[data-test=\'league-gysl\']"); return [link.getAttribute("href"), link.target, link.getAttribute("aria-label")]; }'))
+        ->toBe(['https://www.instagram.com/gwinnettfutbol/', '_blank', 'Gwinnett Youth Soccer League on Instagram (opens in a new tab)']);
 });
 
 test('Joma and CER are placeholders, not links, until they have a logo and a URL', function () {

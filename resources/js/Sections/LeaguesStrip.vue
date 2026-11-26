@@ -1,5 +1,4 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
 import BrandLogo from '../Components/BrandLogo.vue';
 import HomePanel from '../Components/HomePanel.vue';
 import { vReveal } from '../Composables/useReveal';
@@ -9,15 +8,16 @@ import { useTranslations } from '../Composables/useTranslations';
  * "Associated leagues and partners" (docs/design/home-interacciones.md; prototype
  * home.html, "#leagues"): the leagues have no section of their own in the home,
  * only their crests in raised neumorphic pills, grey and faded. On hover or focus
- * a pill gets its colour back, grows a little and sinks (inset shadow). Each crest
- * links to its league page (/leagues/{slug}).
+ * a pill gets its colour back, grows a little and sinks (inset shadow). The
+ * leagues have no pages on this site: each crest opens its Instagram in a new tab
+ * (config/club.php, "leagues").
  *
  * Partners (config/club.php, "partners"): Joma and CER, ready for their logos.
  * Without a logo the pill shows the name in a pressed-in circle; without a URL it
  * is not a link (and has no hover).
  */
 defineProps({
-    /** @type {import('vue').PropType<{ slug: string, url: string }[]>} */
+    /** @type {import('vue').PropType<{ slug: string, name: string, url: string }[]>} */
     leagues: {
         type: Array,
         required: true,
@@ -45,10 +45,17 @@ const { t } = useTranslations();
 
             <ul v-reveal class="gw-leagues__row">
                 <li v-for="league in leagues" :key="league.slug">
-                    <Link :href="league.url" class="gw-pill gw-pill--link" :data-test="`league-${league.slug}`">
+                    <a
+                        :href="league.url"
+                        target="_blank"
+                        rel="noopener"
+                        class="gw-pill gw-pill--link"
+                        :aria-label="t('home.leagues.instagram', { name: league.name })"
+                        :data-test="`league-${league.slug}`"
+                    >
                         <BrandLogo :variant="league.slug" class="gw-pill__logo" decorative />
-                        <span class="gw-pill__name">{{ t(`home.leagues.names.${league.slug}`) }}</span>
-                    </Link>
+                        <span class="gw-pill__name" aria-hidden="true">{{ t(`home.leagues.names.${league.slug}`) }}</span>
+                    </a>
                 </li>
 
                 <li v-for="partner in partners" :key="partner.name">
