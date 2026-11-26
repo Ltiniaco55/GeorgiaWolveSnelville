@@ -211,6 +211,8 @@ Tokens, tipografía, `CtaButton` en sus 4 variantes, `NeuCard` en sus variantes,
 - Al enviar: validación en el servidor, campo trampa contra bots y 5 envíos por minuto por IP. Se guarda como "pending" con teléfonos, dirección, fechas de nacimiento y notas médicas cifrados; email al club (sin datos sensibles, reply-to a la familia) y confirmación a la familia en su idioma. Página de gracias (/free-training/thanks, /register/success) con el resumen solo justo después de enviar
 - El pago con Stripe Checkout se engancha en la fase 7
 
+**Páginas legales (26 nov 2026)**: Privacy, Terms, Refund Policy, Liability Waiver, Media Release y Accessibility con una plantilla común (Pages/LegalPage.vue): título, fecha de actualización, aviso amarillo "DRAFT – pending legal review", índice con anclas (fijo en escritorio), apartados y contacto del club. Los textos son borradores en lang/{en,es}/legal.php; lo que va entre [corchetes] está pendiente del club (razón social, plazo de conservación de datos, reembolso del anual, plazos de devolución y de retirada de imágenes). Los tiene que revisar un abogado antes de publicar
+
 ### Menú principal (escritorio)
 Escudo y wordmark → `/` · **Programs · Pricing · About · Leagues · Gallery** · selector EN/ES · CTA **Register**
 - Teams no va en el menú principal (ver la sección de Teams & Achievements).

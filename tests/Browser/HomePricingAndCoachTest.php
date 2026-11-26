@@ -118,6 +118,13 @@ test('the hero coach card links to the coach section', function () {
     $page->click('[data-test="hero-coach-card"]');
     $page->wait(0.3);
 
-    expect($page->script('() => Math.round(document.querySelector("#coach").getBoundingClientRect().top)'))->toBeLessThan(5)
-        ->and($page->script('() => Math.round(document.querySelector("#coach").getBoundingClientRect().top)'))->toBeGreaterThan(-5);
+    // Just below the fixed header pill (scroll-padding-top).
+    expect($page->script(<<<'JS'
+        () => {
+            const coach = document.querySelector('#coach').getBoundingClientRect().top;
+            const header = document.querySelector('[data-test="site-header"]').getBoundingClientRect().bottom;
+
+            return coach >= header && coach < header + 30;
+        }
+    JS))->toBeTrue();
 });

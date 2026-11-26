@@ -75,3 +75,25 @@ test('Programs is a Coming soon page that search engines do not index', function
         ->and($page->script('() => document.querySelector("[data-test=\'site-header\'] nav a[aria-current=page]").textContent.trim()'))->toBe('Programas');
     $page->assertNoJavaScriptErrors();
 });
+
+test('the footer links to the legal pages, which show the draft notice and jump to their sections', function () {
+    $page = visitHome(['viewport' => ['width' => 1440, 'height' => 900], 'reducedMotion' => 'reduce']);
+
+    $page->click('[data-test="footer-privacy"]');
+    $page->script(<<<'JS'
+        async () => {
+            const deadline = Date.now() + 10000;
+            while (!document.querySelector('[data-test="legal-page"]') && Date.now() < deadline) {
+                await new Promise((resolve) => setTimeout(resolve, 50));
+            }
+        }
+    JS);
+
+    expect($page->script('() => [location.pathname, document.querySelector("#legal-title").textContent.trim()]'))->toBe(['/privacy', 'Privacy Policy'])
+        ->and($page->script('() => document.querySelector("[data-test=\'legal-draft\']").textContent'))->toStartWith('DRAFT – pending legal review.');
+
+    $page->click('a[href="#security"]');
+    $page->wait(0.3);
+
+    expect($page->script('() => document.querySelector("#security").getBoundingClientRect().top >= document.querySelector("[data-test=\'site-header\']").getBoundingClientRect().bottom'))->toBeTrue();
+});

@@ -22,6 +22,11 @@ Localization::routes(function (string $locale): void {
     Route::get(Localization::slug('register', $locale), [RegistrationController::class, 'register'])->name('register');
     Route::post(Localization::slug('register', $locale), [RegistrationController::class, 'store'])->middleware('throttle:forms')->name('register.store');
     Route::get(Localization::slug('register_success', $locale), [RegistrationController::class, 'received'])->name('register_success');
+
+    // Legal pages: one template, texts in lang/{locale}/legal.php (drafts pending legal review).
+    foreach (['privacy', 'terms', 'refund_policy', 'liability_waiver', 'media_release', 'accessibility'] as $document) {
+        Route::inertia(Localization::slug($document, $locale), 'LegalPage', ['document' => $document])->name($document);
+    }
 });
 
 if (app()->environment('local')) {
