@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Support\AgeGroup;
 use App\Support\BillingStartCalculator;
 use App\Support\Localization;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Inertia\ExceptionResponse;
 use Inertia\Inertia;
@@ -25,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Built per resolution, so it always reflects config/billing.php.
         $this->app->bind(BillingStartCalculator::class, fn (): BillingStartCalculator => BillingStartCalculator::fromConfig());
+        $this->app->bind(AgeGroup::class, fn (): AgeGroup => AgeGroup::fromConfig());
     }
 
     /**
@@ -33,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->renderErrorPagesWithInertia();
+
+        // Public forms (registrations, later contact): 5 submissions a minute per IP.
+        RateLimiter::for('forms', fn (Request $request): Limit => Limit::perMinute(5)->by($request->ip()));
     }
 
     /**

@@ -55,6 +55,29 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Registrations
+    |--------------------------------------------------------------------------
+    |
+    | - registrations_email: who receives new registrations (falls back to the
+    |   club email, then to MAIL_FROM_ADDRESS).
+    | - training_days: ISO weekdays of the sessions (1 = Monday): the free
+    |   training form offers the next dates on these days.
+    | - season_end_year and age_groups: a child's group is the smallest group
+    |   that is at least (season_end_year − birth year), US Soccer style
+    |   (born 2017 in the 2026–27 season → U10). Pending confirmation by the club.
+    |
+    */
+
+    'registrations_email' => env('CLUB_REGISTRATIONS_EMAIL'),
+
+    'training_days' => [2, 4],
+
+    'season_end_year' => 2027,
+
+    'age_groups' => [6, 8, 10, 12, 14],
+
     'leagues' => [
         // Crests of the home strip "Associated leagues and partners" and the footer.
         // The leagues have no pages on this site: they link to their Instagram.

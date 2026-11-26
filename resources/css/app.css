@@ -183,6 +183,71 @@
 }
 
 /*
+ * Form controls on the light neumorphic surface (#ECECEC): pressed-in fields,
+ * a black outline on focus and red-bordered when invalid (aria-invalid).
+ */
+.gw-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: var(--color-gw-neu-light);
+    box-shadow: var(--shadow-gw-inset-light-sm);
+    color: var(--color-gw-black);
+    font-size: 16px;
+}
+
+.gw-input::placeholder {
+    color: #6b6b6b;
+}
+
+.gw-input:focus-visible {
+    outline: 3px solid var(--color-gw-black);
+    outline-offset: 2px;
+}
+
+.gw-input[aria-invalid='true'] {
+    border-color: #b42318;
+}
+
+textarea.gw-input {
+    min-height: 96px;
+    resize: vertical;
+}
+
+/* Raised option (radio or checkbox inside a label); pressed in and outlined when checked. */
+.gw-choice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 14px 16px;
+    border: 2px solid transparent;
+    border-radius: 16px;
+    background: var(--color-gw-neu-light);
+    box-shadow: var(--shadow-gw-raised-light-sm);
+    cursor: pointer;
+}
+
+.gw-choice:has(input:checked) {
+    border-color: var(--color-gw-black);
+    box-shadow: var(--shadow-gw-inset-light-sm);
+}
+
+.gw-choice:has(input:focus-visible) {
+    outline: 3px solid var(--color-gw-black);
+    outline-offset: 2px;
+}
+
+.gw-choice input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--color-gw-black);
+}
+
+/*
  * v-reveal (resources/js/Composables/useReveal.js): fade in and rise 40 px the
  * first time the element enters the viewport. The directive only adds
  * .gw-reveal when motion is allowed.

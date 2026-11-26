@@ -202,6 +202,15 @@ Tokens, tipografía, `CtaButton` en sus 4 variantes, `NeuCard` en sus variantes,
 - Los CTA de las tarifas llevan a las plantillas de inscripción: Free trial → /free-training, Monthly → /register?plan=monthly, Annual → /register?plan=annual
 - WhatsApp no se muestra mientras no haya número
 
+**Plantillas de inscripción (26 nov 2026)**: /free-training (entrenamiento gratis) y /register?plan=monthly|annual, con la misma página (Pages/Registration.vue) y el mismo FormRequest (StoreRegistrationRequest):
+- Plan (con lo que se paga hoy según la regla del día 15, calculado en el servidor) o día de entrenamiento (los próximos martes y jueves, config/club.php "training_days")
+- Jugadores (hasta 4): nombre, apellidos, fecha de nacimiento (la categoría U6–U14 se calcula en el servidor con AgeGroup: edad que cumple en el año en que acaba la temporada, redondeada al grupo; pendiente de confirmar con el club), sexo opcional, uniforme y talla (planes de pago) y notas médicas opcionales
+- Padre, madre o tutor (con dirección) y un segundo opcional; contacto de emergencia
+- Fotos y vídeos: el padre o la madre elige sí o no de forma explícita (obligatorio), con enlace a la Media Release
+- Liability Waiver, Terms y, en los planes de pago, Refund Policy; firma con el nombre completo; consentimiento opcional de comunicaciones
+- Al enviar: validación en el servidor, campo trampa contra bots y 5 envíos por minuto por IP. Se guarda como "pending" con teléfonos, dirección, fechas de nacimiento y notas médicas cifrados; email al club (sin datos sensibles, reply-to a la familia) y confirmación a la familia en su idioma. Página de gracias (/free-training/thanks, /register/success) con el resumen solo justo después de enviar
+- El pago con Stripe Checkout se engancha en la fase 7
+
 ### Menú principal (escritorio)
 Escudo y wordmark → `/` · **Programs · Pricing · About · Leagues · Gallery** · selector EN/ES · CTA **Register**
 - Teams no va en el menú principal (ver la sección de Teams & Achievements).
