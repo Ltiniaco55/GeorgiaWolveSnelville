@@ -51,7 +51,7 @@ Hero (escaparate). APROBADO con el prototipo del 25 nov 2026:
 - Linterna: con puntero fino, al pasar el ratón por el hero se ve la foto sin oscurecer en un círculo de 230 px alrededor del puntero (máscara radial). Sin ratón o con reduced motion, no hay linterna. Sustituye a la linterna sobre las líneas del campo (PitchLamp, eliminado)
 - Contenido arriba (no centrado ni abajo): padding superior = alto inicial del menú (104 px) + clamp(32px, 9vh, 90px), unos 100 px bajo el escudo a 1440×900. En móvil va abajo, debajo de la foto
   - Titular "TRAIN LIKE A WOLF." con "wolf." en amarillo, a clamp(56px, min(9.4vw, 13.5vh), 150px) (64 px en móvil). El acento va en línea con el resto, así en español queda "ENTRENA COMO / UN LOBO." en dos líneas
-  - Subtítulo, CTAs "Book a free training" y "View programs" y chips de datos (días, dirección, primer entrenamiento gratis)
+  - Subtítulo, CTAs "Free training" y "View programs" y chips de datos (días, dirección, primer entrenamiento gratis)
   - Por debajo de 780 px de alto se ocultan los chips de datos y se reducen los márgenes. En móvil tampoco hay chips
 - Quitados del hero (25 nov 2026): la camiseta 3D, los badges "U12 Champions 2026" y "GYSL Fall League · Premier Division", el chip "Registration open · Fall season · Snellville, GA" y la pista "Move your cursor to light up the pitch"
 - "GEORGIA WOLVES" gigante abajo: Barlow Condensed 800, degradado amarillo apagado con un contorno sutil, cortado por el borde inferior (0,17 em). Se ajusta siempre al ancho del marco (98,5 %) en cualquier pantalla: se mide y se recalcula con ResizeObserver y al cargar las fuentes (useFitText). Decorativo (aria-hidden)
@@ -143,7 +143,7 @@ Cómo funciona:
 - Al llegar a la sección, esta se queda fija ("pinned", position: sticky, 100vh) y el scroll vertical de la rueda mueve una fila de paneles hacia la izquierda. Al llegar al último panel, el scroll vertical continúa con normalidad
 - La altura de la sección se calcula con JS (altura visible + distancia horizontal que hay que recorrer). La posición se aplica con translate3d en requestAnimationFrame
 - Barra de progreso amarilla, hundida, debajo de los paneles
-- Indicación "Keep scrolling →" con una flecha amarilla que se mueve
+- Sin indicación "Keep scrolling →" (quitada el 27 nov 2026)
 - Los CTA que entran desde la derecha también hacen la animación de círculo a píldora
 - Con prefers-reduced-motion se convierte en un carrusel horizontal normal (overflow-x con scroll-snap), sin enganchar la página
 
@@ -212,7 +212,7 @@ Prueba: sección "Pricing" de /styleguide a 390 px. Componente PricingDeck con e
 - Orden en móvil: Annual → Monthly → Free trial. En escritorio: Free trial · Monthly · Annual. El orden del DOM cambia con el ancho, así el orden del teclado y del lector de pantalla coincide con el visual
 - La sección se engancha al scroll (position: sticky, 100svh; altura = 100svh + 70svh por cada cambio de card). Al avanzar, la card de arriba sale hacia arriba girando (-12°) y se mete al fondo del mazo, y queda arriba la siguiente. Cada paso tiene una zona de reposo al principio y al final para que la card se quede quieta antes de que salga la siguiente. Después de la última, el scroll sigue normal
 - También se cambia de card con un deslizamiento horizontal (swipe) sobre el mazo: a la izquierda, la siguiente; a la derecha, la anterior. El deslizamiento vertical es el scroll normal
-- Puntos indicadores debajo (botones con aria-label "Plan 1 of 3" y aria-current en el activo) y la pista "Scroll or swipe to see the next plan"
+- Puntos indicadores debajo (botones con aria-label "Plan 1 of 3" y aria-current en el activo) (la pista "Scroll or swipe to see the next plan" se quitó el 27 nov 2026)
 - Animación solo con transform en requestAnimationFrame, sin saltos de layout. La opacidad no se anima: una card semitransparente volando sobre la siguiente mezcla los textos de las dos
 - El scroll es la única fuente de verdad: el swipe, los puntos y el foco desplazan la página hasta la posición de esa card
 - Accesibilidad: las tres cards están siempre en el DOM y se llega a todas con el teclado; al recibir el foco, esa card pasa arriba

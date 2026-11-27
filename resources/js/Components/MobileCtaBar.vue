@@ -90,9 +90,10 @@ onBeforeUnmount(() => observer?.disconnect());
         visibility 0s;
 }
 
+/* Sized by their text, sharing the spare room: "Entrenamiento gratis" needs more than half. */
 .gw-bar__button {
     display: inline-grid;
-    flex: 1 1 0;
+    flex: 1 1 auto;
     place-items: center;
     min-width: 0;
     height: 48px;
@@ -102,6 +103,13 @@ onBeforeUnmount(() => observer?.disconnect());
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
+}
+
+@media (max-width: 379px) {
+    .gw-bar__button {
+        padding-inline: 0.625rem;
+        font-size: 0.8125rem;
+    }
 }
 
 .gw-bar__button--primary {

@@ -36,12 +36,6 @@ const { t } = useTranslations();
     <HomePanel tone="light" id="leagues" class="gw-leagues" aria-labelledby="leagues-title" data-test="leagues">
         <div class="gw-wrap">
             <h2 id="leagues-title" class="gw-leagues__eyebrow"><span class="gw-leagues__dot" aria-hidden="true" />{{ t('home.leagues.eyebrow') }}</h2>
-            <p class="gw-leagues__hint">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <path d="M4 3l7 17 2.5-7.5L21 10z" />
-                </svg>
-                {{ t('home.leagues.hint') }}
-            </p>
 
             <ul v-reveal class="gw-leagues__row">
                 <li v-for="league in leagues" :key="league.slug">
@@ -101,20 +95,6 @@ const { t } = useTranslations();
     border-radius: 50%;
     background: var(--color-gw-yellow);
     box-shadow: 0 0 0 1px var(--color-gw-black);
-}
-
-.gw-leagues__hint {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-top: 14px;
-    color: #595959;
-    font-size: 13px;
-}
-
-.gw-leagues__hint svg {
-    width: 15px;
-    height: 15px;
 }
 
 .gw-leagues__row {

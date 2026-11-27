@@ -44,7 +44,7 @@ return [
         'intro' => '<CtaButton variant="primary|secondary" surface="light|dark">. Un círculo que se abre en píldora al entrar en pantalla y vuelve a cerrarse al salir. Pasa el ratón por encima, llega con el tabulador y haz scroll.',
         'on_light' => 'Sobre blanco',
         'on_dark' => 'Sobre negro',
-        'sample_primary' => 'Reserva un entrenamiento gratis',
+        'sample_primary' => 'Entrenamiento gratis',
         'sample_secondary' => 'Ver programas',
         'sample_long' => 'Inscríbete ahora',
         'sample_back' => 'Volver a los botones',
@@ -71,7 +71,7 @@ return [
                 'saving' => 'Sin tarjeta',
                 'description' => 'Ven a un entrenamiento y conoce a los entrenadores antes de decidirte.',
                 'features' => ['Un entrenamiento completo', 'Todas las categorías, de U6 a U14', 'Charla con el entrenador al terminar'],
-                'cta' => 'Reserva un entrenamiento gratis',
+                'cta' => 'Entrenamiento gratis',
             ],
             'monthly' => [
                 'name' => 'Mensual',
@@ -134,7 +134,7 @@ return [
         'sample_name' => 'Christian Tiniaco · 100 $ / mes',
         'sample_body' => 'Niños y niñas de 5 a 14 años, de U6 a U14. El primer entrenamiento es gratis.',
         'sample_label' => 'Inscripciones abiertas · Temporada de otoño',
-        'sample_button' => 'Reserva un entrenamiento gratis',
+        'sample_button' => 'Entrenamiento gratis',
     ],
 
     'stage' => [

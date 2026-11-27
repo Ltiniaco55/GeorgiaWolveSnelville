@@ -6,7 +6,7 @@ El estilo visual y los componentes están en direccion-de-diseno.md.
 
 Orden de la home: intro → hero → cinta de logros → categorías (scroll horizontal) → tarifas → entrenador → franja de ligas asociadas → galería → FAQ → CTA final → pie.
 
-Cada sección lleva una etiqueta pequeña con un icono de cursor ("Move over a card", "Open a question"…), que invita a interactuar.
+Cada sección tiene una interacción con el puntero, pero ya no hay pistas que la anuncien (27 nov 2026): se quitaron todas las etiquetas con icono de cursor ("Move over a card", "Open a question", "Get close to the button"…), la indicación "Keep scrolling →" de las categorías y la pista "Scroll or swipe to see the next plan" de la baraja de tarifas en móvil. Las interacciones funcionan igual.
 
 | Sección | Interacción |
 |---|---|
@@ -43,8 +43,13 @@ Implementación en la home (fase B, 25 nov 2026):
 - Galería: modelo Photo (categoría, título, subtítulo y texto alternativo en inglés y español, imagen en WebP y AVIF, has_media_release y orden). La home solo recibe las que tienen el permiso de imagen (como mucho 9). Las 9 fotos de ejemplo del prototipo están en public/images/gallery y en PhotoSeeder, marcadas con permiso para poder maquetar: hay que confirmar el permiso real antes de publicar
 - El rastro es decorativo (aria-hidden); en táctil y con reduced motion, la rejilla estática lleva los textos alternativos. Sin fotos publicadas no hay ni rastro ni rejilla
 - FAQ: modelo Faq (tema, pregunta y respuesta en inglés y español, publicada, "en la home" y orden), las mismas filas que usará el bot de WhatsApp. La home muestra como mucho 6. Las cifras de la regla del día 15 no se escriben en el texto: van como :cutoff_day y :monthly_price y se rellenan desde config/billing.php. FaqSeeder carga las 5 preguntas del prototipo. El acordeón (FaqAccordion) se rellena de amarillo también con el foco de teclado y sirve para la futura página /faq
-- CTA final: el botón grande (CtaButton size="large", 72 px) se mueve hacia el puntero; con reduced motion o en táctil se queda quieto y no sale la pista
-- Footer (SiteFooter, en todas las páginas del layout): negro #050505 con esquinas superiores de 44 px que sube sobre la última sección. Datos de config/club.php (nombre, razón social, dirección, email y teléfono si los hay, enlace a Google Maps y redes) y las columnas Club, Train, Leagues y Legal del sitemap. Abajo, © razón social, escudo pequeño y selector de idioma. Por debajo de 1024 px deja el hueco de la barra fija de móvil (antes lo dejaba el main)
+- CTA final: el botón grande (CtaButton size="large", 72 px) se mueve hacia el puntero; con reduced motion o en táctil se queda quieto
+- Footer (SiteFooter, en todas las páginas del layout): negro #050505 con esquinas superiores de 44 px que sube sobre la última sección. Datos de config/club.php (nombre, razón social, dirección, email y teléfono si los hay, enlace a Google Maps y redes en círculos neumórficos) y las columnas Club, Train, Leagues y Legal del sitemap. Abajo, © razón social, escudo pequeño y selector de idioma. Por debajo de 1024 px deja el hueco de la barra fija de móvil (antes lo dejaba el main)
+
+Cambios del 27 nov 2026:
+- CTA de entrenamiento gratis: "Free training" / "Entrenamiento gratis" en el hero, el menú, la barra fija de móvil, el panel final de categorías, la card Free trial y Coming soon (antes "Book a free training" / "Reserva un entrenamiento gratis")
+- Redes (config/club.php > social): Instagram (georgiawolvessnellville) y WhatsApp (wa.me/16898087259, el número del club; pendiente de confirmar que es el de WhatsApp). Facebook vacío hasta que el cliente pase la URL: mientras tanto su icono no sale. Los iconos van en la muesca del hero y en la columna de contacto del footer, en círculos neumórficos, con aria-label ("Instagram de Georgia Wolves"…), target="_blank" y rel="noopener"
+- Footer: sin flechas ↗ en los enlaces externos (Liga Interamericana, GYSL y Google Maps); llevan un texto solo para lectores de pantalla, "(se abre en otra pestaña)"
 
 Notas técnicas:
 - Todo lo que depende del ratón se activa solo con `(hover:hover) and (pointer:fine)`. Con prefers-reduced-motion se desactiva lo que tiene movimiento

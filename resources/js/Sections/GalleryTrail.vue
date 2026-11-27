@@ -57,7 +57,6 @@ const gridPhotos = computed(() => props.photos.slice(0, 6));
                     :eyebrow="t('home.gallery.eyebrow')"
                     :title-lead="t('home.gallery.title_lead')"
                     :title-accent="t('home.gallery.title_accent')"
-                    :hint="showsTrail ? t('home.gallery.hint') : ''"
                     title-id="gallery-title"
                 />
                 <div class="gw-gallery__cta">

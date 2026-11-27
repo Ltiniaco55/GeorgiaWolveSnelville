@@ -91,12 +91,6 @@ async function onKeydown(event) {
         <div>
             <p class="gw-calc__eyebrow"><span class="gw-calc__dot" aria-hidden="true" />{{ t('home.pricing.calendar.eyebrow') }}</p>
             <h3 id="join-month" class="gw-calc__month">{{ calendar.monthLabel }}</h3>
-            <p class="gw-calc__hint">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                    <path d="M4 3l7 17 2.5-7.5L21 10z" />
-                </svg>
-                {{ t('home.pricing.calendar.hint') }}
-            </p>
 
             <div class="gw-calc__weekdays" aria-hidden="true">
                 <span v-for="(weekday, index) in tList('home.pricing.calendar.weekdays')" :key="index">{{ weekday }}</span>
@@ -175,7 +169,6 @@ async function onKeydown(event) {
     text-transform: uppercase;
 }
 
-.gw-calc__hint,
 .gw-calc__legend {
     display: inline-flex;
     gap: 8px;
@@ -183,11 +176,6 @@ async function onKeydown(event) {
     margin-top: 14px;
     color: #595959;
     font-size: 13px;
-}
-
-.gw-calc__hint svg {
-    width: 15px;
-    height: 15px;
 }
 
 /* At most 520 px wide, so the days stay key-sized on wide screens. */

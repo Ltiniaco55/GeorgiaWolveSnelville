@@ -3,8 +3,7 @@ import { vReveal } from '../Composables/useReveal';
 
 /**
  * Header of a home section (prototype home.html): a small eyebrow with a dot, a
- * big condensed title whose last words are the accent, and an optional hint with
- * a cursor icon that invites to interact ("Move over a card"…).
+ * big condensed title whose last words are the accent.
  *
  * The accent is yellow on dark sections and a yellow highlighter stroke under
  * black text on light ones (yellow text on light grey fails contrast).
@@ -27,10 +26,6 @@ defineProps({
         type: String,
         required: true,
     },
-    hint: {
-        type: String,
-        default: '',
-    },
     tone: {
         type: String,
         default: 'dark',
@@ -51,12 +46,6 @@ defineProps({
             {{ titleLead }}
             <span v-if="titleAccent" class="gw-intro__accent">{{ titleAccent }}</span>
         </h2>
-        <p v-if="hint" v-reveal="2" class="gw-intro__hint" data-test="section-hint">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                <path d="M4 3l7 17 2.5-7.5L21 10z" />
-            </svg>
-            {{ hint }}
-        </p>
         <slot />
     </div>
 </template>
@@ -112,23 +101,5 @@ defineProps({
 .gw-intro--light .gw-intro__accent {
     background: linear-gradient(transparent 62%, var(--color-gw-yellow) 62% 92%, transparent 92%);
     box-decoration-break: clone;
-}
-
-.gw-intro__hint {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-    margin-top: 14px;
-    color: #a3a3a3;
-    font-size: 13px;
-}
-
-.gw-intro--light .gw-intro__hint {
-    color: #595959;
-}
-
-.gw-intro__hint svg {
-    width: 15px;
-    height: 15px;
 }
 </style>

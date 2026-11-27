@@ -12,7 +12,7 @@ return [
         'title_lead' => 'Entrena como un',
         'title_accent' => 'lobo.',
         'subtitle' => 'Academia de fútbol juvenil en Snellville, Georgia, para niños y niñas de 5 a 14 años (U6–U14). Entrenadores de verdad, un equipo al que pertenecer y el primer entrenamiento es gratis.',
-        'cta_primary' => 'Reserva un entrenamiento gratis',
+        'cta_primary' => 'Entrenamiento gratis',
         'cta_secondary' => 'Ver programas',
         'facts_label' => 'Datos clave',
         'facts' => [
@@ -49,7 +49,6 @@ return [
         'eyebrow' => 'Programas',
         'title_lead' => 'Encuentra tu',
         'title_accent' => 'categoría.',
-        'keep_scrolling' => 'Sigue bajando',
         'progress_label' => 'Categorías vistas',
         'days' => 'Mar y jue',
         'intro' => [
@@ -68,7 +67,7 @@ return [
             'title' => '¿No sabes cuál',
             'mark' => '?',
             'body' => 'Ven a un entrenamiento gratis y el entrenador pondrá a tu hijo en el grupo adecuado.',
-            'cta' => 'Reserva un entrenamiento gratis',
+            'cta' => 'Entrenamiento gratis',
         ],
     ],
 
@@ -76,7 +75,6 @@ return [
         'eyebrow' => 'Tarifas',
         'title_lead' => 'Precios claros.',
         'title_accent' => 'El primer entrenamiento, gratis.',
-        'hint' => 'Pasa el ratón por una card',
         'plans' => [
             'free_trial' => [
                 'name' => 'Prueba gratis',
@@ -84,7 +82,7 @@ return [
                 'saving' => 'Tu primera sesión',
                 'features' => ['Un entrenamiento completo', 'Conoce al entrenador y al equipo', 'Ponemos a tu hijo en el grupo adecuado'],
                 'note' => 'Sin tarjeta. Solo trae tacos, espinilleras y agua.',
-                'cta' => 'Reserva tu entrenamiento',
+                'cta' => 'Entrenamiento gratis',
             ],
             'monthly' => [
                 'name' => 'Mensual',
@@ -107,7 +105,6 @@ return [
         'uniform_note' => 'Uniforme :amount · pago único · equipación Joma con el escudo del club',
         'calendar' => [
             'eyebrow' => '¿Cuándo te apuntas?',
-            'hint' => 'Pasa el ratón o toca un día',
             'days_label' => 'Días de :month',
             'weekdays' => ['L', 'M', 'X', 'J', 'V', 'S', 'D'],
             'legend' => 'Días después del :day: $0 hoy',
@@ -124,7 +121,6 @@ return [
         'eyebrow' => 'El entrenador',
         'title_lead' => 'Entrenados por un',
         'title_accent' => 'profesional.',
-        'hint' => 'Pasa el ratón por la card',
         'card' => [
             'role' => 'Presidente y entrenador principal',
             'name' => 'Christian Tiniaco',
@@ -150,7 +146,6 @@ return [
 
     'leagues' => [
         'eyebrow' => 'Ligas asociadas y patrocinadores',
-        'hint' => 'Pasa el ratón por un escudo',
         'names' => [
             'liga-interamericana' => 'Liga Interamericana',
             'gysl' => 'Gwinnett Youth Soccer League',
@@ -167,7 +162,6 @@ return [
         'eyebrow' => 'Galería',
         'title_lead' => 'La vida en la',
         'title_accent' => 'manada.',
-        'hint' => 'Mueve el cursor por aquí',
         'cta' => 'Ver toda la galería',
     ],
 
@@ -175,14 +169,12 @@ return [
         'eyebrow' => 'Preguntas frecuentes',
         'title_lead' => 'Preguntas,',
         'title_accent' => 'respondidas.',
-        'hint' => 'Abre una pregunta',
         'photo_alt' => 'Jugadores pequeños con equipación gris y medallas de campeones delante de la pancarta de la Gwinnett Youth Soccer League.',
     ],
 
     'final' => [
         'title_lead' => 'Únete a la',
         'title_accent' => 'manada.',
-        'hint' => 'Acércate al botón',
         'cta' => 'Inscríbete ahora',
     ],
 ];

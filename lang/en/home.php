@@ -12,7 +12,7 @@ return [
         'title_lead' => 'Train like a',
         'title_accent' => 'wolf.',
         'subtitle' => 'Youth soccer academy in Snellville, Georgia, for boys and girls from 5 to 14 (U6–U14). Real coaching, a team to belong to, and the first training session is free.',
-        'cta_primary' => 'Book a free training',
+        'cta_primary' => 'Free training',
         'cta_secondary' => 'View programs',
         'facts_label' => 'Key facts',
         'facts' => [
@@ -49,7 +49,6 @@ return [
         'eyebrow' => 'Programs',
         'title_lead' => 'Find your',
         'title_accent' => 'category.',
-        'keep_scrolling' => 'Keep scrolling',
         'progress_label' => 'Categories seen',
         'days' => 'Tue & Thu',
         'intro' => [
@@ -68,7 +67,7 @@ return [
             'title' => 'Not sure which one',
             'mark' => '?',
             'body' => 'Come to a free training and the coach will place your child in the right group.',
-            'cta' => 'Book free training',
+            'cta' => 'Free training',
         ],
     ],
 
@@ -76,7 +75,6 @@ return [
         'eyebrow' => 'Pricing',
         'title_lead' => 'Simple pricing.',
         'title_accent' => 'First training free.',
-        'hint' => 'Move over a card',
         'plans' => [
             'free_trial' => [
                 'name' => 'Free trial',
@@ -84,7 +82,7 @@ return [
                 'saving' => 'Your first session',
                 'features' => ['One full training session', 'Meet the coach and the team', 'We place your child in the right group'],
                 'note' => 'No card needed. Just bring cleats, shin guards and water.',
-                'cta' => 'Book free training',
+                'cta' => 'Free training',
             ],
             'monthly' => [
                 'name' => 'Monthly',
@@ -107,7 +105,6 @@ return [
         'uniform_note' => 'Uniform :amount · one-time payment · Joma kit with the club crest',
         'calendar' => [
             'eyebrow' => 'When do you join?',
-            'hint' => 'Hover or tap a day',
             'days_label' => 'Days of :month',
             'weekdays' => ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
             'legend' => 'Days after the :day: $0 today',
@@ -124,7 +121,6 @@ return [
         'eyebrow' => 'The coach',
         'title_lead' => 'Coached by a',
         'title_accent' => 'pro.',
-        'hint' => 'Move over the card',
         'card' => [
             'role' => 'President & head coach',
             'name' => 'Christian Tiniaco',
@@ -150,7 +146,6 @@ return [
 
     'leagues' => [
         'eyebrow' => 'Associated leagues and partners',
-        'hint' => 'Move over a crest',
         'names' => [
             'liga-interamericana' => 'Liga Interamericana',
             'gysl' => 'Gwinnett Youth Soccer League',
@@ -167,7 +162,6 @@ return [
         'eyebrow' => 'Gallery',
         'title_lead' => 'Life in the',
         'title_accent' => 'pack.',
-        'hint' => 'Move your cursor around',
         'cta' => 'View full gallery',
     ],
 
@@ -175,14 +169,12 @@ return [
         'eyebrow' => 'FAQ',
         'title_lead' => 'Questions,',
         'title_accent' => 'answered.',
-        'hint' => 'Open a question',
         'photo_alt' => 'Young players in grey kits with champions’ medals in front of the Gwinnett Youth Soccer League banner.',
     ],
 
     'final' => [
         'title_lead' => 'Join the',
         'title_accent' => 'pack.',
-        'hint' => 'Get close to the button',
         'cta' => 'Register now',
     ],
 ];

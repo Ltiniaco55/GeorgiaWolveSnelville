@@ -49,9 +49,9 @@ Complementa a `direccion-de-diseno.md` y `home-interacciones.md`. Si hay alguna 
 ## 3. Secciones y CTA principal por página
 
 ### Home
-Orden de `home-interacciones.md`. CTA principal: **Book a free training** → `/free-training`
+Orden de `home-interacciones.md`. CTA principal: **Free training** → `/free-training`
 1. Intro de marca
-2. Hero: "TRAIN LIKE A WOLF.", linterna sobre el campo y CTAs "Book a free training" y "View programs"
+2. Hero: "TRAIN LIKE A WOLF.", linterna sobre el campo y CTAs "Free training" y "View programs"
 3. Cinta de logros, con enlace a `/teams`
 4. Categorías U6–U14: scroll horizontal enganchado **nº 1**. El panel final lleva "Book free training"
 5. Tarifas: cards y calculador "When do you join?" (enlace a `/pricing`)
@@ -73,7 +73,7 @@ CTA principal: **Train with Christian** → `/free-training`
 7. CTA final
 
 ### Programs
-CTA principal: **Book a free training**
+CTA principal: **Free training**
 1. Hero: "U6–U14 · Boys & girls · 5 to 14"
 2. Categorías: rejilla de cards U6, U8, U10, U12 y U14 con edad, días, hora y enfoque. Cada una tiene su ancla (`#u6` … `#u14`). No hay subpáginas por categoría
 3. Horario semanal: una tabla HTML accesible, sin imagen
@@ -116,7 +116,7 @@ Cada liga tiene página propia, con un campo `external_url` opcional para enlaza
 9. Contacto de la liga y enlace externo, si lo hay
 
 ### Gallery
-CTA principal: **Book a free training** (al final)
+CTA principal: **Free training** (al final)
 1. Cabecera "LIFE IN THE PACK." con "← Back to home"
 2. Pestañas de filtro con contador (All, Training, Matchday, Champions, Events, Team), fijas al hacer scroll
 3. Muro masonry
@@ -221,7 +221,7 @@ Escudo y wordmark → `/` · **Programs · Pricing · About · Leagues · Galler
 ### Menú móvil
 Botón hamburguesa con `aria-expanded` que abre un panel negro a pantalla completa:
 - Enlaces grandes en Barlow: Programs, Pricing, About, Teams, Leagues, Gallery, FAQ y Contact
-- CTAs: **Register** (principal) y **Book a free training** (secundario)
+- CTAs: **Register** (principal) y **Free training** (secundario)
 - Teléfono, WhatsApp y redes sociales
 - Selector EN/ES
 - Foco atrapado dentro del panel, se cierra con Esc y el foco vuelve al botón

@@ -229,7 +229,6 @@ function onCardFocus(index) {
                         @click="goTo(index)"
                     />
                 </div>
-                <p class="text-xs font-medium text-gw-black/75">{{ t('common.pricing_deck.hint') }}</p>
             </div>
         </div>
     </div>

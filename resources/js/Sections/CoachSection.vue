@@ -51,7 +51,6 @@ const coach = computed(() => {
                 :eyebrow="t('home.coach.eyebrow')"
                 :title-lead="t('home.coach.title_lead')"
                 :title-accent="t('home.coach.title_accent')"
-                :hint="t('home.coach.hint')"
                 title-id="coach-title"
             />
 

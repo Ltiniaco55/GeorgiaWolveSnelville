@@ -30,7 +30,6 @@ const { t } = useTranslations();
                 :eyebrow="t('home.faq.eyebrow')"
                 :title-lead="t('home.faq.title_lead')"
                 :title-accent="t('home.faq.title_accent')"
-                :hint="t('home.faq.hint')"
                 title-id="faq-title"
             />
 

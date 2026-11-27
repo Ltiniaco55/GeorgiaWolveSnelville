@@ -44,7 +44,7 @@ return [
         'intro' => '<CtaButton variant="primary|secondary" surface="light|dark">. A circle that rolls open into a pill when it enters the screen and folds back when it leaves. Hover the buttons with the mouse, tab to them with the keyboard and scroll down.',
         'on_light' => 'On white',
         'on_dark' => 'On black',
-        'sample_primary' => 'Book a free training',
+        'sample_primary' => 'Free training',
         'sample_secondary' => 'View programs',
         'sample_long' => 'Register now',
         'sample_back' => 'Back to the buttons',
@@ -71,7 +71,7 @@ return [
                 'saving' => 'No card needed',
                 'description' => 'Come to one training session and meet the coaches before you decide.',
                 'features' => ['One full training session', 'All categories, U6 to U14', 'Talk to the coach afterwards'],
-                'cta' => 'Book a free training',
+                'cta' => 'Free training',
             ],
             'monthly' => [
                 'name' => 'Monthly',
@@ -134,7 +134,7 @@ return [
         'sample_name' => 'Christian Tiniaco · $100 / month',
         'sample_body' => 'Boys and girls from 5 to 14, U6 to U14. The first training session is free.',
         'sample_label' => 'Registration open · Fall season',
-        'sample_button' => 'Book a free training',
+        'sample_button' => 'Free training',
     ],
 
     'stage' => [

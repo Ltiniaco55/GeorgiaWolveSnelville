@@ -12,7 +12,7 @@ return [
         'gallery' => 'Gallery',
         'faq' => 'FAQ',
         'register' => 'Register',
-        'free_training' => 'Book a free training',
+        'free_training' => 'Free training',
     ],
     'menu' => [
         'open' => 'Open menu',
@@ -61,7 +61,7 @@ return [
             'media_release' => 'Media Release',
             'accessibility' => 'Accessibility',
         ],
-        'instagram' => 'opens Instagram in a new tab',
+        'new_tab' => 'opens in a new tab',
         'maps' => 'Open in Google Maps',
         'email' => 'Email',
         'phone' => 'Phone',
@@ -70,6 +70,5 @@ return [
     'pricing_deck' => [
         'plans' => 'Plans',
         'dot' => 'Plan :current of :total',
-        'hint' => 'Scroll or swipe to see the next plan',
     ],
 ];

@@ -12,7 +12,7 @@ return [
         'gallery' => 'Galería',
         'faq' => 'Preguntas',
         'register' => 'Inscríbete',
-        'free_training' => 'Reserva un entrenamiento gratis',
+        'free_training' => 'Entrenamiento gratis',
     ],
     'menu' => [
         'open' => 'Abrir menú',
@@ -28,13 +28,13 @@ return [
     'mobile_bar' => [
         'label' => 'Acciones rápidas',
         'register' => 'Inscríbete',
-        'free_training' => 'Prueba gratis',
+        'free_training' => 'Entrenamiento gratis',
         'whatsapp' => 'Escríbenos por WhatsApp',
     ],
     'social' => [
         'label' => 'Georgia Wolves en redes sociales',
-        'instagram' => 'Georgia Wolves en Instagram',
-        'facebook' => 'Georgia Wolves en Facebook',
+        'instagram' => 'Instagram de Georgia Wolves',
+        'facebook' => 'Facebook de Georgia Wolves',
         'whatsapp' => 'Habla con Georgia Wolves por WhatsApp',
     ],
     'footer' => [
@@ -61,7 +61,7 @@ return [
             'media_release' => 'Autorización de imagen',
             'accessibility' => 'Accesibilidad',
         ],
-        'instagram' => 'abre Instagram en una pestaña nueva',
+        'new_tab' => 'se abre en otra pestaña',
         'maps' => 'Abrir en Google Maps',
         'email' => 'Email',
         'phone' => 'Teléfono',
@@ -70,6 +70,5 @@ return [
     'pricing_deck' => [
         'plans' => 'Planes',
         'dot' => 'Plan :current de :total',
-        'hint' => 'Haz scroll o desliza para ver el siguiente plan',
     ],
 ];

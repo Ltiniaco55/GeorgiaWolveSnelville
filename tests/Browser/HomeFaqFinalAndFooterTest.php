@@ -97,7 +97,7 @@ test('the final CTA is pulled towards a pointer within 220 px and springs back',
         ->and($page->script($offset(400, 0)))->toBe([0, 0]);
 });
 
-test('with reduced motion the final CTA stays put and there is no hint', function () {
+test('with reduced motion the final CTA stays put', function () {
     $page = visitHome(['viewport' => ['width' => 1440, 'height' => 900], 'reducedMotion' => 'reduce']);
 
     expect($page->script(<<<'JS'
@@ -107,9 +107,9 @@ test('with reduced motion the final CTA stays put and there is no hint', functio
             window.dispatchEvent(new PointerEvent('pointermove', { pointerType: 'mouse', clientX: rect.left + 10, clientY: rect.top + 10 }));
             await new Promise((resolve) => setTimeout(resolve, 500));
 
-            return [getComputedStyle(magnet).transform, document.querySelector('[data-test="final-cta"] [data-test="section-hint"]') !== null];
+            return getComputedStyle(magnet).transform;
         }
-    JS))->toBe(['none', false]);
+    JS))->toBe('none');
 });
 
 test('the footer shows the club address and the sitemap links, and clears the mobile bar', function () {
@@ -128,6 +128,9 @@ test('the footer shows the club address and the sitemap links, and clears the mo
                 privacy: new URL(document.querySelector('[data-test="footer-privacy"]').href).pathname,
                 gysl: document.querySelector('[data-test="footer-league-gysl"]').href,
                 maps: document.querySelector('[data-test="footer-maps"]').href.startsWith('https://www.google.com/maps/'),
+                externalTexts: ['footer-maps', 'footer-league-gysl'].map((name) => document.querySelector(`[data-test="${name}"]`).textContent.replace(/\s+/g, ' ').trim()),
+                heroSocial: [...document.querySelectorAll('[data-test="hero-social"] a')].map((link) => link.getAttribute('aria-label')),
+                social: [...document.querySelectorAll('[data-test="footer-social"] a')].map((link) => [link.getAttribute('aria-label'), link.target, link.rel]),
                 clearsBar: copyright.bottom <= bar.top,
             };
         }
@@ -138,6 +141,16 @@ test('the footer shows the club address and the sitemap links, and clears the mo
         'privacy' => '/es/privacidad',
         'gysl' => 'https://www.instagram.com/gwinnettfutbol/',
         'maps' => true,
+        // No ↗: screen readers hear that the link opens a new tab.
+        'externalTexts' => [
+            'Abrir en Google Maps (se abre en otra pestaña)',
+            'Gwinnett Youth Soccer League (se abre en otra pestaña)',
+        ],
+        'heroSocial' => ['Instagram de Georgia Wolves', 'Habla con Georgia Wolves por WhatsApp'],
+        'social' => [
+            ['Instagram de Georgia Wolves', '_blank', 'noopener'],
+            ['Habla con Georgia Wolves por WhatsApp', '_blank', 'noopener'],
+        ],
         'clearsBar' => true,
     ]);
 });

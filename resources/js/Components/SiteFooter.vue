@@ -55,10 +55,10 @@ const columns = [
                             <a :href="`tel:${club.phone.replace(/[^+\d]/g, '')}`"><span class="sr-only">{{ t('common.footer.phone') }}: </span>{{ club.phone }}</a>
                         </li>
                         <li>
-                            <a :href="club.mapsUrl" target="_blank" rel="noopener" data-test="footer-maps">{{ t('common.footer.maps') }} ↗</a>
+                            <a :href="club.mapsUrl" target="_blank" rel="noopener" data-test="footer-maps">{{ t('common.footer.maps') }}<span class="sr-only"> ({{ t('common.footer.new_tab') }})</span></a>
                         </li>
                     </ul>
-                    <ul v-if="socialLinks.length" class="gw-footer__social" :aria-label="t('common.social.label')">
+                    <ul v-if="socialLinks.length" class="gw-footer__social" :aria-label="t('common.social.label')" data-test="footer-social">
                         <li v-for="link in socialLinks" :key="link.network">
                             <a :href="link.url" target="_blank" rel="noopener" :aria-label="t(`common.social.${link.network}`)">
                                 <SocialIcon :network="link.network" />
@@ -77,7 +77,7 @@ const columns = [
                             <template v-if="column.key === 'leagues'">
                                 <li v-for="league in leagues" :key="league.slug">
                                     <a :href="league.url" target="_blank" rel="noopener" :data-test="`footer-league-${league.slug}`">
-                                        {{ league.name }}<span class="sr-only"> ({{ t('common.footer.instagram') }})</span> ↗
+                                        {{ league.name }}<span class="sr-only"> ({{ t('common.footer.new_tab') }})</span>
                                     </a>
                                 </li>
                             </template>

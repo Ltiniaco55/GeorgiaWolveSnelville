@@ -64,7 +64,6 @@ const plans = computed(() => {
                 :eyebrow="t('home.pricing.eyebrow')"
                 :title-lead="t('home.pricing.title_lead')"
                 :title-accent="t('home.pricing.title_accent')"
-                :hint="t('home.pricing.hint')"
                 title-id="pricing-title"
             />
 

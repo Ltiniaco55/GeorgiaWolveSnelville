@@ -14,8 +14,7 @@ import { useTranslations } from '../Composables/useTranslations';
  * prototype home.html, "#cats"): pinned horizontal scroll nº 1 of the site.
  *
  * The section sticks for one viewport while vertical scroll slides the row of
- * panels left (usePinnedHorizontal), with a pressed-in yellow progress bar and the
- * "Keep scrolling →" hint. Panels: yellow intro "U6–U14", one #161616 panel per
+ * panels left (usePinnedHorizontal), with a pressed-in yellow progress bar. Panels: yellow intro "U6–U14", one #161616 panel per
  * category and a black closing panel with the CTA.
  *
  * Parallax (fine pointer, motion allowed): inside a category panel the big number
@@ -105,9 +104,6 @@ function onTrackFocusIn(event) {
                         :title-accent="t('home.categories.title_accent')"
                         title-id="categories-title"
                     />
-                    <p v-if="isEnabled" class="gw-cats__keep" aria-hidden="true">
-                        {{ t('home.categories.keep_scrolling') }} <b>→</b>
-                    </p>
                 </div>
 
                 <div class="gw-cats__viewport">
@@ -193,26 +189,6 @@ function onTrackFocusIn(event) {
     justify-content: space-between;
     margin-bottom: 34px;
     padding-inline: calc(var(--gw-edge) + var(--gw-gutter));
-}
-
-.gw-cats__keep {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    color: #a3a3a3;
-    font-size: 13px;
-}
-
-.gw-cats__keep b {
-    display: inline-block;
-    color: var(--color-gw-yellow);
-    animation: gw-nudge 1.2s ease-in-out infinite;
-}
-
-@keyframes gw-nudge {
-    50% {
-        transform: translateX(6px);
-    }
 }
 
 .gw-cats__viewport {
@@ -421,10 +397,6 @@ function onTrackFocusIn(event) {
     .gw-pane__number,
     .gw-pane__ghost {
         transition: none;
-    }
-
-    .gw-cats__keep b {
-        animation: none;
     }
 }
 </style>

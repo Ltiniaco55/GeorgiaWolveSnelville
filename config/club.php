@@ -1,5 +1,7 @@
 <?php
 
+$whatsappNumber = env('CLUB_WHATSAPP_NUMBER') ?: '16898087259';
+
 return [
 
     /*
@@ -37,21 +39,22 @@ return [
     |--------------------------------------------------------------------------
     |
     | WhatsApp number in international format without "+" or spaces
-    | (e.g. 14045550123), used for the wa.me links. Pending from the client:
-    | while it is empty, the WhatsApp links are not shown.
+    | (e.g. 14045550123), used for the wa.me links. While it is empty, the
+    | WhatsApp links are not shown. It is the club's number: pending
+    | confirmation from the client that it is the one on WhatsApp.
     |
     */
 
-    'whatsapp_number' => env('CLUB_WHATSAPP_NUMBER'),
+    'whatsapp_number' => $whatsappNumber,
 
     /*
     |--------------------------------------------------------------------------
     | Social profiles
     |--------------------------------------------------------------------------
     |
-    | Full URLs of the club's profiles, shown as icons in the home hero (and
-    | later in the footer). Pending from the client: a network without a URL is
-    | not shown. WhatsApp reuses the number above.
+    | Full URLs of the club's profiles, shown as icons in the home hero notch
+    | and in the footer. A network without a URL is not shown (Facebook is
+    | pending from the client). WhatsApp reuses the number above.
     |
     */
 
@@ -94,9 +97,9 @@ return [
     ],
 
     'social' => [
-        'instagram' => env('CLUB_INSTAGRAM_URL'),
-        'facebook' => env('CLUB_FACEBOOK_URL'),
-        'whatsapp' => env('CLUB_WHATSAPP_NUMBER') ? 'https://wa.me/'.env('CLUB_WHATSAPP_NUMBER') : null,
+        'instagram' => env('CLUB_INSTAGRAM_URL') ?: 'https://www.instagram.com/georgiawolvessnellville/',
+        'facebook' => env('CLUB_FACEBOOK_URL') ?: null,
+        'whatsapp' => 'https://wa.me/'.$whatsappNumber,
     ],
 
 ];

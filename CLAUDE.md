@@ -22,7 +22,7 @@ Resumen de las reglas clave:
 
 **Home: orden de las secciones**
 intro → hero → cinta de logros → categorías (scroll horizontal) → tarifas → entrenador → franja "Associated leagues and partners" → galería → FAQ → CTA final "Join the pack." → pie.
-Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a interactuar ("Move over a card", "Open a question"…).
+Ninguna sección lleva pistas de interacción (ni etiquetas con icono de cursor ni "Keep scrolling"): se quitaron el 27 nov 2026. Las interacciones siguen igual.
 
 **Intro de marca (2,6 s, aprobada)**
 - Pantalla negra. El emblema amarillo entra con rebote y luego "rueda" en arco hasta el escudo del menú: unas 2,5 vueltas en sentido antihorario, encogiéndose.
@@ -77,7 +77,7 @@ Cada sección lleva una etiqueta pequeña con un icono de cursor que invita a in
 
 **Scroll horizontal enganchado (máximo 2 o 3 en toda la web)**
 - La sección se queda fija (`position: sticky`, 100vh) y el scroll vertical mueve los paneles con `translate3d` dentro de `requestAnimationFrame`. La altura se calcula con JS.
-- Barra de progreso amarilla hundida y la pista "Keep scrolling →".
+- Barra de progreso amarilla hundida (sin pista "Keep scrolling").
 - Con reduced motion pasa a ser un carrusel con `overflow-x` y `scroll-snap`.
 
 **Interacción con el puntero por sección de la home**
