@@ -5,6 +5,7 @@ import CtaButton from '../Components/CtaButton.vue';
 import HeroStage from '../Components/HeroStage.vue';
 import SocialIcon from '../Components/SocialIcon.vue';
 import { useFitText } from '../Composables/useFitText';
+import { useNotchedFrame } from '../Composables/useNotchedFrame';
 import { useReducedMotion } from '../Composables/useReducedMotion';
 import { useTranslations } from '../Composables/useTranslations';
 
@@ -12,15 +13,19 @@ import { useTranslations } from '../Composables/useTranslations';
  * Home hero (docs/design/direccion-de-diseno.md, "Hero"; reference:
  * docs/design/prototype/home.html).
  *
- * A rounded frame (34 px, #262626 border) 14 px inside the window, with:
+ * A rounded frame (34 px, #262626 border) 14 px inside the window. Its outline is
+ * one SVG path (useNotchedFrame) used both to clip the contents and as the 1 px
+ * border, so the social notch is cut out of the frame, outside it. Inside:
  * - HeroStage in "photo" mode: the photo on the right, faded into the black, lit
  *   around the pointer (flashlight). On mobile the photo goes on top.
  * - The content from the top: padding = header height + clamp(32px, 9vh, 90px).
  *   Title, subtitle, CTAs and key facts (hidden below 780 px of height).
  * - "GEORGIA WOLVES" huge at the bottom, cut by the frame's edge, always fitted to
  *   the frame's width (useFitText). Decorative.
- * - Bottom left, a notch in the page colour with concave corners and the social
- *   icons (only the networks with a URL in config/club.php; none, no notch).
+ * - Bottom left, cut out of the frame, a notch in the page colour with rounded
+ *   corners (26 px) and the social icons centred in it (only the networks with a
+ *   URL in config/club.php; none, no notch). The outline follows it, and the
+ *   photo, fade and giant name are clipped by it.
  * - Bottom right, the "Meet the coach" card (from 1100 px), linking to #coach.
  *
  * Page transition (not with reduced motion): the hero is sticky and, while the
@@ -61,10 +66,19 @@ const facts = [
 ];
 
 const frame = ref(null);
+const notch = ref(null);
+const notchMotion = ref(null);
 const shade = ref(null);
 const giantText = ref(null);
 
 useFitText(frame, giantText, { ratio: 0.985 });
+
+/* Radii come from the CSS (--gw-frame-radius, --gw-notch-radius: smaller on mobile). */
+const cssLength = (name) => parseFloat(frame.value ? getComputedStyle(frame.value).getPropertyValue(name) : '') || 0;
+const { clipPath, strokePath, setRadius } = useNotchedFrame(frame, notch, {
+    radius: () => cssLength('--gw-frame-radius'),
+    notchRadius: () => cssLength('--gw-notch-radius'),
+});
 
 /* Recede on scroll: scale 1 → 0.92, 20 px down, corners 34 → 48 px, 55 % darker. */
 let scrollFrame = null;
@@ -85,8 +99,13 @@ function paintRecede() {
 
     lastProgress = progress;
     frame.value.style.transform = progress ? `translate3d(0, ${(progress * 20).toFixed(1)}px, 0) scale(${(1 - progress * 0.08).toFixed(4)})` : '';
-    frame.value.style.borderRadius = progress ? `${(34 + progress * 14).toFixed(1)}px` : '';
+    setRadius(progress ? cssLength('--gw-frame-radius') + progress * 14 : null);
     shade.value.style.opacity = (progress * 0.55).toFixed(3);
+
+    // The notch is outside the clipped contents: it darkens with them.
+    if (notchMotion.value) {
+        notchMotion.value.style.opacity = progress ? (1 - progress * 0.55).toFixed(3) : '';
+    }
 }
 
 function onScroll() {
@@ -112,8 +131,12 @@ function stopRecede() {
 
     if (frame.value && shade.value) {
         frame.value.style.transform = '';
-        frame.value.style.borderRadius = '';
+        setRadius(null);
         shade.value.style.opacity = '0';
+
+        if (notchMotion.value) {
+            notchMotion.value.style.opacity = '';
+        }
     }
 }
 
@@ -131,39 +154,60 @@ onBeforeUnmount(stopRecede);
     <div class="gw-hero-pin" :class="{ 'gw-hero-pin--sticky': !prefersReducedMotion }" data-test="hero-pin">
         <section class="gw-hero" aria-labelledby="hero-title" data-test="hero">
             <div ref="frame" class="gw-hero__frame" data-test="hero-frame">
-                <HeroStage mode="photo" :image="heroImage" :alt="t('home.hero.photo_alt')" />
+                <div class="gw-hero__clip" :style="clipPath ? { clipPath: `path('${clipPath}')` } : null" data-test="hero-clip">
+                    <HeroStage mode="photo" :image="heroImage" :alt="t('home.hero.photo_alt')" />
 
-                <div class="gw-hero__giant" aria-hidden="true">
-                    <span ref="giantText" class="gw-hero__giant-text" data-test="hero-giant">{{ t('home.hero.giant_name') }}</span>
-                </div>
-
-                <div class="gw-hero__content">
-                    <h1 id="hero-title" class="gw-hero-reveal gw-hero__title" style="--gw-reveal-index: 0">
-                        {{ t('home.hero.title_lead') }}
-                        <span class="text-gw-yellow">{{ t('home.hero.title_accent') }}</span>
-                    </h1>
-
-                    <p class="gw-hero-reveal gw-hero__subtitle" style="--gw-reveal-index: 1" data-test="hero-subtitle">{{ t('home.hero.subtitle') }}</p>
-
-                    <div class="gw-hero-reveal gw-hero__ctas" style="--gw-reveal-index: 2" data-test="hero-ctas">
-                        <CtaButton variant="primary" surface="dark" :href="navigation.free_training" :hold="introPlaying" data-test="hero-cta-primary">
-                            {{ t('home.hero.cta_primary') }}
-                        </CtaButton>
-                        <CtaButton variant="secondary" surface="dark" href="#categories" :hold="introPlaying">{{ t('home.hero.cta_secondary') }}</CtaButton>
+                    <div class="gw-hero__giant" aria-hidden="true">
+                        <span ref="giantText" class="gw-hero__giant-text" data-test="hero-giant">{{ t('home.hero.giant_name') }}</span>
                     </div>
 
-                    <ul class="gw-hero-reveal gw-hero__facts" :aria-label="t('home.hero.facts_label')" style="--gw-reveal-index: 3" data-test="hero-facts">
-                        <li v-for="fact in facts" :key="fact.key" class="gw-hero__fact">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                                <path :d="fact.icon" />
-                            </svg>
-                            {{ t(`home.hero.facts.${fact.key}`) }}
-                        </li>
-                    </ul>
+                    <div class="gw-hero__content">
+                        <h1 id="hero-title" class="gw-hero-reveal gw-hero__title" style="--gw-reveal-index: 0">
+                            {{ t('home.hero.title_lead') }}
+                            <span class="text-gw-yellow">{{ t('home.hero.title_accent') }}</span>
+                        </h1>
+
+                        <p class="gw-hero-reveal gw-hero__subtitle" style="--gw-reveal-index: 1" data-test="hero-subtitle">{{ t('home.hero.subtitle') }}</p>
+
+                        <div class="gw-hero-reveal gw-hero__ctas" style="--gw-reveal-index: 2" data-test="hero-ctas">
+                            <CtaButton variant="primary" surface="dark" :href="navigation.free_training" :hold="introPlaying" data-test="hero-cta-primary">
+                                {{ t('home.hero.cta_primary') }}
+                            </CtaButton>
+                            <CtaButton variant="secondary" surface="dark" href="#categories" :hold="introPlaying">{{ t('home.hero.cta_secondary') }}</CtaButton>
+                        </div>
+
+                        <ul class="gw-hero-reveal gw-hero__facts" :aria-label="t('home.hero.facts_label')" style="--gw-reveal-index: 3" data-test="hero-facts">
+                            <li v-for="fact in facts" :key="fact.key" class="gw-hero__fact">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path :d="fact.icon" />
+                                </svg>
+                                {{ t(`home.hero.facts.${fact.key}`) }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <a href="#coach" class="gw-hero-reveal gw-hero__coach" style="--gw-reveal-index: 4" data-test="hero-coach-card">
+                        <picture>
+                            <source type="image/avif" srcset="/images/home/coach-thumb-168.avif 168w, /images/home/coach-thumb-266.avif 266w" sizes="84px" />
+                            <source type="image/webp" srcset="/images/home/coach-thumb-168.webp 168w, /images/home/coach-thumb-266.webp 266w" sizes="84px" />
+                            <img src="/images/home/coach-thumb-168.webp" alt="" width="84" height="84" loading="lazy" decoding="async" class="gw-hero__coach-photo" />
+                        </picture>
+                        <span class="min-w-0">
+                            <span class="gw-hero__coach-eyebrow">{{ t('home.hero.coach_card.eyebrow') }}</span>
+                            <span class="gw-hero__coach-name">{{ t('home.hero.coach_card.name') }}</span>
+                            <span class="gw-hero__coach-meta">{{ t('home.hero.coach_card.meta') }}</span>
+                        </span>
+                    </a>
+
+                    <div ref="shade" class="gw-hero__shade" aria-hidden="true" />
                 </div>
 
-                <nav v-if="socialLinks.length" class="gw-hero__notch" :aria-label="t('common.social.label')" data-test="hero-social">
-                    <ul class="flex gap-3">
+                <svg v-if="strokePath" class="gw-hero__outline" aria-hidden="true" focusable="false" data-test="hero-outline">
+                    <path :d="strokePath" />
+                </svg>
+
+                <nav v-if="socialLinks.length" ref="notch" class="gw-hero__notch" :aria-label="t('common.social.label')" data-test="hero-social">
+                    <ul ref="notchMotion" class="gw-hero__notch-list">
                         <li v-for="link in socialLinks" :key="link.network">
                             <a :href="link.url" class="gw-hero__social" target="_blank" rel="noopener" :aria-label="t(`common.social.${link.network}`)">
                                 <SocialIcon :network="link.network" />
@@ -171,21 +215,6 @@ onBeforeUnmount(stopRecede);
                         </li>
                     </ul>
                 </nav>
-
-                <a href="#coach" class="gw-hero-reveal gw-hero__coach" style="--gw-reveal-index: 4" data-test="hero-coach-card">
-                    <picture>
-                        <source type="image/avif" srcset="/images/home/coach-thumb-168.avif 168w, /images/home/coach-thumb-266.avif 266w" sizes="84px" />
-                        <source type="image/webp" srcset="/images/home/coach-thumb-168.webp 168w, /images/home/coach-thumb-266.webp 266w" sizes="84px" />
-                        <img src="/images/home/coach-thumb-168.webp" alt="" width="84" height="84" loading="lazy" decoding="async" class="gw-hero__coach-photo" />
-                    </picture>
-                    <span class="min-w-0">
-                        <span class="gw-hero__coach-eyebrow">{{ t('home.hero.coach_card.eyebrow') }}</span>
-                        <span class="gw-hero__coach-name">{{ t('home.hero.coach_card.name') }}</span>
-                        <span class="gw-hero__coach-meta">{{ t('home.hero.coach_card.meta') }}</span>
-                    </span>
-                </a>
-
-                <div ref="shade" class="gw-hero__shade" aria-hidden="true" />
             </div>
         </section>
     </div>
@@ -216,18 +245,45 @@ onBeforeUnmount(stopRecede);
 }
 
 .gw-hero__frame {
+    --gw-frame-radius: 34px;
+    --gw-notch-radius: 26px;
+
     position: relative;
     isolation: isolate;
     height: 100%;
-    overflow: hidden;
-    border: 1px solid var(--color-gw-charcoal);
-    border-radius: 34px;
-    background: #0d0d0d;
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
     transform-origin: 50% 0;
 }
 
-/* Layers inside the frame: photo 0, giant name 1, content 2, notch and card 3, shade 4. */
+/*
+ * The frame's contents, clipped by the notched outline (clip-path: path(), set from
+ * useNotchedFrame). Until it is measured, a plain rounded rectangle.
+ */
+.gw-hero__clip {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--gw-frame-radius);
+    background: #0d0d0d;
+    box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.06);
+}
+
+/* The 1 px border, drawn on the same outline (0.5 px inside it). */
+.gw-hero__outline {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    fill: none;
+    stroke: var(--color-gw-charcoal);
+    stroke-width: 1px;
+}
+
+/* Layers inside the clip: photo 0, giant name 1, content 2, card 3, shade 4. */
 .gw-hero__giant {
     position: absolute;
     right: 0;
@@ -322,34 +378,22 @@ onBeforeUnmount(stopRecede);
     color: var(--color-gw-yellow);
 }
 
-/* Notch in the page colour, with concave corners above it and to its right. */
+/*
+ * The notch: the area cut out of the frame's bottom-left corner. Its size is this
+ * box (measured by useNotchedFrame). No background: it is the page itself, #0A0A0A.
+ * Same padding above and below, so the icons sit centred in it.
+ */
 .gw-hero__notch {
     position: absolute;
-    bottom: -1px;
-    left: -1px;
-    z-index: 3;
-    padding: 16px 22px 18px 24px;
-    border-top-right-radius: 26px;
-    background: var(--color-gw-black);
-}
-
-.gw-hero__notch::before,
-.gw-hero__notch::after {
-    position: absolute;
-    width: 26px;
-    height: 26px;
-    background: radial-gradient(circle at 100% 0, transparent 25.5px, var(--color-gw-black) 26px);
-    content: '';
-}
-
-.gw-hero__notch::before {
-    bottom: 100%;
-    left: 0;
-}
-
-.gw-hero__notch::after {
     bottom: 0;
-    left: 100%;
+    left: 0;
+    z-index: 2;
+    padding: 14px 18px 14px 14px;
+}
+
+.gw-hero__notch-list {
+    display: flex;
+    gap: 12px;
 }
 
 .gw-hero__social {
@@ -442,7 +486,7 @@ onBeforeUnmount(stopRecede);
 
 .gw-hero__shade {
     position: absolute;
-    inset: -1px;
+    inset: 0;
     z-index: 4;
     background: #000;
     opacity: 0;
@@ -478,7 +522,8 @@ onBeforeUnmount(stopRecede);
 /* Mobile: the photo on top (HeroStage), the text below it. */
 @media (max-width: 760px) {
     .gw-hero__frame {
-        border-radius: 26px;
+        --gw-frame-radius: 26px;
+        --gw-notch-radius: 20px;
     }
 
     .gw-hero__content {
@@ -506,10 +551,10 @@ onBeforeUnmount(stopRecede);
     }
 
     .gw-hero__notch {
-        padding: 12px 16px 14px 14px;
+        padding: 10px 14px 10px 10px;
     }
 
-    .gw-hero__notch ul {
+    .gw-hero__notch-list {
         gap: 10px;
     }
 

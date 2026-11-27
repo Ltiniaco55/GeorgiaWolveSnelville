@@ -43,7 +43,7 @@ Ninguna sección lleva pistas de interacción (ni etiquetas con icono de cursor 
 - Foto a la derecha (58 % del ancho, como mucho 860 px), oscurecida y fundida hacia el negro por la izquierda y por abajo. En móvil (≤ 760 px), la foto arriba y el texto debajo.
 - Contenido arriba: padding superior = alto del menú (`--gw-header-h`, 104 px) + `clamp(32px, 9vh, 90px)`. Titular "TRAIN LIKE A WOLF." (con "wolf." en amarillo y en línea) a `clamp(56px, min(9.4vw, 13.5vh), 150px)`, subtítulo (con "Snellville, Georgia"), dos CTA y chips de datos. Por debajo de 780 px de alto no hay chips.
 - "GEORGIA WOLVES" gigante abajo, cortado por el borde, ajustado siempre al ancho del marco (`useFitText`, con ResizeObserver y al cargar las fuentes). Decorativo.
-- Muesca abajo a la izquierda con los iconos de redes (`config/club.php` > `social`; sin URL no se muestran). Card "Meet the coach" abajo a la derecha (desde 1100 px), que enlaza a `#coach`.
+- Muesca abajo a la izquierda, fuera del marco, con los iconos de redes centrados (`config/club.php` > `social`; sin URL no se muestran). El marco es un único path SVG (`useNotchedFrame`) que recorta el contenido y dibuja el borde de 1 px, siguiendo la muesca con esquinas de 26 px (20 px en móvil); color del fondo de la página, sin sombra. Card "Meet the coach" abajo a la derecha (desde 1100 px), que enlaza a `#coach`.
 - Fuera del hero (no volver a ponerlos): la camiseta 3D (se conserva en `HeroStage` modo "jersey" y se ve en /styleguide), los badges, el chip "Registration open…" y la pista de la linterna.
 
 **Transiciones de la home (aprobadas)**

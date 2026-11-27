@@ -49,6 +49,7 @@ Implementación en la home (fase B, 25 nov 2026):
 Cambios del 27 nov 2026:
 - CTA de entrenamiento gratis: "Free training" / "Entrenamiento gratis" en el hero, el menú, la barra fija de móvil, el panel final de categorías, la card Free trial y Coming soon (antes "Book a free training" / "Reserva un entrenamiento gratis")
 - Redes (config/club.php > social): Instagram (georgiawolvessnellville) y WhatsApp (wa.me/16898087259, el número del club; pendiente de confirmar que es el de WhatsApp). Facebook vacío hasta que el cliente pase la URL: mientras tanto su icono no sale. Los iconos van en la muesca del hero y en la columna de contacto del footer, en círculos neumórficos, con aria-label ("Instagram de Georgia Wolves"…), target="_blank" y rel="noopener"
+- Muesca del hero: fuera del marco. El contorno del marco sigue la forma de la muesca y el contenido del hero queda recortado por ella (un único path SVG para el recorte y el borde)
 - Footer: sin flechas ↗ en los enlaces externos (Liga Interamericana, GYSL y Google Maps); llevan un texto solo para lectores de pantalla, "(se abre en otra pestaña)"
 
 Notas técnicas:

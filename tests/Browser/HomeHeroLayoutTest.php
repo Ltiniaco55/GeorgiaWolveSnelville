@@ -116,6 +116,42 @@ test('the key facts are hidden on short screens', function () {
     expect(heroLayout($page)['facts'])->toBeNull();
 });
 
+test('the social notch is cut out of the frame, outside its outline', function (int $width, int $height, bool $isMobile) {
+    $page = visitHome([
+        'viewport' => ['width' => $width, 'height' => $height],
+        'reducedMotion' => 'reduce',
+        'isMobile' => $isMobile,
+        'hasTouch' => $isMobile,
+    ]);
+
+    // Hit-testing follows clip-path: the notch's top strip (above the icons) is not
+    // part of the frame's contents, while just above the notch it is.
+    expect($page->script(<<<'JS'
+        () => {
+            const notch = document.querySelector('[data-test="hero-social"]').getBoundingClientRect();
+            const clip = document.querySelector('[data-test="hero-clip"]');
+            const inContents = (x, y) => clip.contains(document.elementFromPoint(x, y));
+            const middle = notch.left + notch.width / 2;
+
+            return {
+                notchIsOutside: inContents(middle, notch.top + 3),
+                aboveNotchIsInside: inContents(middle, notch.top - 8),
+                rightOfNotchIsInside: inContents(notch.right + 8, notch.bottom - 30),
+                outlineFollowsNotch: (document.querySelector('[data-test="hero-outline"] path').getAttribute('d').match(/A/g) ?? []).length,
+            };
+        }
+    JS))->toBe([
+        'notchIsOutside' => false,
+        'aboveNotchIsInside' => true,
+        'rightOfNotchIsInside' => true,
+        // Three rounded corners and the notch's three.
+        'outlineFollowsNotch' => 6,
+    ]);
+})->with([
+    'desktop 1440×900' => [1440, 900, false],
+    'mobile 390×844' => [390, 844, true],
+]);
+
 test('without social URLs there is no notch', function () {
     config(['club.social' => ['instagram' => null, 'facebook' => null, 'whatsapp' => null]]);
 
